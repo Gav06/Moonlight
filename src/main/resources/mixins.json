@@ -1,0 +1,10 @@
+{
+  "minVersion": "0.7",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "refmap.json",
+  "required": true,
+  "package": "dev.moonlight.mixin.mixins",
+  "mixins": [
+    "MixinRenderLivingBase"
+  ]
+}

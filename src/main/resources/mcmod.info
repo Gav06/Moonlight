@@ -1,0 +1,16 @@
+[
+    {
+        "modid": "moonlight",
+        "name": "Moonlight",
+        "description": "Moonlight client for minecraft 1.12.2",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "url": "",
+        "updateUrl": "",
+        "authorList": ["Gav06", "gerald0mc"],
+        "credits": "",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
+]
