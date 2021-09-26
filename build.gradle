@@ -82,7 +82,7 @@ shadowJar {
 
 mixin {
     defaultObfuscationEnv searge
-    add sourceSets.main, 'refmap.json'
+    add sourceSets.main, 'moonlight.refmap.json'
 }
 
 reobf {
@@ -94,7 +94,7 @@ reobf {
 
 
 jar.manifest.attributes(
-        'MixinConfigs': 'mixins.json',
+        'MixinConfigs': 'moonlight.mixins.json',
         'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,
         'FMLCorePluginContainsFMLMod': 'true',
