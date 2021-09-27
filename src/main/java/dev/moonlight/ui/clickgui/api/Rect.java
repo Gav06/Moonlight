@@ -1,4 +1,4 @@
-package dev.moonlight.ui.clickgui;
+package dev.moonlight.ui.clickgui.api;
 
 public class Rect {
 

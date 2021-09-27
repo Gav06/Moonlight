@@ -3,7 +3,7 @@ package dev.moonlight;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.misc.EventListener;
 import dev.moonlight.misc.FontHelper;
-import dev.moonlight.misc.SlickFontRenderer;
+import dev.moonlight.misc.font.CFontRenderer;
 import dev.moonlight.module.ModuleManager;
 import dev.moonlight.ui.clickgui.GUI;
 import dev.moonlight.ui.hud.HUD;
@@ -32,7 +32,7 @@ public final class Moonlight {
 
     private Logger logger;
 
-    private SlickFontRenderer fontRenderer;
+    private CFontRenderer fontRenderer;
 
     private ModuleManager moduleManager;
 
@@ -49,14 +49,16 @@ public final class Moonlight {
 
         logger.info("Starting {} v{}", MOD_NAME, VERSION);
 
-        fontRenderer = new SlickFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/SFUI.ttf", 17.0f));
+        fontRenderer = new CFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/Jetbrains_Mono.ttf", 20.0f), true, true);
         moduleManager = new ModuleManager();
-        hud = new HUD();
-        gui = new GUI();
+        hud = new HUD(this);
+        gui = new GUI(this);
 
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
+
+        logger.error(moduleManager.getModuleList());
     }
 
     public Logger getLogger() {
@@ -67,7 +69,7 @@ public final class Moonlight {
         return moduleManager;
     }
 
-    public SlickFontRenderer getFontRenderer() {
+    public CFontRenderer getFontRenderer() {
         return fontRenderer;
     }
 

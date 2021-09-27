@@ -26,7 +26,7 @@ public final class ModuleManager {
 
     private void addModules() {
         try {
-            final List<Class<?>> classes = ClassFinder.from("dev.moonlight.module.mods", true);
+            final List<Class<?>> classes = ClassFinder.from("dev.moonlight.module.mods");
             if (classes != null) {
                 for (Class<?> clazz : classes) {
                     if (!Modifier.isAbstract(clazz.getModifiers()) && Module.class.isAssignableFrom(clazz)) {

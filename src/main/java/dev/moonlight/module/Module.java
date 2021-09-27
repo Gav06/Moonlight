@@ -1,6 +1,8 @@
 package dev.moonlight.module;
 
+import dev.moonlight.Moonlight;
 import dev.moonlight.misc.Bind;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
@@ -11,6 +13,9 @@ import java.lang.annotation.Target;
 import java.util.Objects;
 
 public abstract class Module extends Bind {
+
+    protected final Minecraft mc = Minecraft.getMinecraft();
+    protected final Moonlight moonlight = Moonlight.INSTANCE;
 
     private final String name;
     private final Category category;

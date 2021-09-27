@@ -1,35 +1,67 @@
 package dev.moonlight.ui.clickgui;
 
+import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.ui.clickgui.api.AbstractComponent;
+import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public final class GUI extends GuiScreen {
+
+    private final Moonlight moonlight;
+    private final ArrayList<AbstractComponent> components;
+
+    public GUI(Moonlight moonlight) {
+        this.moonlight = moonlight;
+        this.components = new ArrayList<>();
+
+        // initialize components here
+        components.add(new TestComponent(50, 50, 100, 100));
+    }
 
     @ApiCall
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-
+        for (IComponent component : components) {
+            if (component.isVisible()) {
+                component.draw(mouseX, mouseY, partialTicks);
+            }
+        }
     }
 
     @ApiCall
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-
+        for (IComponent component : components) {
+            if (component.isVisible()) {
+                component.click(mouseX, mouseY, mouseButton);
+            }
+        }
     }
 
     @ApiCall
     @Override
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-
+        for (IComponent component : components) {
+            if (component.isVisible()) {
+                component.release(mouseX, mouseY, mouseButton);
+            }
+        }
     }
 
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
-        super.keyTyped(keyChar, keyCode);
+        for (IComponent component : components) {
+            if (component.isVisible()) {
+                component.typed(keyChar, keyCode);
+            }
+        }
 
+        super.keyTyped(keyChar, keyCode);
     }
 
     @Override

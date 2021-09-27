@@ -10,7 +10,7 @@ import java.util.Map;
 
 @IFMLLoadingPlugin.Name("Moonlight MIXINS")
 @IFMLLoadingPlugin.MCVersion("1.12.2")
-public class MoonlightMixins implements IFMLLoadingPlugin {
+public final class MoonlightMixins implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         return new String[0];

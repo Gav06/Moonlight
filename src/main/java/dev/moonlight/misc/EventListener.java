@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
-public class EventListener {
+public final class EventListener {
 
     private final Moonlight moonlight;
 
@@ -22,6 +22,7 @@ public class EventListener {
             // on key press
             for (Module module : moonlight.getModuleManager().getModuleList()) {
                 if (module.getBind() == eventKey) {
+                    System.out.println("attempted to toggle module");
                     module.toggle();
                 }
             }
