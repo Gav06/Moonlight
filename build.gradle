@@ -14,24 +14,25 @@ buildscript {
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'dev'
 version = '1.0'
 archivesBaseName = 'moonlight'
+
+configurations {
+    shade
+}
 
 minecraft {
     version = project.forgeVersion
     runDir = "run"
     mappings = project.mcpVersion
     coreMod = "dev.moonlight.mixin.MoonlightMixins"
-
 }
 
 repositories {
@@ -43,12 +44,20 @@ repositories {
 }
 
 dependencies {
-    compile("org.spongepowered:mixin:0.7.4-SNAPSHOT") {
+    shade("org.spongepowered:mixin:0.7.4-SNAPSHOT") {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+
+    shade("org.slick2d:slick2d-core:1.0.2") {
+        exclude module: 'lwjgl'
+        exclude module: "jogg"
+        exclude module: "jorbis"
+    }
+
+    implementation configurations.shade
 }
 
 processResources {
@@ -70,36 +79,24 @@ processResources {
     }
 }
 
-shadowJar {
-    dependencies {
-        include(dependency('org.spongepowered:mixin'))
-    }
-    exclude 'dummyThing'
-    exclude 'LICENSE.txt'
-    classifier = 'release'
-}
-
-
 mixin {
     defaultObfuscationEnv searge
     add sourceSets.main, 'moonlight.refmap.json'
 }
 
-reobf {
-    shadowJar {
-        mappingType = 'SEARGE'
-        classpath = sourceSets.main.compileClasspath
+jar {
+    manifest.attributes(
+            'MixinConfigs': 'moonlight.mixins.json',
+            'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'TweakOrder': 0,
+            'FMLCorePluginContainsFMLMod': 'true',
+            'FMLCorePlugin': 'dev.moonlight.mixin.MoonlightMixins',
+            'ForceLoadAsMod': 'true',
+    )
+
+    from {
+        configurations.shade.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
-
-
-jar.manifest.attributes(
-        'MixinConfigs': 'moonlight.mixins.json',
-        'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-        'TweakOrder': 0,
-        'FMLCorePluginContainsFMLMod': 'true',
-        'FMLCorePlugin': 'dev.moonlight.mixin.MoonlightMixins',
-        'ForceLoadAsMod': 'true',
-)
-
-build.dependsOn(shadowJar)

@@ -1,5 +1,6 @@
 package dev.moonlight.ui.hud;
 
+import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,6 +15,6 @@ public final class HUD {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-
+        Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow("Hello!", 0f, 0f, -1);
     }
 }
