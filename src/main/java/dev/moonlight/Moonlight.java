@@ -10,6 +10,8 @@ import dev.moonlight.ui.hud.HUD;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(
         modid = Moonlight.MOD_ID,
@@ -28,6 +30,8 @@ public final class Moonlight {
     @Mod.Instance(MOD_ID)
     public static Moonlight INSTANCE;
 
+    private Logger logger;
+
     private SlickFontRenderer fontRenderer;
 
     private ModuleManager moduleManager;
@@ -36,15 +40,27 @@ public final class Moonlight {
 
     private GUI gui;
 
+    @SuppressWarnings("all")
     @ApiCall
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        final long startTime = System.currentTimeMillis();
+        logger = LogManager.getLogger(MOD_ID);
+
+        logger.info("Starting {} v{}", MOD_NAME, VERSION);
+
         fontRenderer = new SlickFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/SFUI.ttf", 17.0f));
         moduleManager = new ModuleManager();
         hud = new HUD();
         gui = new GUI();
 
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
+
+        logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public ModuleManager getModuleManager() {
