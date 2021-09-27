@@ -1,5 +1,6 @@
 package dev.moonlight;
 
+import dev.moonlight.module.ModuleManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
@@ -10,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
         clientSideOnly = true,
         acceptedMinecraftVersions = "[1.12.2]"
 )
-public class Moonlight {
+public final class Moonlight {
 
     public static final String MOD_ID = "moonlight";
     public static final String MOD_NAME = "Moonlight";
@@ -20,11 +21,14 @@ public class Moonlight {
     @Mod.Instance(MOD_ID)
     public static Moonlight INSTANCE;
 
-    /**
-     * This is the second initialization event. Register custom recipes
-     */
+    private ModuleManager moduleManager;
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        moduleManager = new ModuleManager();
+    }
 
+    public ModuleManager getModuleManager() {
+        return moduleManager;
     }
 }

@@ -1,10 +1,46 @@
 package dev.moonlight.module;
 
+import dev.moonlight.misc.Bind;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
 
-public abstract class Module {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Objects;
 
+public abstract class Module extends Bind {
+
+    private final String name;
+    private final Category category;
+    private final String desc;
     private boolean enabled = false;
+
+    public Module() {
+        if (getClass().isAnnotationPresent(Info.class)) {
+            final Info info = getClass().getAnnotation(Info.class);
+            this.name = info.name();
+            this.category = info.category();
+            this.desc = info.desc();
+            this.setBind(info.bind());
+            this.setEnabled(info.enabled());
+        } else {
+            throw new RuntimeException(String.format("Module (%s) is missing @Info annotation", getClass().getName()));
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 
     public void enable() {
         enabled = true;
@@ -41,4 +77,36 @@ public abstract class Module {
     protected void onEnable() { }
 
     protected void onDisable() { }
+
+    public enum Category {
+        Combat,
+        Render,
+        Movement,
+        World,
+        Player,
+        Other
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface Info {
+        String name();
+        Category category();
+        String desc();
+        int bind() default Keyboard.KEY_NONE;
+        boolean enabled() default false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Module module = (Module) o;
+        return enabled == module.enabled && name.equals(module.name) && category == module.category && desc.equals(module.desc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, category, desc, enabled, getBind());
+    }
 }

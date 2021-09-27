@@ -1,0 +1,57 @@
+package dev.moonlight.module;
+
+import dev.moonlight.misc.ClassFinder;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public final class ModuleManager {
+
+    private final List<Module> moduleList;
+    private final HashMap<Class<? extends Module>, Module> moduleMap;
+
+    public ModuleManager() {
+        this.moduleList = new ArrayList<>();
+        this.moduleMap = new HashMap<>();
+        addModules();
+        this.moduleList.sort(this::sortAlphabetically);
+    }
+
+    private int sortAlphabetically(Module module1, Module module2) {
+        return module1.getName().compareTo(module2.getName());
+    }
+
+    private void addModules() {
+        try {
+            final List<Class<?>> classes = ClassFinder.from("dev.moonlight.module.mods", true);
+            if (classes != null) {
+                for (Class<?> clazz : classes) {
+                    if (!Modifier.isAbstract(clazz.getModifiers()) && Module.class.isAssignableFrom(clazz)) {
+                        for (Constructor<?> constructor : clazz.getConstructors()) {
+                            if (constructor.getParameterCount() == 0) {
+                                final Module instance = (Module) constructor.newInstance();
+
+                                moduleList.add(instance);
+                                moduleMap.put(instance.getClass(), instance);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Module> getModuleList() {
+        return moduleList;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Module> T getModule(Class<T> clazz) {
+        return (T) moduleMap.get(clazz);
+    }
+}
