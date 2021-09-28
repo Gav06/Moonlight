@@ -4,6 +4,7 @@ import dev.moonlight.misc.ApiCall;
 import dev.moonlight.misc.EventListener;
 import dev.moonlight.misc.FontHelper;
 import dev.moonlight.misc.font.CFontRenderer;
+import dev.moonlight.module.Module;
 import dev.moonlight.module.ModuleManager;
 import dev.moonlight.ui.clickgui.GUI;
 import dev.moonlight.ui.hud.HUD;
@@ -57,6 +58,10 @@ public final class Moonlight {
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
+
+        for (Module module : moduleManager.getModuleList()) {
+            System.out.println(module.getSettings());
+        }
     }
 
     public Logger getLogger() {

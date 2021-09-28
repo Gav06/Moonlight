@@ -2,9 +2,11 @@ package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (moonlight.getModuleManager().getModule(ClickGUI.class).background.getValue())
+            drawDefaultBackground();
+
         for (IComponent component : components) {
             if (component.isVisible()) {
                 component.draw(mouseX, mouseY, partialTicks);
@@ -55,13 +60,19 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
+        if (keyCode == Keyboard.KEY_GRAVE) {
+            this.mc.displayGuiScreen(null);
+            if (this.mc.currentScreen == null) {
+                this.mc.setIngameFocus();
+            }
+            return;
+        }
+
         for (IComponent component : components) {
             if (component.isVisible()) {
                 component.typed(keyChar, keyCode);
             }
         }
-
-        super.keyTyped(keyChar, keyCode);
     }
 
     @Override

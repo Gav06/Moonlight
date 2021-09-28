@@ -37,6 +37,11 @@ public final class Window extends AbstractComponent {
         this.moonlightGui = moonlightGui;
         this.moduleButtonCache = new HashMap<>();
 
+        panes.add(this.categoryPane = new ContentPane<>(x, y, 100, height));
+        panes.add(this.modulePane = new ContentPane<>(x, y, width / 2 - 100, height));
+        panes.add(this.settingPane = new ContentPane<>(x, y, width / 2 - 100, height));
+
+        // module & settings initialization
         for (Module.Category category : Module.Category.values()) {
             moduleButtonCache.put(category, new ArrayList<>());
             for (Module module : moonlightGui.getMoonlight().getModuleManager().getCategoryModules(category)) {
@@ -45,28 +50,10 @@ public final class Window extends AbstractComponent {
             }
         }
 
-        final ContentPane<CategoryButton> categoryPane = new ContentPane<>(x, y, 100, height);
-
+        // category buttons initialization
         for (Module.Category category : Module.Category.values()) {
-            categoryPane.getComponents().add(
-                    new CategoryButton(
-                            category,
-                            0,
-                            0,
-                            categoryPane.width,
-                            categoryPane.height / category.getClass().getEnumConstants().length));
+            categoryPane.getComponents().add(new CategoryButton(category, 0, 0, categoryPane.width, categoryPane.height / category.getClass().getEnumConstants().length));
         }
-
-        final ContentPane<ModuleButton> modulesPane = new ContentPane<>(x, y, width / 2 - 100, height);
-
-        final ContentPane<SettingComponent> settingsPane = new ContentPane<>(x, y, width / 2 - 100, height);
-
-        panes.add(categoryPane);
-        this.categoryPane = categoryPane;
-        panes.add(modulesPane);
-        this.modulePane = modulesPane;
-        panes.add(settingsPane);
-        this.settingPane = settingsPane;
     }
 
     @Override
@@ -145,6 +132,8 @@ public final class Window extends AbstractComponent {
             if (isInside(mouseX, mouseY)) {
 
                 modulePane.getComponents().clear();
+                settingPane.getComponents().clear();
+                settingPane.metaTags.remove("module");
                 for (ModuleButton button : moduleButtonCache.get(category)) {
                     modulePane.getComponents().add(button);
                 }
@@ -182,8 +171,10 @@ public final class Window extends AbstractComponent {
             this.settingComponents = new CopyOnWriteArrayList<>();
 
             for (Setting setting : module.getSettings()) {
-                if (setting instanceof BoolSetting) {
-                    settingComponents.add(new BoolComponent((BoolSetting)setting, 0, 0, settingPane.width, 16));
+                if (setting != null) {
+                    if (setting instanceof BoolSetting) {
+                        settingComponents.add(new BoolComponent((BoolSetting) setting, 0, 0, settingPane.width, 16));
+                    }
                 }
             }
         }
@@ -194,9 +185,15 @@ public final class Window extends AbstractComponent {
                 if (mouseButton == 0) {
                     module.toggle();
                 } else {
-                    settingPane.getComponents().clear();
-                    for (SettingComponent component : settingComponents) {
-                        settingPane.getComponents().add(component);
+                    if (settingPane.metaTags.get("module") != module.getName()) {
+                        settingPane.getComponents().clear();
+                        for (SettingComponent component : settingComponents) {
+                            settingPane.getComponents().add(component);
+                        }
+                        settingPane.metaTags.put("module", module.getName());
+                    } else {
+                        settingPane.getComponents().clear();
+                        settingPane.metaTags.remove("module");
                     }
                 }
             }
@@ -212,7 +209,7 @@ public final class Window extends AbstractComponent {
             }
             Gui.drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x90000000);
             StringBuilder sb = new StringBuilder();
-            if (settingPane.getComponents() == settingComponents)
+            if (settingPane.metaTags.get("module") == module.getName())
                 sb.append("> ");
             sb.append(module.getName());
             int color = 0x666666;

@@ -38,7 +38,7 @@ public final class BoolComponent extends SettingComponent {
             sb.append(ChatFormatting.RED + " false");
         }
 
-        cfont.drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - cfont.getHeight() / 2f, -1);
+        cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
     }
 
     @Override
