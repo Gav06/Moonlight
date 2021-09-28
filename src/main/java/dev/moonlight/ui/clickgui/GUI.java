@@ -3,15 +3,12 @@ package dev.moonlight.ui.clickgui;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
-import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-@SuppressWarnings("unchecked")
 public final class GUI extends GuiScreen {
 
     private final Moonlight moonlight;
