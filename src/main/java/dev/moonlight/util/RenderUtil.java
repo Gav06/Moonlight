@@ -1,4 +1,4 @@
-package dev.moonlight.misc;
+package dev.moonlight.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
