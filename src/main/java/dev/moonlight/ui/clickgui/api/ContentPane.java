@@ -3,7 +3,7 @@ package dev.moonlight.ui.clickgui.api;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ContentPane<T extends AbstractComponent> extends AbstractComponent {
+public final class ContentPane<T extends AbstractComponent> extends AbstractComponent {
 
     private final CopyOnWriteArrayList<T> components;
     public final HashMap<String, Object> metaTags;

@@ -2,6 +2,7 @@ package dev.moonlight.module;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.Bind;
+import dev.moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
@@ -10,6 +11,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Module extends Bind {
@@ -17,6 +19,7 @@ public abstract class Module extends Bind {
     protected final Minecraft mc = Minecraft.getMinecraft();
     protected final Moonlight moonlight = Moonlight.INSTANCE;
 
+    private final ArrayList<Setting> settings = new ArrayList<>();
     private final String name;
     private final Category category;
     private final String desc;
@@ -82,6 +85,10 @@ public abstract class Module extends Bind {
     protected void onEnable() { }
 
     protected void onDisable() { }
+
+    public ArrayList<Setting> getSettings() {
+        return settings;
+    }
 
     public enum Category {
         Combat,

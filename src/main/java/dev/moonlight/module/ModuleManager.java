@@ -1,8 +1,10 @@
 package dev.moonlight.module;
 
 import dev.moonlight.misc.ClassFinder;
+import dev.moonlight.settings.Setting;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,15 @@ public final class ModuleManager {
                         for (Constructor<?> constructor : clazz.getConstructors()) {
                             if (constructor.getParameterCount() == 0) {
                                 final Module instance = (Module) constructor.newInstance();
+
+                                for (Field field : instance.getClass().getDeclaredFields()) {
+                                    if (!field.isAccessible())
+                                        field.setAccessible(true);
+
+                                    if (Setting.class.isAssignableFrom(field.getType())) {
+                                        instance.getSettings().add((Setting) field.get(instance));
+                                    }
+                                }
 
                                 moduleList.add(instance);
                                 moduleMap.put(instance.getClass(), instance);

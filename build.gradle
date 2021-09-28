@@ -51,12 +51,6 @@ dependencies {
         exclude module: 'commons-io'
     }
 
-    shade("org.slick2d:slick2d-core:1.0.2") {
-        exclude module: 'lwjgl'
-        exclude module: "jogg"
-        exclude module: "jorbis"
-    }
-
     implementation configurations.shade
 }
 

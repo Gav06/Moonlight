@@ -3,9 +3,12 @@ package dev.moonlight.ui.clickgui;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.RenderUtil;
 import dev.moonlight.module.Module;
+import dev.moonlight.settings.Setting;
+import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
+import dev.moonlight.ui.clickgui.settings.BoolComponent;
 import net.minecraft.client.gui.Gui;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Window extends AbstractComponent {
+public final class Window extends AbstractComponent {
 
     private final WindowHeader header;
 
@@ -23,7 +26,7 @@ public class Window extends AbstractComponent {
     // used for accessing the different panes to perform actions
     private final ContentPane<CategoryButton> categoryPane;
     private final ContentPane<ModuleButton> modulePane;
-    private final ContentPane<?> settingPane;
+    private final ContentPane<SettingComponent> settingPane;
 
     private final HashMap<Module.Category, List<ModuleButton>> moduleButtonCache;
 
@@ -56,7 +59,7 @@ public class Window extends AbstractComponent {
 
         final ContentPane<ModuleButton> modulesPane = new ContentPane<>(x, y, width / 2 - 100, height);
 
-        final ContentPane<?> settingsPane = new ContentPane<>(x, y, width / 2 - 100, height);
+        final ContentPane<SettingComponent> settingsPane = new ContentPane<>(x, y, width / 2 - 100, height);
 
         panes.add(categoryPane);
         this.categoryPane = categoryPane;
@@ -140,10 +143,8 @@ public class Window extends AbstractComponent {
         @Override
         public void click(int mouseX, int mouseY, int mouseButton) {
             if (isInside(mouseX, mouseY)) {
-                for (ModuleButton button : modulePane.getComponents()) {
-                    modulePane.getComponents().remove(button);
-                }
 
+                modulePane.getComponents().clear();
                 for (ModuleButton button : moduleButtonCache.get(category)) {
                     modulePane.getComponents().add(button);
                 }
@@ -172,13 +173,19 @@ public class Window extends AbstractComponent {
     }
 
     private class ModuleButton extends AbstractComponent {
-        private final CopyOnWriteArrayList<AbstractComponent> settingComponents;
+        private final CopyOnWriteArrayList<SettingComponent> settingComponents;
         private final Module module;
 
         public ModuleButton(Module module, int x, int y, int width, int height) {
             super(x, y, width, height);
             this.module = module;
             this.settingComponents = new CopyOnWriteArrayList<>();
+
+            for (Setting setting : module.getSettings()) {
+                if (setting instanceof BoolSetting) {
+                    settingComponents.add(new BoolComponent((BoolSetting)setting, 0, 0, settingPane.width, 16));
+                }
+            }
         }
 
         @Override
@@ -187,7 +194,10 @@ public class Window extends AbstractComponent {
                 if (mouseButton == 0) {
                     module.toggle();
                 } else {
-
+                    settingPane.getComponents().clear();
+                    for (SettingComponent component : settingComponents) {
+                        settingPane.getComponents().add(component);
+                    }
                 }
             }
         }
@@ -218,7 +228,7 @@ public class Window extends AbstractComponent {
             return module;
         }
 
-        public CopyOnWriteArrayList<AbstractComponent> getSettingComponents() {
+        public CopyOnWriteArrayList<SettingComponent> getSettingComponents() {
             return settingComponents;
         }
     }

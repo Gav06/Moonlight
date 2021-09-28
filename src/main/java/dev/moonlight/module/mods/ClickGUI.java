@@ -1,6 +1,7 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.module.Module;
+import dev.moonlight.settings.impl.BoolSetting;
 import org.lwjgl.input.Keyboard;
 
 @Module.Info(
@@ -10,6 +11,8 @@ import org.lwjgl.input.Keyboard;
         bind = Keyboard.KEY_GRAVE
 )
 public final class ClickGUI extends Module {
+
+    private final BoolSetting background = new BoolSetting("Background", false);
 
     @Override
     protected void onEnable() {
