@@ -14,21 +14,20 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 )
 public class Fullbright extends Module {
 
-    public float brightnessLevel = 0f;
+    public float brightnessLevel = 0.0f;
 
     @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
+    public void onRenderTick(TickEvent.ClientTickEvent event) {
         if (isEnabled()) {
-            if (brightnessLevel < 24f) {
-                brightnessLevel += 1 * mc.getRenderPartialTicks();
+            if (brightnessLevel < 20.0f) {
+                brightnessLevel += 1.0f;
             }
         } else {
-            if (brightnessLevel > 0f) {
-                brightnessLevel -= 1 * mc.getRenderPartialTicks();
+            if (brightnessLevel > 0.0f) {
+                brightnessLevel -= 1.0f;
             }
         }
 
-        brightnessLevel = MathHelper.clamp(brightnessLevel, 0f, 24f);
+        brightnessLevel = MathHelper.clamp(brightnessLevel, 0.0f, 20.0f);
     }
-
 }

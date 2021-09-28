@@ -1,5 +1,7 @@
 package dev.moonlight.misc;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -8,7 +10,7 @@ public class FPSHelper {
 
     private int currFps;
     private int lastFps;
-    private int fpsAvg;
+    private double fpsAvg;
 
     public static final FPSHelper INSTANCE = new FPSHelper();
 
@@ -17,26 +19,24 @@ public class FPSHelper {
     }
 
     private long startTime = 0L;
-    private int frames;
+    private int frames = 0;
 
-    private int fps = -1;
-
-    public int getFps() {
-        return fps;
+    public double getFpsAverage() {
+        return fpsAvg;
     }
 
     @SubscribeEvent
     public void onTick(TickEvent.RenderTickEvent event) {
-        if (frames == 0) {
-            startTime = System.currentTimeMillis();
-            return;
-        }
+        // calculating fps
         frames++;
-//        fps = (int) (frames / (System.currentTimeMillis() - startTime));
-        int diff = (int) (System.currentTimeMillis() - startTime);
-        System.out.println("------------------------");
-        System.out.println(frames);
-        System.out.println(diff);
-        System.out.println(frames / diff);
+        if (System.currentTimeMillis() - startTime > 1000L) {
+            lastFps = currFps;
+            currFps = frames;
+            frames = 0;
+            startTime = System.currentTimeMillis();
+        }
+
+        // getting interpolated
+        fpsAvg = MathHelper.clampedLerp((double) lastFps, (double) currFps, (System.currentTimeMillis() - startTime) / 1000.0) / 2.0;
     }
 }
