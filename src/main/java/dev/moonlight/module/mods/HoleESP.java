@@ -3,12 +3,17 @@ package dev.moonlight.module.mods;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.misc.BlockHelper;
+import dev.moonlight.misc.MathUtil;
 import dev.moonlight.misc.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
+import dev.moonlight.settings.impl.FloatSetting;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +21,9 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -35,6 +42,8 @@ public final class HoleESP extends Module {
 //
 //    private final BoolSetting frustumCheck = new BoolSetting("Frustum Check", true);
 
+    private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
+    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false);
     private final BoolSetting self = new BoolSetting("Self", false);
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
@@ -48,34 +57,29 @@ public final class HoleESP extends Module {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
 
+        int alpha = 128;
+
+
         for (BlockPos pos : safePositions) {
-            renderHole(pos, 0x8000ff00, 0x1a00ff00);
+            renderHole(pos, Color.GREEN);
         }
 
         for (BlockPos pos : unSafePositions) {
-            renderHole(pos, 0x80ff0000, 0x1aff0000);
+            renderHole(pos, Color.RED);
         }
 
     }
 
-    private void renderHole(BlockPos pos, int color, int clearcolor) {
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glPushMatrix();
-        GL11.glLineWidth(2f);
-        final float[] colors = RenderUtil.hexToRGBA(color);
-        GL11.glColor4f(colors[0], colors[1], colors[2], colors[3]);
-        GL11.glTranslated(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
-        RenderUtil.quad3d(GL11.GL_LINE_LOOP,
-                pos.getX(), pos.getY(), pos.getZ(),
-                pos.getX() + 1, pos.getY(), pos.getZ(),
-                pos.getX() + 1, pos.getY(), pos.getZ() + 1,
-                pos.getX(), pos.getY(), pos.getZ() + 1);
-        final AxisAlignedBB bb = new AxisAlignedBB(pos);
-        if (!(bb.intersects(mc.player.getEntityBoundingBox()) && !self.getValue())) {
-            RenderUtil.drawSimpleGradientBB(new AxisAlignedBB(pos), clearcolor, color, true);
-        }
-        GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+    private float getDistanceAlpha(BlockPos pos, int normalOpacity) {
+//        if (top) {
+//
+//        } else {
+            return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, normalOpacity / 255.0));
+//        }
+    }
+
+    private void renderHole(BlockPos pos, Color color) {
+
     }
 
     private int ticksPassed = 0;
@@ -144,5 +148,50 @@ public final class HoleESP extends Module {
                 pos.west(),
                 pos.down()
         };
+    }
+
+    private void drawSimpleGradientBB(AxisAlignedBB bb, Color topColor, Color bottomColor) {
+        RenderUtil.prepareRender();
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder buffer = tessellator.getBuffer();
+        final float[] topColors = new float[] {
+                topColor.getRed() / 255.0f,
+                topColor.getGreen() / 255.0f,
+                topColor.getBlue() / 255.0f,
+                topColor.getAlpha() / 255.0f
+        };
+        final float[] bottomColors = new float[] {
+                bottomColor.getRed() / 255.0f,
+                bottomColor.getGreen() / 255.0f,
+                bottomColor.getBlue() / 255.0f,
+                bottomColor.getAlpha() / 255.0f
+        };
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
+        tessellator.draw();
+        RenderUtil.releaseRender();
     }
 }

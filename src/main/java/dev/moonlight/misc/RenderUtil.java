@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import java.awt.*;
+
 public final class RenderUtil {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
@@ -93,40 +95,5 @@ public final class RenderUtil {
         GlStateManager.enableLighting();
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
-    }
-
-    public static void drawSimpleGradientBB(AxisAlignedBB bb, int topColor, int bottomColor, boolean depth) {
-        prepareRender();
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder buffer = tessellator.getBuffer();
-        final float[] topColors = hexToRGBA(topColor);
-        final float[] bottomColors = hexToRGBA(bottomColor);
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.minY, bb.minZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.minY, bb.maxZ).color(bottomColors[0], bottomColors[1], bottomColors[2], bottomColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.maxZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        buffer.pos(bb.minX, bb.maxY, bb.minZ).color(topColors[0], topColors[1], topColors[2], topColors[3]).endVertex();
-        tessellator.draw();
-        releaseRender();
     }
 }

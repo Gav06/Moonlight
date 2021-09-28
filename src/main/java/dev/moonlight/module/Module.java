@@ -104,7 +104,8 @@ public abstract class Module extends Bind {
         Movement,
         World,
         Player,
-        Client
+        Client,
+        HUD
     }
 
     @Retention(RetentionPolicy.RUNTIME)
