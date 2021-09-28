@@ -5,11 +5,13 @@ import dev.moonlight.misc.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.Setting;
 import dev.moonlight.settings.impl.BoolSetting;
+import dev.moonlight.settings.impl.ModeSetting;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
 import dev.moonlight.ui.clickgui.settings.BindComponent;
 import dev.moonlight.ui.clickgui.settings.BoolComponent;
+import dev.moonlight.ui.clickgui.settings.ModeComponent;
 import net.minecraft.client.gui.Gui;
 
 import java.util.ArrayList;
@@ -178,6 +180,8 @@ public final class Window extends AbstractComponent {
                 if (setting != null) {
                     if (setting instanceof BoolSetting) {
                         settingComponents.add(new BoolComponent((BoolSetting) setting, 0, 0, settingPane.width, height_));
+                    } else if (setting instanceof ModeSetting) {
+                        settingComponents.add(new ModeComponent((ModeSetting) setting, 0, 0, settingPane.width, height_));
                     }
                 }
             }

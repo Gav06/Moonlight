@@ -5,7 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// used for marking methods that should not be called within the client, but only by minecraft / forge
+// used for marking methods that should not be called within the client, but only by minecraft / forge.
+// (like event listener methds for example)
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 public @interface ApiCall {

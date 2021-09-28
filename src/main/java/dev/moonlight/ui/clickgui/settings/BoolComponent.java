@@ -30,7 +30,7 @@ public final class BoolComponent extends SettingComponent {
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         }
 
-        final StringBuilder sb = new StringBuilder(boolSetting.getName());
+        final StringBuilder sb = new StringBuilder(boolSetting.getName() + ":");
 
         if (boolSetting.getValue()) {
             sb.append(ChatFormatting.GREEN + " true");

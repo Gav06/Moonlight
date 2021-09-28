@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
         category = Module.Category.Render,
         alwaysRegistered = true
 )
-public class Fullbright extends Module {
+public final class Fullbright extends Module {
 
     public float brightnessLevel = 0.0f;
 
