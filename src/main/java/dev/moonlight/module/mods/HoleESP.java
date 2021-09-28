@@ -10,6 +10,7 @@ import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -56,10 +57,6 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-
-        int alpha = 128;
-
-
         for (BlockPos pos : safePositions) {
             renderHole(pos, Color.GREEN);
         }
@@ -67,19 +64,20 @@ public final class HoleESP extends Module {
         for (BlockPos pos : unSafePositions) {
             renderHole(pos, Color.RED);
         }
-
     }
 
     private float getDistanceAlpha(BlockPos pos, int normalOpacity) {
-//        if (top) {
-//
-//        } else {
-            return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, normalOpacity / 255.0));
-//        }
+        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, normalOpacity / 255.0));
     }
 
     private void renderHole(BlockPos pos, Color color) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
 
+        int bottomAlpha = 128;
+
+
+        GlStateManager.popMatrix();
     }
 
     private int ticksPassed = 0;
