@@ -6,43 +6,43 @@ import dev.moonlight.settings.Visibility;
 public final class ModeSetting extends Setting {
 
     private final Enum<?>[] constants;
-    private int valueIndex;
+    private int modeIndex;
     private final int defaultValueIndex;
 
     public ModeSetting(String name, Enum<?> defaultValue) {
         super(name);
         constants = defaultValue.getDeclaringClass().getEnumConstants();
-        this.defaultValueIndex = this.valueIndex = indexOf(defaultValue);
+        this.defaultValueIndex = this.modeIndex = indexOf(defaultValue);
     }
 
     public ModeSetting(String name, Enum<?> defaultValue, Visibility visible) {
         super(name, visible);
         constants = defaultValue.getDeclaringClass().getEnumConstants();
-        this.defaultValueIndex = this.valueIndex = indexOf(defaultValue);
+        this.defaultValueIndex = this.modeIndex = indexOf(defaultValue);
     }
 
     public void increase() {
-        if (valueIndex == constants.length - 1) {
-            valueIndex = 0;
+        if (modeIndex == constants.length - 1) {
+            modeIndex = 0;
         } else {
-            valueIndex++;
+            modeIndex++;
         }
     }
 
     public void decrease() {
-        if (valueIndex == 0) {
-            valueIndex = constants.length - 1;
+        if (modeIndex == 0) {
+            modeIndex = constants.length - 1;
         } else {
-            valueIndex--;
+            modeIndex--;
         }
     }
 
     public Enum<?> getValueEnum() {
-        return constants[valueIndex];
+        return constants[modeIndex];
     }
 
     public int getValueIndex() {
-        return valueIndex;
+        return modeIndex;
     }
 
     public int getDefaultValueIndex() {

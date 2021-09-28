@@ -1,7 +1,7 @@
 package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.misc.RenderUtil;
+import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.Setting;
 import dev.moonlight.settings.impl.BoolSetting;

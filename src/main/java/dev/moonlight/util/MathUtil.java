@@ -1,4 +1,4 @@
-package dev.moonlight.misc;
+package dev.moonlight.util;
 
 public final class MathUtil {
 
