@@ -8,6 +8,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: Rewrite font rendering to use minecraft render system instead of immediate / legacy pengl rendering
+ */
+
 @SuppressWarnings("all")
 public class CFontRenderer extends CFont {
 
