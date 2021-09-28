@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("all")
 public class CFontRenderer extends CFont {
 
     protected CharData[] boldChars = new CharData[256];
@@ -15,7 +16,7 @@ public class CFontRenderer extends CFont {
     protected CharData[] boldItalicChars = new CharData[256];
 
     private final int[] colorCode = new int[32];
-    private final String colorcodeIdentifiers = "0123456789abcdefklmnor";
+    private final String colorCodeIdentifiers = "0123456789abcdefklmnor";
 
     public CFontRenderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
         super(font, antiAlias, fractionalMetrics);
@@ -59,12 +60,10 @@ public class CFontRenderer extends CFont {
 
         CharData[] currentData = this.charData;
         float alpha = (color >> 24 & 0xFF) / 255.0F;
-        boolean randomCase = false;
         boolean bold = false;
         boolean italic = false;
         boolean strikethrough = false;
         boolean underline = false;
-        boolean render = true;
         x *= 2.0D;
         y *= 2.0D;
         GL11.glPushMatrix();
@@ -87,29 +86,21 @@ public class CFontRenderer extends CFont {
                 if (colorIndex < 16) {
                     bold = false;
                     italic = false;
-                    randomCase = false;
                     underline = false;
                     strikethrough = false;
                     GlStateManager.bindTexture(tex.getGlTextureId());
-                    // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                    // tex.getGlTextureId());
                     currentData = this.charData;
                     if (colorIndex < 0) colorIndex = 15;
                     if (shadow) colorIndex += 16;
                     int colorCode = this.colorCode[colorIndex];
                     GlStateManager.color((colorCode >> 16 & 0xFF) / 255.0F, (colorCode >> 8 & 0xFF) / 255.0F, (colorCode & 0xFF) / 255.0F, alpha);
-                } else if (colorIndex == 16) randomCase = true;
-                else if (colorIndex == 17) {
+                } else if (colorIndex == 17) {
                     bold = true;
                     if (italic) {
                         GlStateManager.bindTexture(texItalicBold.getGlTextureId());
-                        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                        // texItalicBold.getGlTextureId());
                         currentData = this.boldItalicChars;
                     } else {
                         GlStateManager.bindTexture(texBold.getGlTextureId());
-                        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                        // texBold.getGlTextureId());
                         currentData = this.boldChars;
                     }
                 } else if (colorIndex == 18) strikethrough = true;
@@ -118,25 +109,18 @@ public class CFontRenderer extends CFont {
                     italic = true;
                     if (bold) {
                         GlStateManager.bindTexture(texItalicBold.getGlTextureId());
-                        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                        // texItalicBold.getGlTextureId());
                         currentData = this.boldItalicChars;
                     } else {
                         GlStateManager.bindTexture(texItalic.getGlTextureId());
-                        // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                        // texItalic.getGlTextureId());
                         currentData = this.italicChars;
                     }
                 } else {
                     bold = false;
                     italic = false;
-                    randomCase = false;
                     underline = false;
                     strikethrough = false;
                     GlStateManager.color((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, alpha);
                     GlStateManager.bindTexture(tex.getGlTextureId());
-                    // GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-                    // tex.getGlTextureId());
                     currentData = this.charData;
                 }
                 i++;
@@ -144,8 +128,8 @@ public class CFontRenderer extends CFont {
                 GL11.glBegin(4);
                 drawChar(currentData, character, (float) x, (float) y);
                 GL11.glEnd();
-                if (strikethrough) drawLine(x, y + currentData[character].height / 2f, x + currentData[character].width - 8.0D, y + currentData[character].height / 2f, 1.0F);
-                if (underline) drawLine(x, y + currentData[character].height - 2.0D, x + currentData[character].width - 8.0D, y + currentData[character].height - 2.0D, 1.0F);
+                if (strikethrough) drawLine(x, y + currentData[character].height / 2f, x + currentData[character].width - 8.0D, y + currentData[character].height / 2f);
+                if (underline) drawLine(x, y + currentData[character].height - 2.0D, x + currentData[character].width - 8.0D, y + currentData[character].height - 2.0D);
                 x += currentData[character].width - 8 + this.charOffset;
             }
         }
@@ -200,9 +184,9 @@ public class CFontRenderer extends CFont {
         texItalicBold = setupTexture(this.font.deriveFont(Font.BOLD | Font.ITALIC), this.antiAlias, this.fractionalMetrics, this.boldItalicChars);
     }
 
-    private void drawLine(double x, double y, double x1, double y1, float width) {
+    private void drawLine(double x, double y, double x1, double y1) {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(width);
+        GL11.glLineWidth((float) 1.0);
         GL11.glBegin(1);
         GL11.glVertex2d(x, y);
         GL11.glVertex2d(x1, y1);
@@ -214,7 +198,7 @@ public class CFontRenderer extends CFont {
         List<String> finalWords = new ArrayList<>();
         if (getStringWidth(text) > width) {
             String[] words = text.split(" ");
-            String currentWord = "";
+            StringBuilder currentWord = new StringBuilder();
             char lastColorCode = 65535;
 
             for (String word : words) {
@@ -226,17 +210,16 @@ public class CFontRenderer extends CFont {
                     }
                 }
                 if (getStringWidth(currentWord + word + " ") < width) {
-                    currentWord = currentWord + word + " ";
+                    currentWord.append(word).append(" ");
                 } else {
-                    finalWords.add(currentWord);
-                    currentWord = "\u00A7" + lastColorCode + word + " ";
+                    finalWords.add(currentWord.toString());
+                    currentWord = new StringBuilder("\u00A7" + lastColorCode + word + " ");
                 }
             }
-            if (currentWord.length() > 0) if (getStringWidth(currentWord) < width) {
+            if (currentWord.length() > 0) if (getStringWidth(currentWord.toString()) < width) {
                 finalWords.add("\u00A7" + lastColorCode + currentWord + " ");
-                currentWord = "";
             } else {
-                finalWords.addAll(formatString(currentWord, width));
+                finalWords.addAll(formatString(currentWord.toString(), width));
             }
         } else {
             finalWords.add(text);
@@ -245,8 +228,8 @@ public class CFontRenderer extends CFont {
     }
 
     public List<String> formatString(String string, double width) {
-        List<String> finalWords = new ArrayList<String>();
-        String currentWord = "";
+        List<String> finalWords = new ArrayList<>();
+        StringBuilder currentWord = new StringBuilder();
         char lastColorCode = 65535;
         char[] chars = string.toCharArray();
         for (int i = 0; i < chars.length; i++) {
@@ -256,16 +239,16 @@ public class CFontRenderer extends CFont {
                 lastColorCode = chars[(i + 1)];
             }
 
-            if (getStringWidth(currentWord + c) < width) {
-                currentWord = currentWord + c;
+            if (getStringWidth(currentWord.toString() + c) < width) {
+                currentWord.append(c);
             } else {
-                finalWords.add(currentWord);
-                currentWord = "\u00A7" + lastColorCode + c;
+                finalWords.add(currentWord.toString());
+                currentWord = new StringBuilder("\u00A7" + lastColorCode + c);
             }
         }
 
         if (currentWord.length() > 0) {
-            finalWords.add(currentWord);
+            finalWords.add(currentWord.toString());
         }
 
         return finalWords;
