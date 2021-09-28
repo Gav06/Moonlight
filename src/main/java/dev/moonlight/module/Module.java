@@ -35,8 +35,9 @@ public abstract class Module extends Bind {
             this.alwaysRegistered = info.alwaysRegistered();
             this.setBind(info.bind());
             this.setEnabled(info.enabled());
-            if (alwaysRegistered)
+            if (alwaysRegistered) {
                 MinecraftForge.EVENT_BUS.register(this);
+            }
         } else {
             throw new RuntimeException(String.format("Module (%s) is missing @Info annotation", getClass().getName()));
         }
