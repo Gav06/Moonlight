@@ -6,8 +6,7 @@ import org.lwjgl.input.Keyboard;
 @Module.Info(
         name = "OldAnimations",
         desc = "Makes the swing animations like 1.8",
-        category = Module.Category.Render,
-        bind = Keyboard.KEY_M
+        category = Module.Category.Render
 )
 public final class OldAnimations extends Module {
 

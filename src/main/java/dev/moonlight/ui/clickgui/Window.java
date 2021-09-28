@@ -8,6 +8,7 @@ import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
+import dev.moonlight.ui.clickgui.settings.BindComponent;
 import dev.moonlight.ui.clickgui.settings.BoolComponent;
 import net.minecraft.client.gui.Gui;
 
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
+// class for holding all of the code for the main window
 public final class Window extends AbstractComponent {
 
     private final WindowHeader header;
@@ -39,9 +42,8 @@ public final class Window extends AbstractComponent {
 
         panes.add(this.categoryPane = new ContentPane<>(x, y, 100, height));
         panes.add(this.modulePane = new ContentPane<>(x, y, width / 2 - 100, height));
-        panes.add(this.settingPane = new ContentPane<>(x, y, width / 2 - 100, height));
+        panes.add(this.settingPane = new ContentPane<>(x, y, width / 2, height));
 
-        // module & settings initialization
         for (Module.Category category : Module.Category.values()) {
             moduleButtonCache.put(category, new ArrayList<>());
             for (Module module : moonlightGui.getMoonlight().getModuleManager().getCategoryModules(category)) {
@@ -170,13 +172,17 @@ public final class Window extends AbstractComponent {
             this.module = module;
             this.settingComponents = new CopyOnWriteArrayList<>();
 
+            final int height_ = 16;
+
             for (Setting setting : module.getSettings()) {
                 if (setting != null) {
                     if (setting instanceof BoolSetting) {
-                        settingComponents.add(new BoolComponent((BoolSetting) setting, 0, 0, settingPane.width, 16));
+                        settingComponents.add(new BoolComponent((BoolSetting) setting, 0, 0, settingPane.width, height_));
                     }
                 }
             }
+
+            settingComponents.add(new BindComponent(module, 0, 0, settingPane.width,  height_));
         }
 
         @Override
@@ -212,7 +218,7 @@ public final class Window extends AbstractComponent {
             if (settingPane.metaTags.get("module") == module.getName())
                 sb.append("> ");
             sb.append(module.getName());
-            int color = 0x666666;
+            int color = 0x777777;
             if (module.isEnabled())
                 color = -1;
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);

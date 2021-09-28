@@ -27,7 +27,7 @@ public final class BoolComponent extends SettingComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         if (isInside(mouseX, mouseY)) {
-            Gui.drawRect(x, y, x + width, y + height, 0x30ffffff);
+            Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         }
 
         final StringBuilder sb = new StringBuilder(boolSetting.getName());

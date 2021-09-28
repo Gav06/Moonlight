@@ -60,7 +60,7 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_GRAVE) {
+        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == moonlight.getModuleManager().getModule(ClickGUI.class).getBind()) {
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();

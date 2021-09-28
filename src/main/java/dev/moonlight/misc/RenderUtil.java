@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
-public class RenderUtil {
+public final class RenderUtil {
 
     public static void outline2d(double x1, double y1, double x2, double y2, int color) {
         final Tessellator tessellator = Tessellator.getInstance();

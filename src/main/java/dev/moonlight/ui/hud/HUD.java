@@ -2,6 +2,7 @@ package dev.moonlight.ui.hud;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.misc.FPSHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,6 +20,7 @@ public final class HUD {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
+        moonlight.getFontRenderer().drawStringWithShadow("FPS: " + FPSHelper.INSTANCE.getFps(), 2f, 2f, -1);
 //        moonlight.getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, 2, 2, -1);
     }
 }

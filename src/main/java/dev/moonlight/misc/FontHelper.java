@@ -3,7 +3,7 @@ package dev.moonlight.misc;
 import java.awt.Font;
 import java.io.InputStream;
 
-public class FontHelper {
+public final class FontHelper {
 
     public static Font getFontFromResource(String resPath, float fontSize) {
         try {
