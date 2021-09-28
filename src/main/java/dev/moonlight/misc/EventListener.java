@@ -1,7 +1,9 @@
 package dev.moonlight.misc;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
@@ -22,7 +24,6 @@ public final class EventListener {
             // on key press
             for (Module module : moonlight.getModuleManager().getModuleList()) {
                 if (module.getBind() == eventKey) {
-                    System.out.println("attempted to toggle module");
                     module.toggle();
                 }
             }

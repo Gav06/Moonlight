@@ -54,4 +54,8 @@ public final class ModuleManager {
     public <T extends Module> T getModule(Class<T> clazz) {
         return (T) moduleMap.get(clazz);
     }
+
+    public boolean isModuleEnabled(Class<? extends Module> clazz) {
+        return getModule(clazz).isEnabled();
+    }
 }

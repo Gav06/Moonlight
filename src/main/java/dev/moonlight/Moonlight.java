@@ -49,7 +49,7 @@ public final class Moonlight {
 
         logger.info("Starting {} v{}", MOD_NAME, VERSION);
 
-        fontRenderer = new CFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/Jetbrains_Mono.ttf", 20.0f), true, true);
+        fontRenderer = new CFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/Jetbrains_Mono.ttf", 18.0f), true, true);
         moduleManager = new ModuleManager();
         hud = new HUD(this);
         gui = new GUI(this);

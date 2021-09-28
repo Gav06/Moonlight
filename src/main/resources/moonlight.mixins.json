@@ -6,7 +6,10 @@
   "package": "dev.moonlight.mixin.mixins",
   "target": "@env(CLIENT)",
   "client": [
-    "MixinRenderLivingBase",
-    "MixinEntityPlayerSP"
+    "MixinEntityPlayerSP",
+    "MixinRenderLivingBase"
+  ],
+  "mixins": [
+    "MixinItemRenderer"
   ]
 }

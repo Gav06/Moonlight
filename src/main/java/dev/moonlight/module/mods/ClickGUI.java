@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 @Module.Info(
         name = "ClickGUI",
         desc = "Opens the clickGui",
-        category = Module.Category.Other,
+        category = Module.Category.Client,
         bind = Keyboard.KEY_GRAVE
 )
 public final class ClickGUI extends Module {

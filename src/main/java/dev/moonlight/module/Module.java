@@ -89,7 +89,7 @@ public abstract class Module extends Bind {
         Movement,
         World,
         Player,
-        Other
+        Client
     }
 
     @Retention(RetentionPolicy.RUNTIME)

@@ -1,6 +1,6 @@
 package dev.moonlight.ui.clickgui.api;
 
-public abstract class DragComponent extends AbstractComponent {
+public class DragComponent extends AbstractComponent {
     public DragComponent(int x, int y, int width, int height) {
         super(x, y, width, height);
     }

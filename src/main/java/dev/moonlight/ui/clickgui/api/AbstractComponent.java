@@ -1,5 +1,8 @@
 package dev.moonlight.ui.clickgui.api;
 
+import dev.moonlight.Moonlight;
+import dev.moonlight.ui.clickgui.GUI;
+
 public abstract class AbstractComponent extends Rect implements IComponent {
 
     private boolean isVisible = true;
