@@ -41,19 +41,19 @@ public final class HoleESP extends Module {
                     offsetPos.getX() + 1, offsetPos.getY(), offsetPos.getZ(),
                     offsetPos.getX() + 1, offsetPos.getY(), offsetPos.getZ() + 1,
                     offsetPos.getX(), offsetPos.getY(), offsetPos.getZ() + 1);
-            System.out.println("rendering esp block");
         }
 
         for (BlockPos pos : unSafePositions) {
-            final BlockPos offsetPos = RenderUtil.offsetBlockPos(pos);
+            GL11.glPushMatrix();
             GL11.glLineWidth(1f);
             GL11.glColor4f(1f, 0f, 0f, 1f);
+            GL11.glTranslated(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
             RenderUtil.quad3d(GL11.GL_LINE_LOOP,
-                    offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(),
-                    offsetPos.getX() + 1, offsetPos.getY(), offsetPos.getZ(),
-                    offsetPos.getX() + 1, offsetPos.getY(), offsetPos.getZ() + 1,
-                    offsetPos.getX(), offsetPos.getY(), offsetPos.getZ() + 1);
-            System.out.println("rendering esp block");
+                    pos.getX(), pos.getY(), pos.getZ(),
+                    pos.getX() + 1, pos.getY(), pos.getZ(),
+                    pos.getX() + 1, pos.getY(), pos.getZ() + 1,
+                    pos.getX(), pos.getY(), pos.getZ() + 1);
+            GL11.glPopMatrix();
         }
     }
 
@@ -83,10 +83,8 @@ public final class HoleESP extends Module {
                 // where we are checking if it is a hole or not
                 if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
                     if (isHoleType(pos, Blocks.OBSIDIAN, Blocks.BEDROCK)) {
-                        System.out.println("found unsafe position");
                         unSafePositions.add(pos);
                     } else if (isHoleType(pos, Blocks.BEDROCK)) {
-                        System.out.println("found safe position!");
                         safePositions.add(pos);
                     }
                 }

@@ -76,7 +76,6 @@ public final class RenderUtil {
         GlStateManager.enableBlend();
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GlStateManager.disableFog();
         GlStateManager.enableAlpha();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL32.GL_DEPTH_CLAMP);
@@ -89,7 +88,6 @@ public final class RenderUtil {
         GlStateManager.disableAlpha();
         GlStateManager.enableLighting();
         GlStateManager.enableTexture2D();
-        GlStateManager.enableFog();
         GlStateManager.popMatrix();
     }
 }
