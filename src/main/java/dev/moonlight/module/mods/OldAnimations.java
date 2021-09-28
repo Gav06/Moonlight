@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
         category = Module.Category.Render,
         bind = Keyboard.KEY_M
 )
-public class OldAnimations extends Module {
+public final class OldAnimations extends Module {
 
     /**
      * See MixinItemRenderer -> updateEquippedItem$ModifyVariable$STORE$F4

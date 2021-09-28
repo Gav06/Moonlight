@@ -19,6 +19,6 @@ public final class HUD {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
-        moonlight.getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, 2, 2, -1);
+//        moonlight.getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, 2, 2, -1);
     }
 }

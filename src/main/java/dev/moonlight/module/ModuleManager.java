@@ -58,4 +58,15 @@ public final class ModuleManager {
     public boolean isModuleEnabled(Class<? extends Module> clazz) {
         return getModule(clazz).isEnabled();
     }
+
+    public List<Module> getCategoryModules(Module.Category category) {
+        final List<Module> list = new ArrayList<>();
+
+        for (Module module : moduleList) {
+            if (module.getCategory() == category)
+                list.add(module);
+        }
+
+        return list;
+    }
 }

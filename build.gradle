@@ -96,6 +96,8 @@ jar {
 
     from {
         configurations.shade.collect {
+            exclude "LICENSE.txt"
+            exclude "dummyThing"
             it.isDirectory() ? it : zipTree(it)
         }
     }

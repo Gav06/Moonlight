@@ -57,8 +57,6 @@ public final class Moonlight {
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
-
-        logger.error(moduleManager.getModuleList());
     }
 
     public Logger getLogger() {

@@ -1,19 +1,22 @@
 package dev.moonlight.ui.clickgui.api;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ContentPane extends AbstractComponent {
+public class ContentPane<T extends AbstractComponent> extends AbstractComponent {
 
-    private final ArrayList<AbstractComponent> components;
+    private final CopyOnWriteArrayList<T> components;
+    public final HashMap<String, Object> metaTags;
 
     public ContentPane(int x, int y, int width, int height) {
         super(x, y, width, height);
-        components = new ArrayList<>();
+        components = new CopyOnWriteArrayList<>();
+        this.metaTags = new HashMap<>();
     }
 
     @Override
     public void click(int mouseX, int mouseY, int mouseButton) {
-        for (AbstractComponent component : components) {
+        for (T component : components) {
             if (component.isVisible()) {
                 component.click(mouseX, mouseY, mouseButton);
             }
@@ -22,7 +25,7 @@ public class ContentPane extends AbstractComponent {
 
     @Override
     public void release(int mouseX, int mouseY, int mouseButton) {
-        for (AbstractComponent component : components) {
+        for (T component : components) {
             if (component.isVisible()) {
                 component.release(mouseX, mouseY, mouseButton);
             }
@@ -32,7 +35,7 @@ public class ContentPane extends AbstractComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         int yVal = 0;
-        for (AbstractComponent component : components) {
+        for (T component : components) {
             if (component.isVisible()) {
                 component.x = x;
                 component.y = y + yVal;
@@ -44,14 +47,21 @@ public class ContentPane extends AbstractComponent {
 
     @Override
     public void typed(char keyChar, int keyCode) {
-        for (AbstractComponent component : components) {
+        for (T component : components) {
             if (component.isVisible()) {
                 component.typed(keyChar, keyCode);
             }
         }
     }
 
-    public ArrayList<AbstractComponent> getComponents() {
+
+    public void clear() {
+        for (T component : components) {
+            components.remove(component);
+        }
+    }
+
+    public CopyOnWriteArrayList<T> getComponents() {
         return components;
     }
 }
