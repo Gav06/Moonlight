@@ -37,6 +37,7 @@ import java.util.concurrent.Executors;
 )
 public final class HoleESP extends Module {
 
+    private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
     private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
 //    private final BoolSetting self = new BoolSetting("Self", false, false);
@@ -46,8 +47,8 @@ public final class HoleESP extends Module {
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
     // so we dont get ConcurrentModificationExceptions when we modify these lists in other threads
-    private ConcurrentSet<BlockPos> unSafePositions = new ConcurrentSet<>();
-    private ConcurrentSet<BlockPos> safePositions = new ConcurrentSet<>();
+    private final ConcurrentSet<BlockPos> unSafePositions = new ConcurrentSet<>();
+    private final ConcurrentSet<BlockPos> safePositions = new ConcurrentSet<>();
 
     @ApiCall
     @SubscribeEvent
@@ -62,7 +63,7 @@ public final class HoleESP extends Module {
     }
 
     private float getDistanceAlpha(BlockPos pos) {
-        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 1.0d, distance.getValue()));
+        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.5d, distance.getValue()));
     }
 
     private void renderHole(BlockPos pos, Color color) {
@@ -89,7 +90,9 @@ public final class HoleESP extends Module {
                 pos.getX() + 1, pos.getY(), pos.getZ() + 1,
                 pos.getX(), pos.getY(), pos.getZ() + 1
         );
-        drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
+        if (gradient.getValue()) {
+            drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
+        }
 
         GlStateManager.popMatrix();
     }
