@@ -8,6 +8,7 @@ import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
+import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,7 +25,6 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,8 +46,8 @@ public final class HoleESP extends Module {
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
     // so we dont get ConcurrentModificationExceptions when we modify these lists in other threads
-    private Set<BlockPos> unSafePositions = new HashSet<>();
-    private Set<BlockPos> safePositions = new HashSet<>();
+    private ConcurrentSet<BlockPos> unSafePositions = new ConcurrentSet<>();
+    private ConcurrentSet<BlockPos> safePositions = new ConcurrentSet<>();
 
     @ApiCall
     @SubscribeEvent
@@ -110,8 +110,8 @@ public final class HoleESP extends Module {
 
     @SuppressWarnings("rawtypes")
     private class HoleFinderCallable implements Callable {
-        final Set<BlockPos> safeBlocks = new HashSet<>();
-        final Set<BlockPos> unsafeBlocks = new HashSet<>();
+        private final Set<BlockPos> safeBlocks = new HashSet<>();
+        private final Set<BlockPos> unsafeBlocks = new HashSet<>();
         @Override
         public Object call() {
 
@@ -126,9 +126,13 @@ public final class HoleESP extends Module {
                 }
             }
 
-            safePositions = safeBlocks;
-            unSafePositions = unsafeBlocks;
-
+            // updating the sets
+            safePositions.clear();
+            unSafePositions.clear();
+            safePositions.addAll(safeBlocks);
+            unSafePositions.addAll(unsafeBlocks);
+            safeBlocks.clear();
+            unsafeBlocks.clear();
             return null;
         }
     }
