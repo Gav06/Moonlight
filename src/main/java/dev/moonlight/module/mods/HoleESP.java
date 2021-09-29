@@ -131,7 +131,8 @@ public final class HoleESP extends Module {
             unSafePositions.clear();
             safePositions.addAll(safeBlocks);
             unSafePositions.addAll(unsafeBlocks);
-
+            safeBlocks.clear();
+            unsafeBlocks.clear();
             return null;
         }
     }
