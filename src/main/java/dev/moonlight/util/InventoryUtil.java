@@ -18,7 +18,17 @@ public class InventoryUtil {
         return itemSlot;
     }
 
-    //I actually made this I just took it from mint :)
+    public static int getItemHotbar(Item item) {
+        int itemSlot = -1;
+        for(int i = 9; i > 0; --i) {
+            if(mc.player.inventory.getStackInSlot(i).getItem().equals(item)) {
+                itemSlot = i;
+                break;
+            }
+        }
+        return itemSlot;
+    }
+
     public static void switchToSlot(int slot) {
         if (mc.player.inventory.currentItem == slot || slot == -1) {
             return;
