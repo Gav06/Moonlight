@@ -34,10 +34,6 @@ import java.util.concurrent.Executors;
         category = Module.Category.Render
 )
 public final class HoleESP extends Module {
-//
-//    private final ICamera camera = new Frustum();
-//
-//    private final BoolSetting frustumCheck = new BoolSetting("Frustum Check", true);
 
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
     private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
@@ -99,13 +95,6 @@ public final class HoleESP extends Module {
         @Override
         public Object call() {
             for (BlockPos pos : BlockHelper.getSurroundingPositions(8, mc.player, true)) {
-//                if (frustumCheck.getValue()) {
-//                    camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
-//                    if (!camera.isBoundingBoxInFrustum(new AxisAlignedBB(pos))) {
-//                        return null;
-//                    }
-//                }
-
                 // where we are checking if it is a hole or not
                 if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
                     if (isHoleType(pos, Blocks.BEDROCK)) {
