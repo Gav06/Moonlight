@@ -58,8 +58,8 @@ public final class HoleESP extends Module {
         }
     }
 
-    private float getDistanceAlpha(BlockPos pos, int normalOpacity) {
-        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, normalOpacity / 255.0));
+    private float getDistanceAlpha(BlockPos pos) {
+        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, distance.getValue()));
     }
 
     private void renderHole(BlockPos pos, Color color) {
@@ -67,7 +67,25 @@ public final class HoleESP extends Module {
         GlStateManager.translate(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
 
         int bottomAlpha = 128;
+        int topAlpha = 28;
 
+        if (distanceFade.getValue()) {
+            topAlpha = (int) getDistanceAlpha(pos) * topAlpha;
+            bottomAlpha = (int) getDistanceAlpha(pos) * bottomAlpha;
+        }
+
+        final Color topColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), topAlpha);
+        final Color bottomColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), bottomAlpha);
+
+        GlStateManager.color(bottomColor.getRed() / 255.0f, bottomColor.getGreen() / 255.0f, bottomColor.getBlue() / 255.0f, bottomColor.getAlpha() / 255.0f);
+        RenderUtil.quad3d(
+                GL11.GL_LINE_LOOP,
+                pos.getX(), pos.getY(), pos.getZ(),
+                pos.getX() + 1, pos.getY(), pos.getZ(),
+                pos.getX() + 1, pos.getY(), pos.getZ() + 1,
+                pos.getX(), pos.getY(), pos.getZ() + 1
+        );
+        drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
 
         GlStateManager.popMatrix();
     }

@@ -30,7 +30,7 @@ public class SliderComponent extends SettingComponent {
 
     @Override
     public void release(int mouseX, int mouseY, int mouseButton) {
-        if(isInside(mouseX, mouseY) && (mouseButton == 1 || mouseButton == 0)) {
+        if (mouseButton == 1 || mouseButton == 0) {
             isDragging = false;
         }
     }
