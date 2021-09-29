@@ -23,11 +23,11 @@ public final class MathUtil {
     }
 
     public static double clampedNormalize(double value, double min, double max) {
-        return clamp(normalize(value, min, max), min, max);
+        return clamp(normalize(value, min, max), 0.0, 1.0);
     }
 
     public static float clampedNormalize(float value, float min, float max) {
-        return clamp(normalize(value, min, max), min, max);
+        return clamp(normalize(value, min, max), 0.0f, 1.0f);
     }
 
     public static double lerp(double then, double now, double delta) {
