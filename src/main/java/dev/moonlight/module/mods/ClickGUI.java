@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 )
 public final class ClickGUI extends Module {
 
-    public final BoolSetting background = new BoolSetting("Background", false);
+    public final BoolSetting background = new BoolSetting("Background", false, false);
 
     @Override
     protected void onEnable() {

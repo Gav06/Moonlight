@@ -40,8 +40,8 @@ public final class HoleESP extends Module {
 //    private final BoolSetting frustumCheck = new BoolSetting("Frustum Check", true);
 
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
-    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false);
-    private final BoolSetting self = new BoolSetting("Self", false);
+    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
+    private final BoolSetting self = new BoolSetting("Self", false, false);
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
     private final ExecutorService executor = Executors.newFixedThreadPool(2);

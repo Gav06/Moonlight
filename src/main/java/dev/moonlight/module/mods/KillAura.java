@@ -32,23 +32,26 @@ public class KillAura extends Module {
 
     public FloatSetting range = new FloatSetting("Range", 4, 1, 6);
     //delay
-    public BoolSetting attackDelay = new BoolSetting("AttackDelay", true);
-    public FloatSetting attackSpeed = new FloatSetting("AttackSpeed", 10, 1, 18);
+    public BoolSetting delayParent = new BoolSetting("Delay", false, true);
+    public BoolSetting attackDelay = new BoolSetting("AttackDelay", true, false, () -> delayParent.getValue());
+    public FloatSetting attackSpeed = new FloatSetting("AttackSpeed", 10, 1, 18, () -> delayParent.getValue());
     //targets
-    public BoolSetting players = new BoolSetting("Players", true);
-    public BoolSetting mobs = new BoolSetting("Mobs", true);
-    public BoolSetting animals = new BoolSetting("Animals", true);
+    public BoolSetting targetParent = new BoolSetting("Targets", true, true);
+    public BoolSetting players = new BoolSetting("Players", true, false, () -> targetParent.getValue());
+    public BoolSetting mobs = new BoolSetting("Mobs", true, false, () -> targetParent.getValue());
+    public BoolSetting animals = new BoolSetting("Animals", true, false, () -> targetParent.getValue());
     //render
-    public BoolSetting render = new BoolSetting("Render", true);
-    public ModeSetting renderMode = new ModeSetting("RenderMode", RenderMode.Both);
-    public FloatSetting r = new FloatSetting("R", 255, 0, 255);
-    public FloatSetting g = new FloatSetting("G", 255, 0, 255);
-    public FloatSetting b = new FloatSetting("B", 255, 0, 255);
-    public FloatSetting a = new FloatSetting("A", 125, 0, 255);
-    public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 3);
-    public BoolSetting rainbow = new BoolSetting("Rainbow", true);
+    public BoolSetting renderParent = new BoolSetting("Render", false, true);
+    public BoolSetting render = new BoolSetting("Render", true, false, () -> renderParent.getValue());
+    public ModeSetting renderMode = new ModeSetting("RenderMode", RenderMode.Both, () -> renderParent.getValue() && render.getValue());
+    public FloatSetting r = new FloatSetting("R", 255, 0, 255, () -> renderParent.getValue() && render.getValue());
+    public FloatSetting g = new FloatSetting("G", 255, 0, 255, () -> renderParent.getValue() && render.getValue());
+    public FloatSetting b = new FloatSetting("B", 255, 0, 255, () -> renderParent.getValue() && render.getValue());
+    public FloatSetting a = new FloatSetting("A", 125, 0, 255, () -> renderParent.getValue() && render.getValue());
+    public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 3, () -> renderParent.getValue() && render.getValue());
+    public BoolSetting rainbow = new BoolSetting("Rainbow", true, false, () -> renderParent.getValue() && render.getValue());
     //misc
-    public BoolSetting switchToSword = new BoolSetting("SwitchToSword", true);
+    public BoolSetting switchToSword = new BoolSetting("SwitchToSword", true, false);
 
     public enum RenderMode {
         Both,
