@@ -22,17 +22,15 @@ public final class Fullbright extends Module {
     public float brightnessLevel = 0.0f;
 
     @SubscribeEvent
-    public void onRenderTick(TickEvent.ClientTickEvent event) {
-        if (isEnabled()) {
-            if (brightnessLevel < 16.0f) {
-                brightnessLevel += 0.5f;
-            }
-        } else {
-            if (brightnessLevel > 0.0f) {
-                brightnessLevel -= 0.5f;
-            }
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+    	if (isEnabled()) {
+                if (brightnessLevel < 20.0f) {
+                    brightnessLevel += 1.0f;
+                }
+            } else {
+                if (brightnessLevel > 0.0f) {
+                    brightnessLevel -= 1.0f;
+                }
         }
-
-        brightnessLevel = MathHelper.clamp(brightnessLevel, 0.0f, 16.0f);
     }
 }

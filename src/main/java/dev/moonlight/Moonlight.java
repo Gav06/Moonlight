@@ -8,6 +8,7 @@ import dev.moonlight.module.Module;
 import dev.moonlight.module.ModuleManager;
 import dev.moonlight.ui.clickgui.GUI;
 import dev.moonlight.ui.hud.HUD;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

@@ -1,10 +1,13 @@
 package dev.moonlight.module;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.events.PacketEvent;
 import dev.moonlight.misc.Bind;
 import dev.moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.lang.annotation.ElementType;
