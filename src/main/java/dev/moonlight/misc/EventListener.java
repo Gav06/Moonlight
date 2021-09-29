@@ -19,16 +19,13 @@ public final class EventListener {
     @ApiCall
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event) {
-        final int eventKey = Keyboard.getEventKey();
         if (Keyboard.getEventKeyState()) {
             // on key press
             for (Module module : moonlight.getModuleManager().getModuleList()) {
-                if (module.getBind() == eventKey) {
+                if (module.getBind() == Keyboard.getEventKey()) {
                     module.toggle();
                 }
             }
-        } else {
-            // on key release
         }
     }
 
