@@ -21,6 +21,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -36,15 +38,16 @@ import java.util.concurrent.Executors;
 public final class HoleESP extends Module {
 
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
-    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false);
-    private final BoolSetting self = new BoolSetting("Self", false);
+    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
+//    private final BoolSetting self = new BoolSetting("Self", false, false);
+    private final FloatSetting updateDelay = new FloatSetting("Update Delay", 2f, 1f, 20f);
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
 
     // so we dont get ConcurrentModificationExceptions when we modify these lists in other threads
-    private final ConcurrentLinkedQueue<BlockPos> unSafePositions = new ConcurrentLinkedQueue<>();
-    private final ConcurrentLinkedQueue<BlockPos> safePositions = new ConcurrentLinkedQueue<>();
+    private Set<BlockPos> unSafePositions = new HashSet<>();
+    private Set<BlockPos> safePositions = new HashSet<>();
 
     @ApiCall
     @SubscribeEvent
@@ -58,8 +61,8 @@ public final class HoleESP extends Module {
         }
     }
 
-    private float getDistanceAlpha(BlockPos pos, int normalOpacity) {
-        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 0.0d, normalOpacity / 255.0));
+    private float getDistanceAlpha(BlockPos pos) {
+        return (float) (MathUtil.clampedNormalize(mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()), 1.0d, distance.getValue()));
     }
 
     private void renderHole(BlockPos pos, Color color) {
@@ -67,7 +70,26 @@ public final class HoleESP extends Module {
         GlStateManager.translate(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
 
         int bottomAlpha = 128;
+        int topAlpha = 28;
 
+        if (distanceFade.getValue()) {
+            topAlpha *= getDistanceAlpha(pos);
+            bottomAlpha *= getDistanceAlpha(pos);
+
+        }
+
+        final Color topColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), topAlpha);
+        final Color bottomColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), bottomAlpha);
+
+        GlStateManager.color(bottomColor.getRed() / 255.0f, bottomColor.getGreen() / 255.0f, bottomColor.getBlue() / 255.0f, bottomColor.getAlpha() / 255.0f);
+        RenderUtil.quad3d(
+                GL11.GL_LINE_LOOP,
+                pos.getX(), pos.getY(), pos.getZ(),
+                pos.getX() + 1, pos.getY(), pos.getZ(),
+                pos.getX() + 1, pos.getY(), pos.getZ() + 1,
+                pos.getX(), pos.getY(), pos.getZ() + 1
+        );
+        drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
 
         GlStateManager.popMatrix();
     }
@@ -78,11 +100,7 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
-        System.out.println("wowowowoy97u8543t");
-        if (ticksPassed >= 2) {
-            safePositions.clear();
-            unSafePositions.clear();
-
+        if (ticksPassed >= updateDelay.getValue()) {
             executor.submit(callable);
             ticksPassed = 0;
         }
@@ -92,19 +110,24 @@ public final class HoleESP extends Module {
 
     @SuppressWarnings("rawtypes")
     private class HoleFinderCallable implements Callable {
-
+        final Set<BlockPos> safeBlocks = new HashSet<>();
+        final Set<BlockPos> unsafeBlocks = new HashSet<>();
         @Override
         public Object call() {
-            for (BlockPos pos : BlockHelper.getSurroundingPositions(8, mc.player, true)) {
+
+            for (BlockPos pos : BlockHelper.getSurroundingPositions(Math.round(distance.getValue()), mc.player, true)) {
                 // where we are checking if it is a hole or not
                 if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
                     if (isHoleType(pos, Blocks.BEDROCK)) {
-                        safePositions.add(pos);
+                        safeBlocks.add(pos);
                     } else if (isHoleType(pos, Blocks.OBSIDIAN, Blocks.BEDROCK)) {
-                        unSafePositions.add(pos);
+                        unsafeBlocks.add(pos);
                     }
                 }
             }
+
+            safePositions = safeBlocks;
+            unSafePositions = unsafeBlocks;
 
             return null;
         }

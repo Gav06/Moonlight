@@ -1,6 +1,8 @@
 package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.settings.impl.FloatSetting;
+import dev.moonlight.ui.clickgui.settings.SliderComponent;
 import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.Setting;
@@ -175,13 +177,14 @@ public final class Window extends AbstractComponent {
             this.settingComponents = new CopyOnWriteArrayList<>();
 
             final int height_ = 16;
-
             for (Setting setting : module.getSettings()) {
                 if (setting != null) {
                     if (setting instanceof BoolSetting) {
                         settingComponents.add(new BoolComponent((BoolSetting) setting, 0, 0, settingPane.width, height_));
                     } else if (setting instanceof ModeSetting) {
                         settingComponents.add(new ModeComponent((ModeSetting) setting, 0, 0, settingPane.width, height_));
+                    } else if (setting instanceof FloatSetting) {
+                        settingComponents.add(new SliderComponent((FloatSetting) setting, 0, 0, settingPane.width, height_));
                     }
                 }
             }
@@ -218,6 +221,8 @@ public final class Window extends AbstractComponent {
                 Gui.drawRect(x, y, x + width, y + height, 0x50ffffff);
             }
             Gui.drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x90000000);
+            if (!settingPane.getComponents().isEmpty())
+                Gui.drawRect(settingPane.x, settingPane.y, settingPane.x + settingPane.width - 1, settingPane.y + settingPane.height, 0x90000000);
             StringBuilder sb = new StringBuilder();
             if (settingPane.metaTags.get("module") == module.getName())
                 sb.append("> ");

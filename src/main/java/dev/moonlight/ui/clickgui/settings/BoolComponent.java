@@ -26,19 +26,24 @@ public final class BoolComponent extends SettingComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
-        if (isInside(mouseX, mouseY)) {
-            Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
+        if(!boolSetting.isParent()) {
+            if (isInside(mouseX, mouseY)) {
+                Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
+            }
+
+            final StringBuilder sb = new StringBuilder(boolSetting.getName() + ":");
+
+            if (boolSetting.getValue()) {
+                sb.append(ChatFormatting.GREEN + " True");
+            } else {
+                sb.append(ChatFormatting.RED + " False");
+            }
+
+            cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        }else {
+            Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? 0xC81c4791 : 0x90000000);
+            cfont.drawStringWithShadow(boolSetting.getName(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
-
-        final StringBuilder sb = new StringBuilder(boolSetting.getName() + ":");
-
-        if (boolSetting.getValue()) {
-            sb.append(ChatFormatting.GREEN + " true");
-        } else {
-            sb.append(ChatFormatting.RED + " false");
-        }
-
-        cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
     }
 
     @Override

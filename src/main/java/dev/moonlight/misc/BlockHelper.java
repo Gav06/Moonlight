@@ -17,8 +17,6 @@ public final class BlockHelper {
             center.add(player.motionX, player.motionY, player.motionZ);
         }
 
-        positions.add(center);
-
         for (int x = -distance; x < distance; x++) {
             for (int y = -distance; y < distance; y++) {
                 for (int z = -distance; z < distance; z++) {
