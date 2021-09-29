@@ -78,6 +78,7 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
+        System.out.println("wowowowoy97u8543t");
         if (ticksPassed >= 2) {
             safePositions.clear();
             unSafePositions.clear();

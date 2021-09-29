@@ -4,13 +4,12 @@
   "refmap": "moonlight.refmap.json",
   "required": true,
   "package": "dev.moonlight.mixin.mixins",
-  "target": "@env(CLIENT)",
-  "client": [
+  "mixins": [
     "MixinEntityPlayerSP",
     "MixinEntityRenderer",
-    "MixinRenderLivingBase"
-  ],
-  "mixins": [
-    "MixinItemRenderer"
+    "MixinRenderLivingBase",
+    "MixinGuiNewChat",
+    "MixinItemRenderer",
+    "MixinNetworkManager"
   ]
 }
