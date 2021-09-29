@@ -1,9 +1,13 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
 import net.minecraft.client.gui.Gui;
+
+import java.awt.*;
 
 public final class BoolComponent extends SettingComponent {
 
@@ -26,6 +30,10 @@ public final class BoolComponent extends SettingComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
         if(!boolSetting.isParent()) {
             if (isInside(mouseX, mouseY)) {
                 Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
@@ -40,12 +48,16 @@ public final class BoolComponent extends SettingComponent {
             }
 
             cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
-        }else {
-            Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? 0xC81c4791 : 0x90000000);
+        } else {
+            Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? convertRgbaToArgb(new Color(r, g, b, a).getRGB()) : 0x90000000);
             cfont.drawStringWithShadow(boolSetting.getName(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }
 
     @Override
     public void typed(char keyChar, int keyCode) { }
+
+    public static int convertRgbaToArgb(int rgba) {
+        return (rgba >>> 8) | (rgba << (32 - 8));
+    }
 }

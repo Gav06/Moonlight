@@ -1,6 +1,7 @@
 package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.settings.SliderComponent;
 import dev.moonlight.util.RenderUtil;
@@ -16,6 +17,7 @@ import dev.moonlight.ui.clickgui.settings.BoolComponent;
 import dev.moonlight.ui.clickgui.settings.ModeComponent;
 import net.minecraft.client.gui.Gui;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,10 +88,13 @@ public final class Window extends AbstractComponent {
 
         moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
 
-        Gui.drawRect(x, y, x + width, y + height, 0x60000000);
+        Gui.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).backgroundA.getValue()).getRGB());
 
-        final int color = 0xC81c4791;
-        RenderUtil.outline2d(x, y - header.height, x + width, y + height, color);
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+        RenderUtil.outline2d(x, y - header.height, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
 
 
         int x = 0;
@@ -99,6 +104,10 @@ public final class Window extends AbstractComponent {
             x += pane.width;
             pane.draw(mouseX, mouseY, partialTicks);
         }
+    }
+
+    public static int convertRgbaToArgb(int rgba) {
+        return (rgba >>> 8) | (rgba << (32 - 8));
     }
 
     @Override
@@ -120,7 +129,11 @@ public final class Window extends AbstractComponent {
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
             super.draw(mouseX, mouseY, partialTicks);
-            Gui.drawRect(x, y, x + width, y + height, 0xC81c4791);
+            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
+            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
+            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
+            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+            Gui.drawRect(x, y, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
         }
     }
 

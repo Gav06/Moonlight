@@ -1,6 +1,8 @@
 package dev.moonlight.ui.clickgui.settings;
 
+import dev.moonlight.Moonlight;
 import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
 import net.minecraft.client.gui.Gui;
@@ -43,7 +45,11 @@ public class SliderComponent extends SettingComponent {
         }
         final StringBuilder sb = new StringBuilder(setting.getName() + ":" + setting.getValue());
 
-        Gui.drawRect(x, y, x + (int) sliderWidth, y + height, 0xC81c4791);
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+        Gui.drawRect(x, y, x + (int) sliderWidth, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
         cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
     }
 
@@ -75,5 +81,9 @@ public class SliderComponent extends SettingComponent {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.floatValue();
+    }
+
+    public static int convertRgbaToArgb(int rgba) {
+        return (rgba >>> 8) | (rgba << (32 - 8));
     }
 }

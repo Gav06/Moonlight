@@ -99,6 +99,10 @@ public abstract class Module extends Bind {
         return settings;
     }
 
+    public String getMetaData(String message) {
+        return "";
+    }
+
     public enum Category {
         Combat,
         Render,
