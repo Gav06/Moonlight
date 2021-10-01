@@ -12,8 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 @Mod(
@@ -60,6 +63,8 @@ public final class Moonlight {
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
+
+        Display.setTitle(MOD_NAME + "|" + VERSION);
     }
 
     public Logger getLogger() {

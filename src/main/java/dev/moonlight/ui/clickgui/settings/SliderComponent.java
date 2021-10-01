@@ -1,12 +1,10 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
 import net.minecraft.client.gui.Gui;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.math.BigDecimal;

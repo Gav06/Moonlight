@@ -24,7 +24,7 @@ public class Sprint extends Module {
         if(mode.getValueEnum() == Mode.Legit && mc.player.moveForward > 0 && !mc.player.isSneaking() && !mc.player.isHandActive() && !mc.player.collidedHorizontally) {
             if (!mc.player.isSprinting())
                 mc.player.setSprinting(true);
-        }else {
+        }else if(mode.getValueEnum() == Mode.Rage){
             mc.player.setSprinting(false);
         }
     }

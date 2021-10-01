@@ -1,5 +1,6 @@
 package dev.moonlight.module.mods;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.util.ColorUtil;
 import dev.moonlight.util.InventoryUtil;
@@ -22,11 +23,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 
 @Module.Info(
         name = "KillAura",
         desc = "Automatically attacks entities.",
-        category = Module.Category.Combat
+        category = Module.Category.Combat,
+        bind = Keyboard.KEY_F
 )
 public class KillAura extends Module {
 
@@ -60,6 +63,11 @@ public class KillAura extends Module {
     }
 
     public Entity target = null;
+
+    @Override
+    public String getMetaData() {
+        return "[" + ChatFormatting.GRAY + range.getValue() + ChatFormatting.RESET + "]";
+    }
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {

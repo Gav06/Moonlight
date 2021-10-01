@@ -100,8 +100,12 @@ public abstract class Module extends Bind {
     }
 
     // 莱利是个愚蠢的笨蛋
-    public String getMetaData(String message) {
+    public String getMetaData() {
         return "";
+    }
+
+    public boolean nullCheck() {
+        return mc.player == null || mc.world == null;
     }
 
     public enum Category {

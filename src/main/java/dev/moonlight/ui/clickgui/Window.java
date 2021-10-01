@@ -2,8 +2,9 @@ package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.module.mods.ClickGUI;
+import dev.moonlight.settings.impl.ColorSetting;
 import dev.moonlight.settings.impl.FloatSetting;
-import dev.moonlight.ui.clickgui.settings.SliderComponent;
+import dev.moonlight.ui.clickgui.settings.*;
 import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.Setting;
@@ -12,9 +13,6 @@ import dev.moonlight.settings.impl.ModeSetting;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
-import dev.moonlight.ui.clickgui.settings.BindComponent;
-import dev.moonlight.ui.clickgui.settings.BoolComponent;
-import dev.moonlight.ui.clickgui.settings.ModeComponent;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -198,6 +196,8 @@ public final class Window extends AbstractComponent {
                         settingComponents.add(new ModeComponent((ModeSetting) setting, 0, 0, settingPane.width, height_));
                     } else if (setting instanceof FloatSetting) {
                         settingComponents.add(new SliderComponent((FloatSetting) setting, 0, 0, settingPane.width, height_));
+                    } else if (setting instanceof ColorSetting) {
+                        settingComponents.add(new ColorComponent((ColorSetting) setting, 0, 0, settingPane.width, height_));
                     }
                 }
             }
