@@ -59,7 +59,6 @@ public final class Moonlight {
 
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
-        logger.debug("Running " + GL11.glGetString(GL11.GL_VERSION));
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
     }
 

@@ -24,7 +24,6 @@ public final class EventListener {
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
-            // on key press
             for (Module module : moonlight.getModuleManager().getModuleList()) {
                 if (module.getBind() == Keyboard.getEventKey()) {
                     module.toggle();

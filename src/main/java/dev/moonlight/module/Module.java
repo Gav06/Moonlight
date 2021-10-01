@@ -26,7 +26,7 @@ public abstract class Module extends Bind {
     private final String name;
     private final Category category;
     private final String desc;
-    private boolean enabled = false;
+    private boolean enabled;
     private final boolean registerByDefault;
 
     public Module() {
@@ -99,6 +99,7 @@ public abstract class Module extends Bind {
         return settings;
     }
 
+    // 莱利是个愚蠢的笨蛋
     public String getMetaData(String message) {
         return "";
     }
