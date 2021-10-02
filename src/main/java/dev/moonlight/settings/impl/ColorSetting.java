@@ -10,34 +10,34 @@ public class ColorSetting extends Setting {
 
     public ColorSetting(String name, float r, float g, float b, float a) {
         super(name);
-        this.r.setValue(r);
-        this.g.setValue(g);
-        this.b.setValue(b);
-        this.a.setValue(a);
+        this.r = new FloatSetting("Red", r, 0, 255);
+        this.g = new FloatSetting("Green", g, 0, 255);
+        this.b = new FloatSetting("Blue", b, 0, 255);
+        this.a = new FloatSetting("Alpha", a, 0, 255);
     }
 
     public ColorSetting(String name, Color color) {
         super(name);
-        this.r.setValue(color.getRed());
-        this.g.setValue(color.getGreen());
-        this.b.setValue(color.getBlue());
-        this.a.setValue(color.getAlpha());
+        this.r = new FloatSetting("Red", color.getRed(), 0, 255);
+        this.g = new FloatSetting("Green", color.getGreen(), 0, 255);
+        this.b = new FloatSetting("Blue", color.getBlue(), 0, 255);
+        this.a = new FloatSetting("Alpha", color.getAlpha(), 0, 255);
     }
 
     public ColorSetting(String name, float r, float g, float b, float a, Visibility visible) {
         super(name, visible);
-        this.r.setValue(r);
-        this.g.setValue(g);
-        this.b.setValue(b);
-        this.a.setValue(a);
+        this.r = new FloatSetting("Red", r, 0, 255);
+        this.g = new FloatSetting("Green", g, 0, 255);
+        this.b = new FloatSetting("Blue", b, 0, 255);
+        this.a = new FloatSetting("Alpha", a, 0, 255);
     }
 
     public ColorSetting(String name, Color color, Visibility visible) {
         super(name, visible);
-        this.r.setValue(color.getRed());
-        this.g.setValue(color.getGreen());
-        this.b.setValue(color.getBlue());
-        this.a.setValue(color.getAlpha());
+        this.r = new FloatSetting("Red", color.getRed(), 0, 255);
+        this.g = new FloatSetting("Green", color.getGreen(), 0, 255);
+        this.b = new FloatSetting("Blue", color.getBlue(), 0, 255);
+        this.a = new FloatSetting("Alpha", color.getAlpha(), 0, 255);
     }
 
     public Color getAsColor() {

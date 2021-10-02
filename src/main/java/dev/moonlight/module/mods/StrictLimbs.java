@@ -18,15 +18,13 @@ public class StrictLimbs extends Module {
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if(nullCheck()) return;
         for(Entity entity : mc.world.loadedEntityList) {
             if(!(entity instanceof EntityPlayer)) return;
             if(entity.equals(mc.player) && !self.getValue()) return;
             ((EntityPlayer) entity).prevLimbSwingAmount = 0;
-            ((EntityPlayer) entity).rotationYawHead = 0;
             ((EntityPlayer) entity).limbSwingAmount = 0;
             ((EntityPlayer) entity).limbSwing = 0;
-            entity.rotationPitch = 0;
-            entity.rotationYaw = 0;
         }
     }
 }
