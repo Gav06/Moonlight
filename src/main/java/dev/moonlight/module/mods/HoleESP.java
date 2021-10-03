@@ -40,7 +40,7 @@ public final class HoleESP extends Module {
     private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
     private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
-//    private final BoolSetting self = new BoolSetting("Self", false, false);
+    private final BoolSetting self = new BoolSetting("Self", false, false);
     private final FloatSetting updateDelay = new FloatSetting("Update Delay", 2f, 1f, 20f);
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
@@ -53,12 +53,14 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        for (BlockPos pos : safePositions) {
-            renderHole(pos, Color.GREEN);
-        }
+        if(isEnabled()) {
+            for (BlockPos pos : safePositions) {
+                renderHole(pos, Color.GREEN);
+            }
 
-        for (BlockPos pos : unSafePositions) {
-            renderHole(pos, Color.RED);
+            for (BlockPos pos : unSafePositions) {
+                renderHole(pos, Color.RED);
+            }
         }
     }
 
@@ -76,7 +78,6 @@ public final class HoleESP extends Module {
         if (distanceFade.getValue()) {
             topAlpha *= getDistanceAlpha(pos);
             bottomAlpha *= getDistanceAlpha(pos);
-
         }
 
         final Color topColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), topAlpha);
@@ -91,6 +92,7 @@ public final class HoleESP extends Module {
                 pos.getX(), pos.getY(), pos.getZ() + 1
         );
         if (gradient.getValue()) {
+            if (self.getValue() && mc.player.getDistanceSq(pos) <= 1) return;
             drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
         }
 
@@ -103,12 +105,14 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
-        if (ticksPassed >= updateDelay.getValue()) {
-            executor.submit(callable);
-            ticksPassed = 0;
-        }
+        if(isEnabled()) {
+            if (ticksPassed >= updateDelay.getValue()) {
+                executor.submit(callable);
+                ticksPassed = 0;
+            }
 
-        ticksPassed++;
+            ticksPassed++;
+        }
     }
 
     @SuppressWarnings("rawtypes")

@@ -1,7 +1,7 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.ClickGUI;
+import dev.moonlight.module.mods.GUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
 import net.minecraft.client.gui.Gui;
@@ -38,15 +38,14 @@ public class SliderComponent extends SettingComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         updateSliderShit(mouseX, mouseY);
-        if (isInside(mouseX, mouseY)) {
+        if (isInside(mouseX, mouseY))
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
-        }
         final StringBuilder sb = new StringBuilder(setting.getName() + ":" + setting.getValue());
 
-        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
-        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
-        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).a.getValue();
         Gui.drawRect(x, y, x + (int) sliderWidth, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
         cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
     }

@@ -1,7 +1,6 @@
 package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.ClickGUI;
 import dev.moonlight.settings.impl.ColorSetting;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.settings.*;
@@ -86,12 +85,12 @@ public final class Window extends AbstractComponent {
 
         moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
 
-        Gui.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).backgroundA.getValue()).getRGB());
+        Gui.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundA.getValue()).getRGB());
 
-        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
-        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
-        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
         RenderUtil.outline2d(x, y - header.height, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
 
 
@@ -127,10 +126,10 @@ public final class Window extends AbstractComponent {
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
             super.draw(mouseX, mouseY, partialTicks);
-            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).r.getValue();
-            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).g.getValue();
-            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).b.getValue();
-            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(ClickGUI.class).a.getValue();
+            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
+            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
+            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
+            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
             Gui.drawRect(x, y, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
         }
     }

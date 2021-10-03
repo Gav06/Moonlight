@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.util.logging.Logger;
+
 public final class EventListener {
 
     private final Moonlight moonlight;
@@ -27,6 +29,7 @@ public final class EventListener {
             System.out.println("im an alabama nigger and i wanna be free");
             for (Module module : moonlight.getModuleManager().getModuleList()) {
                 if (module.getBind() == Keyboard.getEventKey()) {
+                    System.out.println("Module is being toggled");
                     module.toggle();
                 }
             }

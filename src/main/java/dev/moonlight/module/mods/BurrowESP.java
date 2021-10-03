@@ -43,19 +43,12 @@ public class BurrowESP extends Module {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        for (Entity e : mc.world.loadedEntityList) {
-            AxisAlignedBB bb = e.getEntityBoundingBox().offset(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
+        for (BlockPos pos : burrowedPlayers) {
+            AxisAlignedBB bb = new AxisAlignedBB(pos);
             RenderUtil.prepareRender();
-            if(e instanceof EntityItem)
-                RenderGlobal.drawSelectionBoundingBox(bb, color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
+            RenderGlobal.drawSelectionBoundingBox(bb, color.r.getValue(), color.g.getValue(), color.b.getValue(), color.a.getValue());
             RenderUtil.releaseRender();
         }
-//        for (BlockPos pos : burrowedPlayers) {
-//            AxisAlignedBB bb = new AxisAlignedBB(pos);
-//            RenderUtil.prepareRender();
-//            RenderGlobal.drawSelectionBoundingBox(bb, color.r.getValue(), color.g.getValue(), color.b.getValue(), color.a.getValue());
-//            RenderUtil.releaseRender();
-//        }
     }
 
     public boolean isBurrowed(Entity entity) {

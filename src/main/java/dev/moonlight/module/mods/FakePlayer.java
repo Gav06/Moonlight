@@ -4,13 +4,14 @@ import com.mojang.authlib.GameProfile;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
+import dev.moonlight.settings.impl.FloatSetting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
 
 import java.util.Random;
+import java.util.Timer;
 
 @Module.Info(
         name = "FakePlayer",
@@ -19,7 +20,9 @@ import java.util.Random;
 )
 public class FakePlayer extends Module {
 
-    public BoolSetting moving = new BoolSetting("Moving", true, false);
+    public BoolSetting moving = new BoolSetting("Moving", false, false);
+    public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", true, false);
+    public FloatSetting distanceToRespawn = new FloatSetting("DistanceToRespawn", 10, 1, 30, () -> autoRespawn.getValue());
 
     public EntityOtherPlayerMP fakePlayer;
 
@@ -42,10 +45,15 @@ public class FakePlayer extends Module {
                 fakePlayer.posY += 1D;
             fakePlayer.posZ += random.nextDouble();
         }
+        if(autoRespawn.getValue() && fakePlayer != null) {
+            if(fakePlayer.getDistance(mc.player) >= distanceToRespawn.getValue()) {
+                fakePlayer.attemptTeleport(mc.player.posX, mc.player.posY, mc.player.posZ);
+            }
+        }
     }
 
     @Override
     public void onDisable() {
-        if(mc.world == null) fakePlayer.setDead();
+        if(mc.world == null && fakePlayer != null) fakePlayer.setDead();
     }
 }

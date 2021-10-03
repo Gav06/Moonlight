@@ -6,19 +6,19 @@ import dev.moonlight.settings.impl.FloatSetting;
 import org.lwjgl.input.Keyboard;
 
 @Module.Info(
-        name = "ClickGUI",
-        desc = "Opens the clickGui",
+        name = "GUI",
+        desc = "Opens the GUI.",
         category = Module.Category.Client,
         bind = Keyboard.KEY_GRAVE
 )
-public final class ClickGUI extends Module {
+public final class GUI extends Module {
 
     public final BoolSetting background = new BoolSetting("Background", false, false);
     public final FloatSetting backgroundA = new FloatSetting("WindowA", 255, 0, 255);
     public final FloatSetting r = new FloatSetting("R", 255, 0, 255);
-    public final FloatSetting g = new FloatSetting("R", 255, 0, 255);
-    public final FloatSetting b = new FloatSetting("R", 255, 0, 255);
-    public final FloatSetting a = new FloatSetting("R", 255, 0, 255);
+    public final FloatSetting g = new FloatSetting("G", 255, 0, 255);
+    public final FloatSetting b = new FloatSetting("B", 255, 0, 255);
+    public final FloatSetting a = new FloatSetting("A", 255, 0, 255);
 
     @Override
     protected void onEnable() {

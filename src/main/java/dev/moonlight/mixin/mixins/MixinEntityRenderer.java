@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(EntityRenderer.class)
 public final class MixinEntityRenderer {
 
-//    @ModifyVariable(method = "updateLightmap", at = @At("STORE"), index = 16)
-//    private float updateLightmap$ModifyVariable$STORE$F16(float original) {
-//        return Math.max(Moonlight.INSTANCE.getModuleManager().getModule(Fullbright.class).brightnessLevel, original);
-//    }
+    @ModifyVariable(method = "updateLightmap", at = @At("STORE"), index = 16)
+    private float updateLightmap$ModifyVariable$STORE$F16(float original) {
+        return Math.max(Moonlight.INSTANCE.getModuleManager().getModule(Fullbright.class).brightnessLevel, original);
+    }
 }

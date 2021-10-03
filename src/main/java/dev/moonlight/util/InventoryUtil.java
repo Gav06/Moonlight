@@ -37,4 +37,12 @@ public class InventoryUtil {
         mc.player.inventory.currentItem = slot;
         mc.playerController.updateController();
     }
+
+    public static void silentSwitchToSlot(int slot) {
+        if (mc.player.inventory.currentItem == slot || slot == -1) {
+            return;
+        }
+        mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+        mc.playerController.updateController();
+    }
 }
