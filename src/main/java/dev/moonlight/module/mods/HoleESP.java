@@ -92,8 +92,9 @@ public final class HoleESP extends Module {
                 pos.getX(), pos.getY(), pos.getZ() + 1
         );
         if (gradient.getValue()) {
-            if (self.getValue() && mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 1) return;
-            drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
+            final AxisAlignedBB bb = new AxisAlignedBB(pos);
+            if (!mc.player.getEntityBoundingBox().intersects(bb) || self.getValue())
+                drawSimpleGradientBB(bb, topColor, bottomColor);
         }
 
         GlStateManager.popMatrix();
