@@ -37,8 +37,8 @@ public class AutoRegear extends Module {
         }
         if(mc.currentScreen instanceof GuiShulkerBox) {
             for(int i = 27; i > 0; --i) {
-                if(mc.player.inventory.getStackInSlot(i).getItem().equals(slots.values())) {
-
+                if(slots.containsKey(i) && mc.player.inventoryContainer.getSlot(i).getStack().getItem() == slots.get(i)) {
+//                    moveItemToSlot(i, mc.player.inventory.);
                 }
             }
         }

@@ -24,11 +24,11 @@ import java.util.List;
 )
 public class BurrowESP extends Module {
     public BoolSetting self = new BoolSetting("Self", true, false);
-    public BoolSetting targetParent = new BoolSetting("Targets", false, true);
-    public BoolSetting obsidian = new BoolSetting("Obsidian", true, false);
-    public BoolSetting eChest = new BoolSetting("EChest", true, false);
-    public BoolSetting anvil = new BoolSetting("Anvil", true, false);
-    public BoolSetting skull = new BoolSetting("Skull", true, false);
+    public BoolSetting targetParent = new BoolSetting("Blocks", false, true);
+    public BoolSetting obsidian = new BoolSetting("Obsidian", true, false, () -> targetParent.getValue());
+    public BoolSetting eChest = new BoolSetting("EChest", true, false, () -> targetParent.getValue());
+    public BoolSetting anvil = new BoolSetting("Anvil", true, false, () -> targetParent.getValue());
+    public BoolSetting skull = new BoolSetting("Skull", true, false, () -> targetParent.getValue());
     public ColorSetting color = new ColorSetting("Color", 255, 255, 255, 255);
 
     public List<BlockPos> burrowedPlayers = new ArrayList<>();

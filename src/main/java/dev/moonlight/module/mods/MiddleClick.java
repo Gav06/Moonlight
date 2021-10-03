@@ -25,6 +25,7 @@ public class MiddleClick extends Module {
     public BoolSetting footXP = new BoolSetting("FootXP", true, false, () -> xp.getValue());
     public BoolSetting verticalXP = new BoolSetting("VerticalXP", false, false, () -> xp.getValue());
     public BoolSetting ePearl = new BoolSetting("EPearl", false, false);
+    public BoolSetting packetGap = new BoolSetting("PacketGap", true, false, () -> silent.getValue());
 
     boolean mouseHolding = false;
     boolean hasSwitched = false;
@@ -54,9 +55,11 @@ public class MiddleClick extends Module {
             slot = InventoryUtil.getItemSlot(Items.EXPERIENCE_BOTTLE);
         }else if(ePearl.getValue()) {
             slot = InventoryUtil.getItemSlot(Items.ENDER_PEARL);
+        }else if(packetGap.getValue()) {
+            slot = InventoryUtil.getItemSlot(Items.GOLDEN_APPLE);
         }
         if(mouseHolding) {
-            if (mc.player.getHeldItemMainhand().getItem() != Items.EXPERIENCE_BOTTLE && xp.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.ENDER_PEARL && ePearl.getValue()) {
+            if (mc.player.getHeldItemMainhand().getItem() != Items.EXPERIENCE_BOTTLE && xp.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.ENDER_PEARL && ePearl.getValue() || mc.player.getHeldItemMainhand().getItem() != Items.GOLDEN_APPLE && packetGap.getValue()) {
                 if (silent.getValue() && slot != -1) {
                     InventoryUtil.silentSwitchToSlot(slot);
                     hasSwitched = true;
