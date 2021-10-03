@@ -14,11 +14,12 @@ import org.lwjgl.input.Keyboard;
 public final class GUI extends Module {
 
     public final BoolSetting background = new BoolSetting("Background", false, false);
-    public final FloatSetting backgroundA = new FloatSetting("WindowA", 255, 0, 255);
+    public final BoolSetting descriptions = new BoolSetting("Descriptions", true, false);
     public final FloatSetting r = new FloatSetting("R", 255, 0, 255);
-    public final FloatSetting g = new FloatSetting("G", 255, 0, 255);
-    public final FloatSetting b = new FloatSetting("B", 255, 0, 255);
+    public final FloatSetting g = new FloatSetting("G", 0, 0, 255);
+    public final FloatSetting b = new FloatSetting("B", 0, 0, 255);
     public final FloatSetting a = new FloatSetting("A", 255, 0, 255);
+    public final FloatSetting backgroundA = new FloatSetting("WindowA", 255, 0, 255);
 
     @Override
     protected void onEnable() {

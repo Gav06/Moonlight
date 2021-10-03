@@ -91,7 +91,7 @@ public final class Window extends AbstractComponent {
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
         int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
-        RenderUtil.outline2d(x, y - header.height, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
+        RenderUtil.outline2d(x, y - header.height, x + width, y + height, new Color(r, g, b, a).getRGB());
 
 
         int x = 0;
@@ -130,7 +130,7 @@ public final class Window extends AbstractComponent {
             int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
             int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
             int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
-            Gui.drawRect(x, y, x + width, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
+            Gui.drawRect(x, y, x + width, y + height, new Color(r, g, b, a).getRGB());
         }
     }
 
@@ -167,8 +167,9 @@ public final class Window extends AbstractComponent {
             }
             Gui.drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x90000000);
             StringBuilder sb = new StringBuilder();
-            if (modulePane.metaTags.get("category") == category)
+            if (modulePane.metaTags.get("category") == category) {
                 sb.append("> ");
+            }
             sb.append(category.name());
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
         }
@@ -243,6 +244,11 @@ public final class Window extends AbstractComponent {
             if (module.isEnabled())
                 color = -1;
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
+            if(isInside(mouseX, mouseY)) {
+                if(Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
+                    moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY  - 4, -1);
+                }
+            }
         }
 
         @Override

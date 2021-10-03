@@ -24,6 +24,7 @@ import java.util.List;
 )
 public class BurrowESP extends Module {
     public BoolSetting self = new BoolSetting("Self", true, false);
+    public BoolSetting targetParent = new BoolSetting("Targets", false, true);
     public BoolSetting obsidian = new BoolSetting("Obsidian", true, false);
     public BoolSetting eChest = new BoolSetting("EChest", true, false);
     public BoolSetting anvil = new BoolSetting("Anvil", true, false);

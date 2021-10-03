@@ -46,7 +46,7 @@ public class SliderComponent extends SettingComponent {
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).b.getValue();
         int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).a.getValue();
-        Gui.drawRect(x, y, x + (int) sliderWidth, y + height, convertRgbaToArgb(new Color(r, g, b, a).getRGB()));
+        Gui.drawRect(x, y, x + (int) sliderWidth, y + height, new Color(r, g, b, a).getRGB());
         cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
     }
 

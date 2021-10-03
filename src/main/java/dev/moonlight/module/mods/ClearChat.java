@@ -1,7 +1,6 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.module.Module;
-import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
 
 @Module.Info(
         name = "ClearChat",
@@ -9,4 +8,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
         category = Module.Category.Render
 )
 public class ClearChat extends Module {
+
+    /**
+     * See MixinGuiNewChat -> drawChatRedirect
+     */
 }

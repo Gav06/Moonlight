@@ -37,11 +37,22 @@ import java.util.concurrent.Executors;
 )
 public final class HoleESP extends Module {
 
-    private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
+    private final FloatSetting updateDelay = new FloatSetting("Update Delay", 2f, 1f, 20f);
+    //render
+    private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
     private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
     private final BoolSetting self = new BoolSetting("Self", false, false);
-    private final FloatSetting updateDelay = new FloatSetting("Update Delay", 2f, 1f, 20f);
+    public BoolSetting safeColorParent = new BoolSetting("SafeColor", false, true);
+    public final FloatSetting rSafe = new FloatSetting("R", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting gSafe = new FloatSetting("G", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting bSafe = new FloatSetting("B", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting aSafe = new FloatSetting("A", 255, 0, 255, () -> safeColorParent.getValue());
+    public BoolSetting unSafeColorParent = new BoolSetting("UnSafeColor", false, true);
+    public final FloatSetting rUnSafe = new FloatSetting("R", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting gUnSafe = new FloatSetting("G", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting bUnSafe = new FloatSetting("B", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting aUnSafe = new FloatSetting("A", 255, 0, 255, () -> unSafeColorParent.getValue());
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -55,11 +66,11 @@ public final class HoleESP extends Module {
     public void onRender(RenderWorldLastEvent event) {
         if(isEnabled()) {
             for (BlockPos pos : safePositions) {
-                renderHole(pos, Color.GREEN);
+                renderHole(pos, new Color(rSafe.getValue(), gSafe.getValue(), bSafe.getValue()));
             }
 
             for (BlockPos pos : unSafePositions) {
-                renderHole(pos, Color.RED);
+                renderHole(pos, new Color(rUnSafe.getValue(), gUnSafe.getValue(), bUnSafe.getValue()));
             }
         }
     }

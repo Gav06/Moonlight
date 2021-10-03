@@ -1,9 +1,11 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import dev.moonlight.events.PacketEvent;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.util.ColorUtil;
 import dev.moonlight.util.InventoryUtil;
+import dev.moonlight.util.MathUtil;
 import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
@@ -19,6 +21,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSword;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -39,7 +42,7 @@ public class KillAura extends Module {
     public BoolSetting attackDelay = new BoolSetting("AttackDelay", true, false, () -> delayParent.getValue());
     public FloatSetting attackSpeed = new FloatSetting("AttackSpeed", 10, 1, 18, () -> delayParent.getValue());
     //targets
-    public BoolSetting targetParent = new BoolSetting("Targets", true, true);
+    public BoolSetting targetParent = new BoolSetting("Targets", false, true);
     public BoolSetting players = new BoolSetting("Players", true, false, () -> targetParent.getValue());
     public BoolSetting mobs = new BoolSetting("Mobs", true, false, () -> targetParent.getValue());
     public BoolSetting animals = new BoolSetting("Animals", true, false, () -> targetParent.getValue());
@@ -54,7 +57,10 @@ public class KillAura extends Module {
     public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 3, () -> renderParent.getValue() && render.getValue());
     public BoolSetting rainbow = new BoolSetting("Rainbow", true, false, () -> renderParent.getValue() && render.getValue());
     //misc
-    public BoolSetting switchToSword = new BoolSetting("SwitchToSword", true, false);
+    public BoolSetting miscParent = new BoolSetting("Misc", false, true);
+    public BoolSetting rotate = new BoolSetting("Rotate", true, false, () -> miscParent.getValue());
+    public BoolSetting switchToSword = new BoolSetting("SwitchToSword", true, false, () -> miscParent.getValue());
+    public BoolSetting swordOnly = new BoolSetting("SwordOnly", false, false, () -> miscParent.getValue());
 
     public enum RenderMode {
         Both,
@@ -64,6 +70,10 @@ public class KillAura extends Module {
 
     public Entity target = null;
 
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+    private boolean rotating = false;
+
     @Override
     public String getMetaData() {
         return "[" + ChatFormatting.GRAY + range.getValue() + ChatFormatting.RESET + "]";
@@ -72,25 +82,17 @@ public class KillAura extends Module {
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
         if(isEnabled()) {
+            int slot = InventoryUtil.getItemSlot(Items.DIAMOND_SWORD);
             for (Entity e : mc.world.loadedEntityList) {
-                int swordSlot = InventoryUtil.getItemSlot(Items.DIAMOND_SWORD);
                 if (shouldAttack(e)) {
-                    if (swordSlot != -1 && switchToSword.getValue() && mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD)
-                        InventoryUtil.switchToSlot(swordSlot);
-                    if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) {
-                        if (attackDelay.getValue()) {
-                            if (mc.player.getCooledAttackStrength(0.0f) >= 1.0f) {
-                                mc.playerController.attackEntity(mc.player, e);
-                                mc.player.swingArm(EnumHand.MAIN_HAND);
-                                target = e;
-                            }
-                        } else {
-                            if (mc.player.ticksExisted % attackSpeed.getValue() == 0.0) {
-                                mc.playerController.attackEntity(mc.player, e);
-                                mc.player.swingArm(EnumHand.MAIN_HAND);
-                                target = e;
-                            }
-                        }
+                    if (slot != -1 && switchToSword.getValue())
+                        InventoryUtil.switchToSlot(slot);
+                    if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordOnly.getValue()) {
+                        if(rotate.getValue()) rotateTo(e);
+                        attack(e);
+                    }else if(!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !swordOnly.getValue()){
+                        if(rotate.getValue()) rotateTo(e);
+                        attack(e);
                     }
                 }
             }
@@ -137,5 +139,30 @@ public class KillAura extends Module {
         if ((entity instanceof EntityMob || entity instanceof EntitySlime) && !mobs.getValue()) return false;
         if ((entity instanceof EntityAnimal) && !animals.getValue()) return false;
         return entity.getDistance(mc.player) <= range.getValue();
+    }
+
+    public void attack(Entity e) {
+        if (attackDelay.getValue()) {
+            if (mc.player.getCooledAttackStrength(0.0f) >= 1.0f) {
+                mc.playerController.attackEntity(mc.player, e);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                target = e;
+            }
+        } else {
+            if (mc.player.ticksExisted % attackSpeed.getValue() == 0.0) {
+                mc.playerController.attackEntity(mc.player, e);
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+                target = e;
+            }
+        }
+    }
+
+    private void rotateTo(Entity entity) {
+        if (rotate.getValue()) {
+            float[] angle = MathUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), entity.getPositionVector());
+            yaw = angle[0];
+            pitch = angle[1];
+            rotating = true;
+        }
     }
 }

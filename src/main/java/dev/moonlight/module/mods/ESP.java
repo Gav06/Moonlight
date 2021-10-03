@@ -39,19 +39,14 @@ public class ESP extends Module {
             if(distance.getValue() && e.getDistance(mc.player) >= distanceToRender.getValue()) return;
             AxisAlignedBB bb = e.getEntityBoundingBox().offset(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
             RenderUtil.prepareRender();
-
             if(e instanceof EntityItem && items.getValue())
                 RenderGlobal.drawSelectionBoundingBox(bb, color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
-
             if(e instanceof EntityPlayer && players.getValue())
                 RenderGlobal.drawSelectionBoundingBox(bb, color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
-
             if(e instanceof EntityAnimal && animals.getValue())
                 RenderGlobal.drawSelectionBoundingBox(bb, color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
-
             if((e instanceof EntityMob || e instanceof EntitySlime) && mobs.getValue())
                 RenderGlobal.drawSelectionBoundingBox(bb, color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
-
             RenderUtil.releaseRender();
         }
     }

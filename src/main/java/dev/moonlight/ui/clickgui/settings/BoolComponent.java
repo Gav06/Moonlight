@@ -49,7 +49,7 @@ public final class BoolComponent extends SettingComponent {
 
             cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         } else {
-            Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? convertRgbaToArgb(new Color(r, g, b, a).getRGB()) : 0x90000000);
+            Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? new Color(r, g, b, a).getRGB() : 0x90000000);
             cfont.drawStringWithShadow(boolSetting.getName(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }

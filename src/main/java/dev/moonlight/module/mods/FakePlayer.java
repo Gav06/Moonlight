@@ -22,7 +22,7 @@ import java.util.Timer;
 public class FakePlayer extends Module {
 
     public BoolSetting moving = new BoolSetting("Moving", false, false);
-    public FloatSetting distanceToMove = new FloatSetting("DistanceToMove", 5, 1, 20, () -> moving.getValue());
+    public FloatSetting delayToMove = new FloatSetting("DelayToMove", 5, 1, 20, () -> moving.getValue());
     public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", true, false);
     public FloatSetting distanceToRespawn = new FloatSetting("DistanceToRespawn", 10, 1, 30, () -> autoRespawn.getValue());
 
