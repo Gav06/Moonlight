@@ -84,4 +84,9 @@ public class SliderComponent extends SettingComponent {
     public static int convertRgbaToArgb(int rgba) {
         return (rgba >>> 8) | (rgba << (32 - 8));
     }
+
+    @Override
+    public boolean isVisible() {
+        return setting.isVisible();
+    }
 }

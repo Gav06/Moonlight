@@ -39,4 +39,9 @@ public final class ModeComponent extends SettingComponent {
 
     @Override
     public void typed(char keyChar, int keyCode) { }
+
+    @Override
+    public boolean isVisible() {
+        return setting.isVisible();
+    }
 }

@@ -24,6 +24,7 @@ public final class EventListener {
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
+            System.out.println("im an alabama nigger and i wanna be free");
             for (Module module : moonlight.getModuleManager().getModuleList()) {
                 if (module.getBind() == Keyboard.getEventKey()) {
                     module.toggle();

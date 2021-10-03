@@ -46,4 +46,9 @@ public final class BindComponent extends SettingComponent {
             listening = false;
         }
     }
+
+    @Override
+    public boolean isVisible() {
+        return true;
+    }
 }
