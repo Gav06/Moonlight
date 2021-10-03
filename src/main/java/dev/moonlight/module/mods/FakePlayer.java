@@ -5,6 +5,7 @@ import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
+import dev.moonlight.util.TickTimer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,7 @@ import java.util.Timer;
 public class FakePlayer extends Module {
 
     public BoolSetting moving = new BoolSetting("Moving", false, false);
+    public FloatSetting distanceToMove = new FloatSetting("DistanceToMove", 5, 1, 20, () -> moving.getValue());
     public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", true, false);
     public FloatSetting distanceToRespawn = new FloatSetting("DistanceToRespawn", 10, 1, 30, () -> autoRespawn.getValue());
 
@@ -40,10 +42,14 @@ public class FakePlayer extends Module {
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
         if(moving.getValue()) {
-            fakePlayer.posX += random.nextDouble();
-            if(!mc.world.getBlockState(new BlockPos(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ)).getBlock().equals(Blocks.AIR))
-                fakePlayer.posY += 1D;
-            fakePlayer.posZ += random.nextDouble();
+            TickTimer timer = new TickTimer();
+            if(timer.hasTicksPassed((long) distanceToRespawn.getValue())) {
+                fakePlayer.posX += random.nextDouble();
+                if(!mc.world.getBlockState(new BlockPos(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ)).getBlock().equals(Blocks.AIR))
+                    fakePlayer.posY += 1D;
+                fakePlayer.posZ += random.nextDouble();
+                timer.reset();
+            }
         }
         if(autoRespawn.getValue() && fakePlayer != null) {
             if(fakePlayer.getDistance(mc.player) >= distanceToRespawn.getValue()) {
@@ -54,6 +60,6 @@ public class FakePlayer extends Module {
 
     @Override
     public void onDisable() {
-        if(mc.world == null && fakePlayer != null) fakePlayer.setDead();
+        if(mc.world == null && fakePlayer != null) mc.world.removeEntity(fakePlayer);
     }
 }

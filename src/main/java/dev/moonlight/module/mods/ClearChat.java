@@ -1,6 +1,7 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.module.Module;
+import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
 
 @Module.Info(
         name = "ClearChat",

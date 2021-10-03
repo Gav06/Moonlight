@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @Module.Info(
         name = "StrictLimbs",
-        desc = "ez",
+        desc = "Stops limb movement so players look sexy.",
         category = Module.Category.Render
 )
 public class StrictLimbs extends Module {

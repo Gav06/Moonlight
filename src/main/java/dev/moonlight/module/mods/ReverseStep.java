@@ -17,11 +17,9 @@ public class ReverseStep extends Module {
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
         if(nullCheck()) return;
-        if (mc.player.isInLava() || mc.player.isInWater()) {
+        if (mc.player.isInLava() || mc.player.isInWater())
             return;
-        }
-        if (mc.player.onGround) {
+        if (mc.player.onGround)
             mc.player.motionY -= vanillaSpeed.getValue();
-        }
     }
 }

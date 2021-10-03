@@ -92,7 +92,7 @@ public final class HoleESP extends Module {
                 pos.getX(), pos.getY(), pos.getZ() + 1
         );
         if (gradient.getValue()) {
-            if (self.getValue() && mc.player.getDistanceSq(pos) <= 1) return;
+            if (self.getValue() && mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 1) return;
             drawSimpleGradientBB(new AxisAlignedBB(pos), topColor, bottomColor);
         }
 
