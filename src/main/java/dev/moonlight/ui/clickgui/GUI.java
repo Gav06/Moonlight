@@ -48,6 +48,11 @@ public final class GUI extends GuiScreen {
         }
     }
 
+    public void onGuiClosed() {
+        if (mc.entityRenderer.getShaderGroup() != null)
+            mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+    }
+
     @ApiCall
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
@@ -73,9 +78,6 @@ public final class GUI extends GuiScreen {
     public void keyTyped(char keyChar, int keyCode) throws IOException {
         if (keyCode == Keyboard.KEY_ESCAPE || keyCode == moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).getBind()) {
             mc.displayGuiScreen(null);
-            
-                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
-            
             if (mc.currentScreen == null) {
                 mc.setIngameFocus();
             }
