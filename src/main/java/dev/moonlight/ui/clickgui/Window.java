@@ -10,7 +10,6 @@ import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
 import net.minecraft.client.gui.Gui;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +25,6 @@ public final class Window extends AbstractComponent {
     private final ArrayList<ContentPane<?>> panes;
     private final GUI moonlightGui;
 
-    // used for accessing the different panes to perform actions
-    private final ContentPane<CategoryButton> categoryPane;
     private final ContentPane<ModuleButton> modulePane;
     private final ContentPane<SettingComponent> settingPane;
 
@@ -40,7 +37,9 @@ public final class Window extends AbstractComponent {
         this.moonlightGui = moonlightGui;
         this.moduleButtonCache = new HashMap<>();
 
-        panes.add(this.categoryPane = new ContentPane<>(x, y, 100, height));
+        // used for accessing the different panes to perform actions
+        ContentPane<CategoryButton> categoryPane;
+        panes.add(categoryPane = new ContentPane<>(x, y, 100, height));
         panes.add(this.modulePane = new ContentPane<>(x, y, width / 2 - 100, height));
         panes.add(this.settingPane = new ContentPane<>(x, y, width / 2, height));
 
@@ -79,15 +78,28 @@ public final class Window extends AbstractComponent {
         header.draw(mouseX, mouseY, partialTicks);
         this.x = header.x;
         this.y = header.y + header.height;
-
-        moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
-
-        Gui.drawRect(x, y, x + width, y + height, new Color(0, 0, 0, (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundA.getValue()).getRGB());
-
         int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
         int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
+        int lbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgr.getValue();
+        int lbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgg.getValue();
+        int lbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgb.getValue();
+        int lbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbga.getValue();
+        int rbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgr.getValue();
+        int rbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgg.getValue();
+        int rbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgb.getValue();
+        int rbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbga.getValue();
+
+        moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
+
+        //Right Rect
+        Gui.drawRect(x + 100, y, x + width, y + height, new Color(rbgr, rbgg, rbgb, rbga).getRGB());
+        //Left Rect
+        Gui.drawRect(x, y, x + 100, y + height, new Color(lbgr, lbgg, lbgb, lbga).getRGB());
+        //Middle
+        Gui.drawRect(x + 99, y, x + 100, y + height, new Color(r, g, b, a).getRGB());
+
         RenderUtil.outline2d(x, y - header.height, x + width, y + height, new Color(r, g, b, a).getRGB());
 
 
@@ -99,23 +111,13 @@ public final class Window extends AbstractComponent {
             pane.draw(mouseX, mouseY, partialTicks);
         }
     }
-
-    public static int convertRgbaToArgb(int rgba) {
-        return (rgba >>> 8) | (rgba << (32 - 8));
-    }
-
     @Override
     public void typed(char keyChar, int keyCode) {
         for (ContentPane<?> pane : panes) {
             pane.typed(keyChar, keyCode);
         }
     }
-
-    public ArrayList<ContentPane<?>> getContentPanes() {
-        return panes;
-    }
-
-    private class WindowHeader extends DragComponent {
+    private static class WindowHeader extends DragComponent {
         public WindowHeader(int x, int y, int width, int height) {
             super(x, y, width, height);
         }
@@ -255,10 +257,6 @@ public final class Window extends AbstractComponent {
 
         public Module getModule() {
             return module;
-        }
-
-        public CopyOnWriteArrayList<SettingComponent> getSettingComponents() {
-            return settingComponents;
         }
     }
 }

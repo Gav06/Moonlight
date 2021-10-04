@@ -5,6 +5,9 @@ import dev.moonlight.misc.ApiCall;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -17,22 +20,31 @@ public final class GUI extends GuiScreen {
 
     public GUI(Moonlight moonlight) {
         this.moonlight = moonlight;
-        this.components = new ArrayList<>();
+        components = new ArrayList<>();
 
         // initialize components here
-        this.components.add(new Window(this, 150, 150, 450, 300));
+        components.add(new Window(this, 150, 150, 450, 300));
     }
 
     @ApiCall
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).background.getValue())
+        if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.GUI.BackgroundMode.Darken))
             drawDefaultBackground();
 
         for (IComponent component : components) {
             if (component.isVisible()) {
                 component.draw(mouseX, mouseY, partialTicks);
             }
+        }
+    }
+    @Override
+    public void initGui() {
+        if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.GUI.BackgroundMode.Blur)) {
+            if (mc.entityRenderer.getShaderGroup() != null) {
+                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            }
+            mc.entityRenderer.loadShader(new ResourceLocation("shaders/post/blur.json"));
         }
     }
 
@@ -60,9 +72,12 @@ public final class GUI extends GuiScreen {
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
         if (keyCode == Keyboard.KEY_ESCAPE || keyCode == moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).getBind()) {
-            this.mc.displayGuiScreen(null);
-            if (this.mc.currentScreen == null) {
-                this.mc.setIngameFocus();
+            mc.displayGuiScreen(null);
+            
+                mc.entityRenderer.getShaderGroup().deleteShaderGroup();
+            
+            if (mc.currentScreen == null) {
+                mc.setIngameFocus();
             }
             return;
         }
