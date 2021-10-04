@@ -40,7 +40,7 @@ public class SliderComponent extends SettingComponent {
         updateSliderShit(mouseX, mouseY);
         if (isInside(mouseX, mouseY))
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
-        final StringBuilder sb = new StringBuilder(setting.getName() + ":" + setting.getValue());
+        final StringBuilder sb = new StringBuilder(setting.getName() + ": " + setting.getValue());
 
         int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).r.getValue();
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
