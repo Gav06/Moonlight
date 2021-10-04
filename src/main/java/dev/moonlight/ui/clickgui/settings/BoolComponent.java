@@ -20,8 +20,14 @@ public final class BoolComponent extends SettingComponent {
 
     @Override
     public void click(int mouseX, int mouseY, int mouseButton) {
-        if (isInside(mouseX, mouseY) && mouseButton == 0) {
-            boolSetting.toggle();
+        if(boolSetting.isParent()){
+            if (isInside(mouseX, mouseY) && mouseButton == 1) {
+                boolSetting.toggle();
+            }
+        } else {
+            if (isInside(mouseX, mouseY) && mouseButton == 0) {
+                boolSetting.toggle();
+            }
         }
     }
 
