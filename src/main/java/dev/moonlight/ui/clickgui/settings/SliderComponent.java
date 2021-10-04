@@ -37,7 +37,7 @@ public class SliderComponent extends SettingComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
-        updateSliderShit(mouseX, mouseY);
+        updateSliderShit(mouseX);
         if (isInside(mouseX, mouseY))
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         final StringBuilder sb = new StringBuilder(setting.getName() + ": " + setting.getValue());
@@ -55,7 +55,7 @@ public class SliderComponent extends SettingComponent {
 
     }
 
-    protected void updateSliderShit(int mouseX, int mouseY) {
+    protected void updateSliderShit(int mouseX) {
         float diff = Math.min(width, Math.max(0, mouseX - x));
         float min = setting.getMin();
         float max = setting.getMax();
@@ -78,10 +78,6 @@ public class SliderComponent extends SettingComponent {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.floatValue();
-    }
-
-    public static int convertRgbaToArgb(int rgba) {
-        return (rgba >>> 8) | (rgba << (32 - 8));
     }
 
     @Override
