@@ -75,7 +75,6 @@ public final class GUI extends GuiScreen {
             }
         }
     }
-
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
@@ -101,9 +100,5 @@ public final class GUI extends GuiScreen {
 
     public Moonlight getMoonlight() {
         return moonlight;
-    }
-
-    public void drawGradient(double left, double top, double right, double bottom, int startColor, int endColor) {
-        drawGradientRect((int) left, (int) top, (int) right, (int) bottom, startColor, endColor);
     }
 }

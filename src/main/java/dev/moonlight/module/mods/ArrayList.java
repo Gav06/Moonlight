@@ -1,6 +1,7 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.MoonlightStatics;
 import dev.moonlight.module.Module;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
