@@ -4,6 +4,7 @@ import dev.moonlight.Moonlight;
 import dev.moonlight.module.mods.GUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
+import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class SliderComponent extends SettingComponent {
 
     @Override
     public void click(int mouseX, int mouseY, int mouseButton) {
-        if(isInside(mouseX, mouseY) && (mouseButton == 1 || mouseButton == 0)) {
+        if (isInside(mouseX, mouseY) && (mouseButton == 1 || mouseButton == 0)) {
             isDragging = true;
         }
     }
@@ -46,8 +47,10 @@ public class SliderComponent extends SettingComponent {
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).b.getValue();
         int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).a.getValue();
-        Gui.drawRect(x, y, x + (int) sliderWidth, y + height, new Color(r, g, b, a).getRGB());
-        cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        Gui.drawRect(x, y + (height / 2) - 1, x + width, y + (height / 2), new Color(r, g, b, 50).getRGB());
+        Gui.drawRect(x, y + (height / 2) - 1, x + (int) sliderWidth, y + (height / 2), new Color(r, g, b, a).getRGB());
+        RenderUtil.drawRoundedRect(x + sliderWidth - 4, y + (height / 2) - 4, 8, 8, 9, new Color(r, g, b, a));
+        cfont.drawStringWithShadow(sb.toString(), x + 2f, y, -1);
     }
 
     @Override
@@ -60,10 +63,10 @@ public class SliderComponent extends SettingComponent {
         float min = setting.getMin();
         float max = setting.getMax();
         sliderWidth = width * (setting.getValue() - min) / (max - min);
-        if(isDragging) {
-            if(diff == 0) {
+        if (isDragging) {
+            if (diff == 0) {
                 setting.setValue(setting.getMin());
-            }else {
+            } else {
                 float value = roundToPlace(diff / width * (max - min) + min, 1);
                 setting.setValue(value);
             }

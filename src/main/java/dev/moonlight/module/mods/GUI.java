@@ -19,7 +19,6 @@ public final class GUI extends Module {
     public enum BackgroundMode {Darken, Blur, None}
 
     public final BoolSetting descriptions = new BoolSetting("Descriptions", true, false, () -> othersParent.getValue());
-
     public BoolSetting leftBackgroundparent = new BoolSetting("LeftBackground", false, true);
     public final FloatSetting lbgr = new FloatSetting("LEFT-BG-R", 0, 0, 255, () -> leftBackgroundparent.getValue());
     public final FloatSetting lbgg = new FloatSetting("LEFT-BG-G", 0, 0, 255, () -> leftBackgroundparent.getValue());
