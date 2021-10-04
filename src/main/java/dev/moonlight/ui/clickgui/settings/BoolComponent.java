@@ -37,10 +37,6 @@ public final class BoolComponent extends SettingComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
-        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).r.getValue();
-        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
-        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).a.getValue();
         if(!boolSetting.isParent()) {
             if (isInside(mouseX, mouseY)) {
                 Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
@@ -58,19 +54,15 @@ public final class BoolComponent extends SettingComponent {
         } else {
             if(isInside(mouseX, mouseY)){
                 Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
-                RenderUtil.outline2d(x, y, x + width, y + height, 0x20ffffff);
-
+                RenderUtil.outline2d(x + 1, y, x + width -1, y + height - 1, 0x20ffffff);
             }
-            Gui.drawRect(x + 1, y, x + width - 1, y + height, boolSetting.getValue() ? new Color(r, g, b, a).getRGB() : 0x90000000);
-            cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            Gui.drawRect(x , y, x + width - 1, y + height, 0x90000000);
+            cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }
 
     @Override
-    public void typed(char keyChar, int keyCode) { }
-
-    public static int convertRgbaToArgb(int rgba) {
-        return (rgba >>> 8) | (rgba << (32 - 8));
+    public void typed(char keyChar, int keyCode) {
     }
 
     @Override
