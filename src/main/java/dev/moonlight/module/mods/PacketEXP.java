@@ -19,9 +19,7 @@ import org.lwjgl.input.Mouse;
 public class PacketEXP extends Module {
 
     public ModeSetting triggerMode = new ModeSetting("TriggerMode", TriggerMode.RightClick);
-
     public enum TriggerMode {RightClick, MiddleClick, Custom}
-
     public BindSetting customKey = new BindSetting("CustomKey", Keyboard.KEY_NONE, () -> triggerMode.getValueEnum().equals(TriggerMode.Custom));
     public FloatSetting packets = new FloatSetting("Packets", 2, 0, 10);
     public BoolSetting onlyInHand = new BoolSetting("OnlyInHand", false, false);
