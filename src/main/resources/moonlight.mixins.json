@@ -10,7 +10,6 @@
     "MixinGuiNewChat",
     "MixinItemRenderer",
     "MixinNetworkManager",
-    "MixinRenderItem",
     "MixinRenderLivingBase"
   ]
 }

@@ -40,7 +40,6 @@ public class PacketGap extends Module {
         }
         if(!Keyboard.isKeyDown(buttonToHold.getBind()) && isHolding) {
             mc.player.connection.sendPacket(new CPacketHeldItemChange(originalSlot));
-            isHolding = false;
         }
     }
 }
