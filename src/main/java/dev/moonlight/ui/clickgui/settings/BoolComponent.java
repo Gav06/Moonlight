@@ -5,6 +5,7 @@ import dev.moonlight.Moonlight;
 import dev.moonlight.module.mods.GUI;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.ui.clickgui.SettingComponent;
+import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -57,6 +58,8 @@ public final class BoolComponent extends SettingComponent {
         } else {
             if(isInside(mouseX, mouseY)){
                 Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
+                RenderUtil.outline2d(x, y, x + width, y + height, 0x20ffffff);
+
             }
             Gui.drawRect(x, y, x + width, y + height, boolSetting.getValue() ? new Color(r, g, b, a).getRGB() : 0x90000000);
             cfont.drawStringWithShadow(boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
