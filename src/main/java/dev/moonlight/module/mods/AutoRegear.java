@@ -3,14 +3,10 @@ package dev.moonlight.module.mods;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
-import dev.moonlight.util.InventoryUtil;
 import dev.moonlight.util.MessageUtil;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiShulkerBox;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemAir;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;

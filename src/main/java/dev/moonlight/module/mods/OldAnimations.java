@@ -1,7 +1,6 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.module.Module;
-import org.lwjgl.input.Keyboard;
 
 @Module.Info(
         name = "OldAnimations",

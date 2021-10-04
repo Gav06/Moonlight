@@ -6,7 +6,6 @@ import dev.moonlight.settings.impl.ColorSetting;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;

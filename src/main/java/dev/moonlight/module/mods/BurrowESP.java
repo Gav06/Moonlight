@@ -7,7 +7,6 @@ import dev.moonlight.settings.impl.ColorSetting;
 import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;

@@ -1,7 +1,6 @@
 package dev.moonlight.module.mods;
 
 import dev.moonlight.module.Module;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;

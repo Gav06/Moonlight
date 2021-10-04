@@ -1,7 +1,6 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.moonlight.events.PacketEvent;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.util.ColorUtil;
 import dev.moonlight.util.InventoryUtil;
@@ -21,7 +20,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
