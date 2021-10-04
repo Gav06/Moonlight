@@ -5,11 +5,13 @@ import dev.moonlight.misc.ApiCall;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,6 +40,7 @@ public final class GUI extends GuiScreen {
             }
         }
     }
+
     @Override
     public void initGui() {
         if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.GUI.BackgroundMode.Blur)) {
@@ -98,5 +101,9 @@ public final class GUI extends GuiScreen {
 
     public Moonlight getMoonlight() {
         return moonlight;
+    }
+
+    public void drawGradient(double left, double top, double right, double bottom, int startColor, int endColor) {
+        drawGradientRect((int) left, (int) top, (int) right, (int) bottom, startColor, endColor);
     }
 }

@@ -31,7 +31,7 @@ public final class GUI extends Module {
     public final FloatSetting rbgb = new FloatSetting("RIGHT-BG-B", 0, 0, 255, () -> rightBackgroundParent.getValue());
     public final FloatSetting rbga = new FloatSetting("RIGHT-BG-A", 200, 0, 255, () -> rightBackgroundParent.getValue());
 
-    public BoolSetting outlineParent = new BoolSetting("OutlineParent", false, true);
+    public BoolSetting outlineParent = new BoolSetting("Outline", false, true);
     public final FloatSetting r = new FloatSetting("OUTLINE-R", 255, 0, 255, () -> outlineParent.getValue());
     public final FloatSetting g = new FloatSetting("OUTLINE-G", 0, 0, 255, () -> outlineParent.getValue());
     public final FloatSetting b = new FloatSetting("OUTLINE-B", 0, 0, 255, () -> outlineParent.getValue());
