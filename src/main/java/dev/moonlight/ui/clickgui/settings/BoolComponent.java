@@ -62,7 +62,7 @@ public final class BoolComponent extends SettingComponent {
 
             }
             Gui.drawRect(x + 1, y, x + width - 1, y + height, boolSetting.getValue() ? new Color(r, g, b, a).getRGB() : 0x90000000);
-            cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName(): "" + boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }
 
