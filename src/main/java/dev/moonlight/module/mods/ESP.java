@@ -35,6 +35,7 @@ public class ESP extends Module {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         for (Entity e : mc.world.loadedEntityList) {
+            if(e.equals(mc.player)) return;
             if(distance.getValue() && e.getDistance(mc.player) >= distanceToRender.getValue()) return;
             AxisAlignedBB bb = e.getEntityBoundingBox().offset(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
             RenderUtil.prepareRender();
