@@ -1,15 +1,16 @@
 package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.settings.impl.*;
-import dev.moonlight.ui.clickgui.settings.*;
-import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.Setting;
+import dev.moonlight.settings.impl.*;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
+import dev.moonlight.ui.clickgui.settings.*;
+import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,11 @@ public final class Window extends AbstractComponent {
     private final ContentPane<SettingComponent> settingPane;
 
     private final HashMap<Module.Category, List<ModuleButton>> moduleButtonCache;
+
+    int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
+    int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
+    int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
+    int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
 
     public Window(GUI moonlightGui, int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -78,10 +84,6 @@ public final class Window extends AbstractComponent {
         header.draw(mouseX, mouseY, partialTicks);
         this.x = header.x;
         this.y = header.y + header.height;
-        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
-        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
-        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
         int lbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgr.getValue();
         int lbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgg.getValue();
         int lbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgb.getValue();
@@ -111,12 +113,14 @@ public final class Window extends AbstractComponent {
             pane.draw(mouseX, mouseY, partialTicks);
         }
     }
+
     @Override
     public void typed(char keyChar, int keyCode) {
         for (ContentPane<?> pane : panes) {
             pane.typed(keyChar, keyCode);
         }
     }
+
     private static class WindowHeader extends DragComponent {
         public WindowHeader(int x, int y, int width, int height) {
             super(x, y, width, height);
@@ -157,7 +161,8 @@ public final class Window extends AbstractComponent {
         }
 
         @Override
-        public void release(int mouseX, int mouseY, int mouseButton) { }
+        public void release(int mouseX, int mouseY, int mouseButton) {
+        }
 
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
@@ -174,7 +179,8 @@ public final class Window extends AbstractComponent {
         }
 
         @Override
-        public void typed(char keyChar, int keyCode) { }
+        public void typed(char keyChar, int keyCode) {
+        }
     }
 
     private class ModuleButton extends AbstractComponent {
@@ -203,7 +209,7 @@ public final class Window extends AbstractComponent {
                 }
             }
 
-            settingComponents.add(new BindComponent(module, 0, 0, settingPane.width,  height_));
+            settingComponents.add(new BindComponent(module, 0, 0, settingPane.width, height_));
         }
 
         @Override
@@ -227,10 +233,12 @@ public final class Window extends AbstractComponent {
         }
 
         @Override
-        public void release(int mouseX, int mouseY, int mouseButton) { }
+        public void release(int mouseX, int mouseY, int mouseButton) {
+        }
 
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
+
             if (isInside(mouseX, mouseY)) {
                 Gui.drawRect(x, y, x + width, y + height, 0x50ffffff);
             }
@@ -245,15 +253,18 @@ public final class Window extends AbstractComponent {
             if (module.isEnabled())
                 color = -1;
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
-            if(isInside(mouseX, mouseY)) {
-                if(Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
-                    moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY  - 4, -1);
+            if (isInside(mouseX, mouseY)) {
+                if (Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
+                    Gui.drawRect(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 3 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), 0x90000000);
+                    moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
+                    RenderUtil.outline2d(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 2 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), new Color(r, g, b, a).getRGB());
                 }
             }
         }
 
         @Override
-        public void typed(char keyChar, int keyCode) { }
+        public void typed(char keyChar, int keyCode) {
+        }
 
         public Module getModule() {
             return module;
