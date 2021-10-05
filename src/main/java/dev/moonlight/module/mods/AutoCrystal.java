@@ -85,13 +85,14 @@ public class AutoCrystal extends Module {
     public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
     public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue());
     public FloatSetting boxBlue = new FloatSetting("BoxBlue", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxAlpha = new FloatSetting("BoxALpha", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxAlpha = new FloatSetting("BoxAlpha", 255, 0, 255, () -> render.getValue() && box.getValue());
 
     public BoolSetting outline = new BoolSetting("Outline", false, false, () -> render.getValue());
     public FloatSetting outlineRed = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
     public FloatSetting outlineGreen = new FloatSetting("OutlineGreen", 255, 0, 255, () -> render.getValue() && outline.getValue());
     public FloatSetting outlineBlue = new FloatSetting("OutlineBlue", 255, 0, 255, () -> render.getValue() && outline.getValue());
     public FloatSetting outlineAlpha = new FloatSetting("OutlineAlpha", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 5, () -> render.getValue() && outline.getValue());
 
 
     EntityPlayer targetPlayer;
@@ -306,10 +307,10 @@ public class AutoCrystal extends Module {
                         possesToFade.remove(entry.getKey());
                         return;
                     }
-                    RenderUtil.drawBoxESP(entry.getKey(), new Color(boxRed.getValue(), boxGreen.getValue(), boxBlue.getValue(), entry.getValue()), true, new Color(outlineRed.getValue(), outlineGreen.getValue(), outlineBlue.getValue(), entry.getValue()), 0.1f, outline.getValue(), box.getValue(), entry.getValue(), true);
+                    RenderUtil.drawBoxESP(entry.getKey(), new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, entry.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, entry.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), entry.getValue(), true);
                 }
             } else if(finalPos != null){
-                RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue(), boxGreen.getValue(), boxBlue.getValue(), boxAlpha.getValue()), true, new Color(outlineRed.getValue(), outlineGreen.getValue(), outlineBlue.getValue(), outlineAlpha.getValue()), 0.1f, outline.getValue(), box.getValue(), (int) boxAlpha.getValue(), true);
+                RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, boxAlpha.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, outlineAlpha.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), (int) ((int) boxAlpha.getValue() / 255f), true);
             }
         }
     }
