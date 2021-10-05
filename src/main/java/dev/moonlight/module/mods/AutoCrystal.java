@@ -40,6 +40,8 @@ import java.util.Map;
 @Module.Info(name = "AutoCrystal", category = Module.Category.Combat, desc = "obliterates kids with ender crystals.")
 public class AutoCrystal extends Module {
 
+    //TODO: add parents
+    //TODO: test on cc
     public FloatSetting placeRange = new FloatSetting("PlaceRange", 5, 0, 6);
     public FloatSetting breakRange = new FloatSetting("BreakRange", 5, 0, 6);
     public FloatSetting targetRange = new FloatSetting("TargetRange", 10, 0, 15);
@@ -261,6 +263,9 @@ public class AutoCrystal extends Module {
                                 return;
 
                             if (targetDamage < minimumDamageValue)
+                                return;
+
+                            if (!mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) && !mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL))
                                 return;
 
                             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
