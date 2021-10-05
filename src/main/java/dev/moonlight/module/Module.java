@@ -1,13 +1,12 @@
 package dev.moonlight.module;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.events.PacketEvent;
+import dev.moonlight.events.ModuleDisableEvent;
+import dev.moonlight.events.ModuleEnableEvent;
 import dev.moonlight.misc.Bind;
 import dev.moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.lang.annotation.ElementType;
@@ -56,13 +55,17 @@ public abstract class Module extends Bind {
 
     public void enable() {
         enabled = true;
-            MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(this);
+        ModuleEnableEvent moduleEnableEvent = new ModuleEnableEvent(name);
+        MinecraftForge.EVENT_BUS.post(moduleEnableEvent);
         onEnable();
     }
 
     public void disable() {
         enabled = false;
-            MinecraftForge.EVENT_BUS.unregister(this);
+        MinecraftForge.EVENT_BUS.unregister(this);
+        ModuleDisableEvent moduleDisableEvent = new ModuleDisableEvent(name);
+        MinecraftForge.EVENT_BUS.post(moduleDisableEvent);
         onDisable();
     }
 
@@ -86,9 +89,11 @@ public abstract class Module extends Bind {
         return enabled;
     }
 
-    protected void onEnable() { }
+    protected void onEnable() {
+    }
 
-    protected void onDisable() { }
+    protected void onDisable() {
+    }
 
     public ArrayList<Setting> getSettings() {
         return settings;
@@ -121,9 +126,13 @@ public abstract class Module extends Bind {
     @Target(ElementType.TYPE)
     public @interface Info {
         String name();
+
         Category category();
+
         String desc();
+
         int bind() default Keyboard.KEY_NONE;
+
         boolean enabled() default false;
     }
 

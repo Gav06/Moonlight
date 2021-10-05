@@ -28,7 +28,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author zPrestige_
@@ -47,7 +49,6 @@ public class AutoCrystal extends Module {
     public BoolSetting antiSuicide = new BoolSetting("AntiSuicide", false, false);
 
     public BoolSetting packetBreak = new BoolSetting("PacketBreak", false, false);
-    public BoolSetting breakPredict = new BoolSetting("BreakPredict", false, false);
     public BoolSetting soundPredict = new BoolSetting("SoundPredict", false, false);
     public BoolSetting placePredict = new BoolSetting("PlacePredict", false, false);
 
@@ -74,10 +75,30 @@ public class AutoCrystal extends Module {
     public FloatSetting facePlaceHp = new FloatSetting("FacePlaceHp", 15, 0, 36, () -> facePlaceMode.getValueEnum().equals(FacePlaceMode.Health));
     public BindSetting facePlaceBind = new BindSetting("FacePlaceBind", Keyboard.KEY_NONE, () -> facePlaceMode.getValueEnum().equals(FacePlaceMode.Bind));
 
+    public BoolSetting render = new BoolSetting("Render", false, false);
+    public BoolSetting fade = new BoolSetting("Fade", false, false, () -> render.getValue());
+    public FloatSetting startAlpha = new FloatSetting("StartAlpha", 255, 0, 255, () -> render.getValue() && fade.getValue());
+    public FloatSetting endAlpha = new FloatSetting("EndAlpha", 0, 0, 255, () -> render.getValue() && fade.getValue());
+    public FloatSetting fadeSpeed = new FloatSetting("FadeSpeed", 20, 0, 100, () -> render.getValue() && fade.getValue());
+
+    public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue());
+    public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxGreen = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxBlue = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxAlpha = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
+
+    public BoolSetting outline = new BoolSetting("Outline", false, false, () -> render.getValue());
+    public FloatSetting outlineRed = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineGreen = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineBlue = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineAlpha = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
+
+
     EntityPlayer targetPlayer;
     BlockPos finalPos;
     Timer placeTimer = new Timer();
     Timer breakTimer = new Timer();
+    HashMap<BlockPos, Integer> possesToFade = new HashMap();
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
@@ -121,6 +142,9 @@ public class AutoCrystal extends Module {
                 if (targetDamage < minimumDamageValue)
                     return;
 
+                if (!mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) && !mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL))
+                    return;
+
                 finalPos = pos;
 
             }
@@ -130,6 +154,9 @@ public class AutoCrystal extends Module {
                 InventoryUtil.silentSwitchToSlot(slot);
 
             mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
+
+            if (render.getValue() && fade.getValue())
+                possesToFade.put(finalPos, (int) startAlpha.getValue());
 
             if (placeSwing.getValue())
                 mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
@@ -175,6 +202,9 @@ public class AutoCrystal extends Module {
                 } else {
                     mc.playerController.attackEntity(mc.player, entity);
                 }
+
+                if (breakSwing.getValue())
+                    mc.player.swingArm(breakSwingHand.getValueEnum().equals(BreakSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
                 if (silentSwitch.getValue() && antiWeakness.getValue() && (mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD) && mc.player.getActivePotionEffects().equals(Potion.getPotionById(18))) {
                     mc.player.inventory.currentItem = oldSlot;
@@ -237,6 +267,9 @@ public class AutoCrystal extends Module {
 
                             mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(predictedCrystalPos, EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
 
+                            if (render.getValue() && fade.getValue())
+                                possesToFade.put(predictedCrystalPos, (int) startAlpha.getValue());
+
                             if (placeSwing.getValue())
                                 mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
@@ -253,18 +286,31 @@ public class AutoCrystal extends Module {
 
     @Override
     protected void onEnable() {
+        targetPlayer = null;
         finalPos = null;
     }
 
     @Override
     protected void onDisable() {
+        targetPlayer = null;
         finalPos = null;
     }
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if (finalPos != null) {
-            RenderUtil.drawBox(finalPos, new Color(255, 255, 255, 120));
+        if (render.getValue()) {
+            if (fade.getValue()) {
+                for (Map.Entry<BlockPos, Integer> entry : possesToFade.entrySet()) {
+                    possesToFade.put(entry.getKey(), (int) (entry.getValue() - (fadeSpeed.getValue() / 10)));
+                    if (entry.getValue() <= endAlpha.getValue()) {
+                        possesToFade.remove(entry.getKey());
+                        return;
+                    }
+                    RenderUtil.drawBoxESP(entry.getKey(), new Color(boxRed.getValue(), boxGreen.getValue(), boxBlue.getValue(), entry.getValue()), true, new Color(outlineRed.getValue(), outlineGreen.getValue(), outlineBlue.getValue(), entry.getValue()), 0.1f, outline.getValue(), box.getValue(), entry.getValue(), true);
+                }
+            } else if(finalPos != null){
+                RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue(), boxGreen.getValue(), boxBlue.getValue(), boxAlpha.getValue()), true, new Color(outlineRed.getValue(), outlineGreen.getValue(), outlineBlue.getValue(), outlineAlpha.getValue()), 0.1f, outline.getValue(), box.getValue(), (int) boxAlpha.getValue(), true);
+            }
         }
     }
 }
