@@ -35,7 +35,8 @@ public abstract class Module extends Bind {
             this.category = info.category();
             this.desc = info.desc();
             this.setBind(info.bind());
-            this.setEnabled(info.enabled());
+            if (info.enabled())
+                enable();
         } else {
             throw new RuntimeException(String.format("Module (%s) is missing @Info annotation", getClass().getName()));
         }
