@@ -27,8 +27,7 @@ public abstract class Module extends Bind {
     private final Category category;
     private final String desc;
     private boolean enabled;
-    private long lastEnabledTime;
-    private long lastDisabledTime;
+    private boolean visible;
     private final boolean registerByDefault;
 
     public Module() {
@@ -62,7 +61,6 @@ public abstract class Module extends Bind {
         if (registerByDefault) {
             MinecraftForge.EVENT_BUS.register(this);
         }
-        lastEnabledTime = System.currentTimeMillis();
         onEnable();
     }
 
@@ -71,7 +69,6 @@ public abstract class Module extends Bind {
         if (registerByDefault) {
             MinecraftForge.EVENT_BUS.unregister(this);
         }
-        lastDisabledTime = System.currentTimeMillis();
         onDisable();
     }
 
@@ -106,6 +103,10 @@ public abstract class Module extends Bind {
     // 莱利是个愚蠢的笨蛋
     public String getMetaData() {
         return "";
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
     public boolean nullCheck() {

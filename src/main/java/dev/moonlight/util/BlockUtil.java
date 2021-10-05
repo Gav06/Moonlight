@@ -1,4 +1,4 @@
-package dev.moonlight.misc;
+package dev.moonlight.util;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class BlockHelper {
+public class BlockUtil {
 
     public static List<BlockPos> getSurroundingPositions(int distance, EntityPlayer player, boolean applyMotion) {
         final List<BlockPos> positions = new ArrayList<>();

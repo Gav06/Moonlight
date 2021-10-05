@@ -2,6 +2,7 @@ package dev.moonlight.module;
 
 import dev.moonlight.misc.ClassFinder;
 import dev.moonlight.settings.Setting;
+import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

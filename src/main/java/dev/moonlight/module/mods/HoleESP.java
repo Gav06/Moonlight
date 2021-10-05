@@ -2,7 +2,7 @@ package dev.moonlight.module.mods;
 
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.misc.ApiCall;
-import dev.moonlight.misc.BlockHelper;
+import dev.moonlight.util.BlockUtil;
 import dev.moonlight.util.MathUtil;
 import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
@@ -44,15 +44,15 @@ public final class HoleESP extends Module {
     private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
     private final BoolSetting self = new BoolSetting("Self", false, false);
     public BoolSetting safeColorParent = new BoolSetting("SafeColor", false, true);
-    public final FloatSetting rSafe = new FloatSetting("R", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting gSafe = new FloatSetting("G", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting bSafe = new FloatSetting("B", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting aSafe = new FloatSetting("A", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting rSafe = new FloatSetting("RSafe", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting gSafe = new FloatSetting("GSafe", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting bSafe = new FloatSetting("BSafe", 255, 0, 255, () -> safeColorParent.getValue());
+    public final FloatSetting aSafe = new FloatSetting("ASafe", 255, 0, 255, () -> safeColorParent.getValue());
     public BoolSetting unSafeColorParent = new BoolSetting("UnSafeColor", false, true);
-    public final FloatSetting rUnSafe = new FloatSetting("R", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting gUnSafe = new FloatSetting("G", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting bUnSafe = new FloatSetting("B", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting aUnSafe = new FloatSetting("A", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting rUnSafe = new FloatSetting("RUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting gUnSafe = new FloatSetting("GUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting bUnSafe = new FloatSetting("BUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public final FloatSetting aUnSafe = new FloatSetting("AUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -134,7 +134,7 @@ public final class HoleESP extends Module {
         @Override
         public Object call() {
 
-            for (BlockPos pos : BlockHelper.getSurroundingPositions(Math.round(distance.getValue()), mc.player, true)) {
+            for (BlockPos pos : BlockUtil.getSurroundingPositions(Math.round(distance.getValue()), mc.player, true)) {
                 // where we are checking if it is a hole or not
                 if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
                     if (isHoleType(pos, Blocks.BEDROCK)) {
