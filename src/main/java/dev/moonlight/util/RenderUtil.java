@@ -3,7 +3,10 @@ package dev.moonlight.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -13,11 +16,39 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import java.awt.*;
+import java.util.Objects;
+
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glHint;
 
 public final class RenderUtil {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
-
+    static ICamera camera;
+    static {
+        camera = new Frustum();
+    }
+    public static void drawBox(final BlockPos pos, final Color color) {
+        final AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - RenderUtil.mc.getRenderManager().viewerPosX, pos.getY() - RenderUtil.mc.getRenderManager().viewerPosY, pos.getZ() - RenderUtil.mc.getRenderManager().viewerPosZ, pos.getX() + 1 - RenderUtil.mc.getRenderManager().viewerPosX, pos.getY() + 1 - RenderUtil.mc.getRenderManager().viewerPosY, pos.getZ() + 1 - RenderUtil.mc.getRenderManager().viewerPosZ);
+        camera.setPosition(Objects.requireNonNull(RenderUtil.mc.getRenderViewEntity()).posX, RenderUtil.mc.getRenderViewEntity().posY, RenderUtil.mc.getRenderViewEntity().posZ);
+        if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + RenderUtil.mc.getRenderManager().viewerPosX, bb.minY + RenderUtil.mc.getRenderManager().viewerPosY, bb.minZ + RenderUtil.mc.getRenderManager().viewerPosZ, bb.maxX + RenderUtil.mc.getRenderManager().viewerPosX, bb.maxY + RenderUtil.mc.getRenderManager().viewerPosY, bb.maxZ + RenderUtil.mc.getRenderManager().viewerPosZ))) {
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.disableDepth();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+            GlStateManager.disableTexture2D();
+            GlStateManager.depthMask(false);
+            glEnable(2848);
+            glHint(3154, 4354);
+            RenderGlobal.renderFilledBox(bb, color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
+            GL11.glDisable(2848);
+            GlStateManager.depthMask(true);
+            GlStateManager.enableDepth();
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
+        }
+    }
     //i really dont care this is just so good to have man stfu skidded from client 2.0.0 nigger
     public static void drawRoundedRect(double x, double y, double width, double height, final double radius, final Color color) {
         GL11.glPushAttrib(0);

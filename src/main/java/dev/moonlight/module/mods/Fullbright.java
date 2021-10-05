@@ -8,8 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 @Module.Info(
         name = "Fullbright",
         desc = "Makes the world bright",
-        category = Module.Category.Render,
-        registerByDefault = false
+        category = Module.Category.Render
 )
 public final class Fullbright extends Module {
 

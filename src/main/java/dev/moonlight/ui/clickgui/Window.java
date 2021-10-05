@@ -238,7 +238,7 @@ public final class Window extends AbstractComponent {
 
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
-
+            Moonlight moonlight = Moonlight.INSTANCE;
             if (isInside(mouseX, mouseY)) {
                 Gui.drawRect(x, y, x + width, y + height, 0x50ffffff);
             }
@@ -254,7 +254,7 @@ public final class Window extends AbstractComponent {
                 color = -1;
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
             if (isInside(mouseX, mouseY)) {
-                if (Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
+                if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
                     Gui.drawRect(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 3 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), 0x90000000);
                     moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
                     RenderUtil.outline2d(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 2 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), new Color(r, g, b, a).getRGB());

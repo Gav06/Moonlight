@@ -5,13 +5,11 @@ import dev.moonlight.misc.ApiCall;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -78,7 +76,7 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).getBind()) {
+        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).getBind()) {
             mc.displayGuiScreen(null);
             if (mc.currentScreen == null) {
                 mc.setIngameFocus();

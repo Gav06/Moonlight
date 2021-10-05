@@ -4,6 +4,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public final class MathUtil {
+    public static double square(double input) {
+        return input * input;
+    }
 
     public static float normalize(float value, float min, float max) {
         return 1.0f - ((value - min) / (max - min));

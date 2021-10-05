@@ -28,7 +28,6 @@ public abstract class Module extends Bind {
     private final String desc;
     private boolean enabled;
     private boolean visible;
-    private final boolean registerByDefault;
 
     public Module() {
         if (getClass().isAnnotationPresent(Info.class)) {
@@ -36,7 +35,6 @@ public abstract class Module extends Bind {
             this.name = info.name();
             this.category = info.category();
             this.desc = info.desc();
-            this.registerByDefault = info.registerByDefault();
             this.setBind(info.bind());
             this.setEnabled(info.enabled());
         } else {
@@ -58,17 +56,13 @@ public abstract class Module extends Bind {
 
     public void enable() {
         enabled = true;
-        if (registerByDefault) {
             MinecraftForge.EVENT_BUS.register(this);
-        }
         onEnable();
     }
 
     public void disable() {
         enabled = false;
-        if (registerByDefault) {
             MinecraftForge.EVENT_BUS.unregister(this);
-        }
         onDisable();
     }
 
@@ -131,7 +125,6 @@ public abstract class Module extends Bind {
         String desc();
         int bind() default Keyboard.KEY_NONE;
         boolean enabled() default false;
-        boolean registerByDefault() default true;
     }
 
     @Override

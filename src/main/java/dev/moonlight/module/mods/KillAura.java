@@ -2,14 +2,13 @@ package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.events.PlayerUpdateEvent;
-import dev.moonlight.util.ColorUtil;
-import dev.moonlight.util.InventoryUtil;
-import dev.moonlight.util.MathUtil;
-import dev.moonlight.util.RenderUtil;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.settings.impl.ModeSetting;
+import dev.moonlight.util.ColorUtil;
+import dev.moonlight.util.InventoryUtil;
+import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
@@ -24,14 +23,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
 
-@Module.Info(
-        name = "KillAura",
-        desc = "Automatically attacks entities.",
-        category = Module.Category.Combat,
-        bind = Keyboard.KEY_F
-)
+@Module.Info(name = "KillAura", desc = "Automatically attacks entities.", category = Module.Category.Combat)
 public class KillAura extends Module {
 
     public FloatSetting range = new FloatSetting("Range", 4, 1, 6);
@@ -68,10 +61,6 @@ public class KillAura extends Module {
 
     public Entity target = null;
 
-    private float yaw = 0.0f;
-    private float pitch = 0.0f;
-    private boolean rotating = false;
-
     @Override
     public String getMetaData() {
         return "[" + ChatFormatting.GRAY + range.getValue() + ChatFormatting.RESET + "]";
@@ -79,17 +68,15 @@ public class KillAura extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        if(isEnabled()) {
+        if (isEnabled()) {
             int slot = InventoryUtil.getItemSlot(Items.DIAMOND_SWORD);
             for (Entity e : mc.world.loadedEntityList) {
                 if (shouldAttack(e)) {
                     if (slot != -1 && switchToSword.getValue())
                         InventoryUtil.switchToSlot(slot);
                     if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordOnly.getValue()) {
-                        if(rotate.getValue()) rotateTo(e);
                         attack(e);
-                    }else if(!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !swordOnly.getValue()){
-                        if(rotate.getValue()) rotateTo(e);
+                    } else if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !swordOnly.getValue()) {
                         attack(e);
                     }
                 }
@@ -101,13 +88,13 @@ public class KillAura extends Module {
     public void onRender3D(RenderWorldLastEvent event) {
         boolean fill = false;
         boolean outline = false;
-        if(renderMode.getValueEnum() == RenderMode.Both) {
+        if (renderMode.getValueEnum() == RenderMode.Both) {
             fill = true;
             outline = true;
-        }else if(renderMode.getValueEnum() == RenderMode.Fill) {
+        } else if (renderMode.getValueEnum() == RenderMode.Fill) {
             fill = true;
             outline = false;
-        }else if(renderMode.getValueEnum() == RenderMode.Outline) {
+        } else if (renderMode.getValueEnum() == RenderMode.Outline) {
             fill = false;
             outline = true;
         }
@@ -152,15 +139,6 @@ public class KillAura extends Module {
                 mc.player.swingArm(EnumHand.MAIN_HAND);
                 target = e;
             }
-        }
-    }
-
-    private void rotateTo(Entity entity) {
-        if (rotate.getValue()) {
-            float[] angle = MathUtil.calcAngle(mc.player.getPositionEyes(mc.getRenderPartialTicks()), entity.getPositionVector());
-            yaw = angle[0];
-            pitch = angle[1];
-            rotating = true;
         }
     }
 }

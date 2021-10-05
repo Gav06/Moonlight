@@ -15,14 +15,18 @@ public class MixinNetworkManager {
 
     @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
     private void sendPacketMixin(Packet<?> packetIn, CallbackInfo ci) {
-        if (MinecraftForge.EVENT_BUS.post(new PacketEvent.Send(packetIn))) {
+        PacketEvent.Send event = new PacketEvent.Send(packetIn);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) {
             ci.cancel();
         }
     }
 
     @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
     private void channelRead0Mixin(ChannelHandlerContext channelContext, Packet<?> packet, CallbackInfo ci) {
-        if (MinecraftForge.EVENT_BUS.post(new PacketEvent.Receive(packet))) {
+        PacketEvent.Receive event = new PacketEvent.Receive(packet);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) {
             ci.cancel();
         }
     }
