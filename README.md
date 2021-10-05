@@ -9,4 +9,4 @@ Based client made by gerald0mc and Gav06
 
     -Dyanmic Fade HoleESP
 
-    -Sexy custom Skeet GUI like GUI
+    -Cool gui (stop calling it skeet you fucking retard)
