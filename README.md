@@ -1,6 +1,6 @@
 # Moonlight
 
-Based client made by gerald0mc and Gav06
+Based client made by gerald0mc, Gav06 and zPrestige_
 
 ## Probably the client you have ever used
 :trollface:
