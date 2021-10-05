@@ -83,15 +83,15 @@ public class AutoCrystal extends Module {
 
     public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue());
     public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxGreen = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxBlue = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxAlpha = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxBlue = new FloatSetting("BoxBlue", 255, 0, 255, () -> render.getValue() && box.getValue());
+    public FloatSetting boxAlpha = new FloatSetting("BoxALpha", 255, 0, 255, () -> render.getValue() && box.getValue());
 
     public BoolSetting outline = new BoolSetting("Outline", false, false, () -> render.getValue());
     public FloatSetting outlineRed = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineGreen = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineBlue = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineAlpha = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineGreen = new FloatSetting("OutlineGreen", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineBlue = new FloatSetting("OutlineBlue", 255, 0, 255, () -> render.getValue() && outline.getValue());
+    public FloatSetting outlineAlpha = new FloatSetting("OutlineAlpha", 255, 0, 255, () -> render.getValue() && outline.getValue());
 
 
     EntityPlayer targetPlayer;
