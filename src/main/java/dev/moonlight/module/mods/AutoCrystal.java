@@ -18,6 +18,7 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.network.play.server.SPacketSoundEffect;
+import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -109,7 +110,7 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        if(nullCheck())
+        if (nullCheck())
             return;
 
         targetPlayer = DamageUtil.getTarget(targetRange.getValue());
@@ -134,17 +135,18 @@ public class AutoCrystal extends Module {
 
         bestCrystalPos = getBestPlacePos();
 
-        if(bestCrystalPos == null){
-            MessageUtil.sendMessage("NULLLLL");
+        if (bestCrystalPos == null)
             return;
-        }
+
         if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
             InventoryUtil.silentSwitchToSlot(slot);
 
         mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(bestCrystalPos.getBlockPos(), EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
 
+        finalPos = bestCrystalPos.getBlockPos();
+
         if (render.getValue() && fade.getValue())
-            possesToFade.put(finalPos, (int) startAlpha.getValue());
+            possesToFade.put(bestCrystalPos.getBlockPos(), (int) startAlpha.getValue());
 
         if (placeSwing.getValue())
             mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
@@ -203,15 +205,33 @@ public class AutoCrystal extends Module {
 
     bestPlacePos getBestPlacePos() {
         TreeMap<Float, bestPlacePos> posList = new TreeMap<>();
-        for (BlockPos pos : BlockUtil.getSurroundingPositions((int) placeRange.getValue(), mc.player, false)) {
+        for (BlockPos pos : BlockUtil.getSphere(placeRange.getValue())) {
             float targetDamage = DamageUtil.calculatePosDamage(pos, targetPlayer);
+            float selfHealth = mc.player.getHealth() + mc.player.getAbsorptionAmount();
+            float selfDamage = DamageUtil.calculatePosDamage(pos, mc.player);
+            float targetHealth = targetPlayer.getHealth() + targetPlayer.getAbsorptionAmount();
+            float minimumDamageValue = minimumDamage.getValue();
             if (BlockUtil.isPosValidForCrystal(pos)) {
+                if (mc.player.getDistance(pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f) > MathUtil.square(placeRange.getValue()))
+                    continue;
+
+                if (BlockUtil.isPlayerSafe(targetPlayer) && (facePlaceMode.getValueEnum().equals(FacePlaceMode.Always) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Health) && targetHealth < facePlaceHp.getValue()) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Bind) && Keyboard.isKeyDown(facePlaceBind.getBind()))))
+                    minimumDamageValue = 2;
+
+                if (antiSuicide.getValue() && selfDamage > selfHealth)
+                    continue;
+
+                if (selfDamage > maximumSelfDamage.getValue())
+                    continue;
+
+                if (targetDamage < minimumDamageValue)
+                    continue;
+
                 posList.put(targetDamage, new bestPlacePos(pos, targetDamage));
             }
         }
         if (!posList.isEmpty()) {
-            bestPlacePos bestPos = posList.lastEntry().getValue();
-            return bestPos;
+            return posList.lastEntry().getValue();
         }
         return null;
     }
@@ -246,7 +266,7 @@ public class AutoCrystal extends Module {
                         if (soundPredict.getValue() && entity.getDistance(packet.getX(), packet.getY(), packet.getZ()) <= breakRange.getValue())
                             entity.setDead();
 
-                        if (placePredict.getValue()) {
+                        if (placePredict.getValue() && predictedCrystalPos.equals(bestCrystalPos)) {
 
                             if (entity.getDistance(mc.player) > MathUtil.square(breakRange.getValue()))
                                 return;
@@ -314,7 +334,7 @@ public class AutoCrystal extends Module {
                     }
                 }
             } else if (finalPos != null) {
-                RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, boxAlpha.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, outlineAlpha.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), (int) ((int) boxAlpha.getValue() / 255f), true);
+                RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, boxAlpha.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, outlineAlpha.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), (int) boxAlpha.getValue(), true);
                 if (damageText.getValue()) {
                     float targetDamage = DamageUtil.calculatePosDamage(finalPos, targetPlayer);
                     RenderUtil.drawText(finalPos, targetDamage + "", new Color(255, 255, 255, 255).getRGB());
@@ -324,8 +344,8 @@ public class AutoCrystal extends Module {
     }
 
     static class bestPlacePos {
-        private final BlockPos blockPos;
-        private final float targetDamage;
+        BlockPos blockPos;
+        float targetDamage;
 
         public bestPlacePos(BlockPos blockPos, float targetDamage) {
             this.blockPos = blockPos;

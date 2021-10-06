@@ -130,7 +130,7 @@ public final class HoleESP extends Module {
         @Override
         public Object call() {
 
-            for (BlockPos pos : BlockUtil.getSurroundingPositions(Math.round(distance.getValue()), mc.player, true)) {
+            for (BlockPos pos : BlockUtil.getSurroundingPositions(Math.round(distance.getValue()), mc.player, true, false)) {
                 // where we are checking if it is a hole or not
                 if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR && mc.world.getBlockState(pos.down()).getBlock() != Blocks.AIR) {
                     if (isHoleType(pos, Blocks.BEDROCK)) {
