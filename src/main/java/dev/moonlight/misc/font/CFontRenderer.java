@@ -25,7 +25,6 @@ public class CFontRenderer extends CFont {
     public CFontRenderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
         super(font, antiAlias, fractionalMetrics);
         setupMinecraftColorCodes();
-        setupBoldItalicIDs();
     }
 
     public float drawStringWithShadow(String text, double x, double y, int color) {
@@ -64,7 +63,6 @@ public class CFontRenderer extends CFont {
 
         CharData[] currentData = this.charData;
         float alpha = (color >> 24 & 0xFF) / 255.0F;
-        boolean bold = false;
         boolean italic = false;
         boolean strikethrough = false;
         boolean underline = false;
@@ -88,7 +86,6 @@ public class CFontRenderer extends CFont {
                 } catch (Exception ignored) {
                 }
                 if (colorIndex < 16) {
-                    bold = false;
                     italic = false;
                     underline = false;
                     strikethrough = false;
@@ -99,27 +96,15 @@ public class CFontRenderer extends CFont {
                     int colorCode = this.colorCode[colorIndex];
                     GlStateManager.color((colorCode >> 16 & 0xFF) / 255.0F, (colorCode >> 8 & 0xFF) / 255.0F, (colorCode & 0xFF) / 255.0F, alpha);
                 } else if (colorIndex == 17) {
-                    bold = true;
                     if (italic) {
-                        GlStateManager.bindTexture(texItalicBold.getGlTextureId());
                         currentData = this.boldItalicChars;
-                    } else {
-                        GlStateManager.bindTexture(texBold.getGlTextureId());
-                        currentData = this.boldChars;
                     }
                 } else if (colorIndex == 18) strikethrough = true;
                 else if (colorIndex == 19) underline = true;
                 else if (colorIndex == 20) {
                     italic = true;
-                    if (bold) {
-                        GlStateManager.bindTexture(texItalicBold.getGlTextureId());
-                        currentData = this.boldItalicChars;
-                    } else {
-                        GlStateManager.bindTexture(texItalic.getGlTextureId());
                         currentData = this.italicChars;
-                    }
                 } else {
-                    bold = false;
                     italic = false;
                     underline = false;
                     strikethrough = false;
@@ -165,28 +150,16 @@ public class CFontRenderer extends CFont {
 
     public void setFont(Font font) {
         super.setFont(font);
-        setupBoldItalicIDs();
     }
 
     public void setAntiAlias(boolean antiAlias) {
         super.setAntiAlias(antiAlias);
-        setupBoldItalicIDs();
     }
 
     public void setFractionalMetrics(boolean fractionalMetrics) {
         super.setFractionalMetrics(fractionalMetrics);
-        setupBoldItalicIDs();
     }
 
-    protected DynamicTexture texBold;
-    protected DynamicTexture texItalic;
-    protected DynamicTexture texItalicBold;
-
-    private void setupBoldItalicIDs() {
-        texBold = setupTexture(this.font.deriveFont(Font.BOLD), this.antiAlias, this.fractionalMetrics, this.boldChars);
-        texItalic = setupTexture(this.font.deriveFont(Font.ITALIC), this.antiAlias, this.fractionalMetrics, this.italicChars);
-        texItalicBold = setupTexture(this.font.deriveFont(Font.BOLD | Font.ITALIC), this.antiAlias, this.fractionalMetrics, this.boldItalicChars);
-    }
 
     private void drawLine(double x, double y, double x1, double y1) {
         GL11.glDisable(GL11.GL_TEXTURE_2D);

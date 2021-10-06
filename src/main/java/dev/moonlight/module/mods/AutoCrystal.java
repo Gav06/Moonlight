@@ -138,14 +138,20 @@ public class AutoCrystal extends Module {
                 if (BlockUtil.isPlayerSafe(targetPlayer) && (facePlaceMode.getValueEnum().equals(FacePlaceMode.Always) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Health) && targetHealth < facePlaceHp.getValue()) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Bind) && Keyboard.isKeyDown(facePlaceBind.getBind()))))
                     minimumDamageValue = 2;
 
-                if (antiSuicide.getValue() && selfDamage > selfHealth)
+                if (antiSuicide.getValue() && selfDamage > selfHealth) {
+                    MessageUtil.sendMessage("selfdamage > selfhealth");
                     return;
+                }
 
-                if (selfDamage > maximumSelfDamage.getValue())
+                if (selfDamage > maximumSelfDamage.getValue()) {
+                    MessageUtil.sendMessage("selfdamage > maximumself");
                     return;
+                }
 
-                if (targetDamage < minimumDamageValue)
+                if (targetDamage < minimumDamageValue) {
+                    MessageUtil.sendMessage("targetdamage < minimumdamage");
                     return;
+                }
 
                 if (!mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) && !mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL))
                     return;
@@ -158,6 +164,7 @@ public class AutoCrystal extends Module {
             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
                 InventoryUtil.silentSwitchToSlot(slot);
 
+            MessageUtil.sendMessage("Placing");
             mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
 
             if (render.getValue() && fade.getValue())
@@ -226,8 +233,7 @@ public class AutoCrystal extends Module {
 
 
         if (event.getPacket() instanceof SPacketEntityVelocity) {
-            SPacketEntityVelocity velocity;
-            velocity = (SPacketEntityVelocity) event.getPacket();
+            SPacketEntityVelocity velocity = (SPacketEntityVelocity) event.getPacket();
 
             if (velocity.getEntityID() == mc.player.getEntityId())
                 event.setCanceled(true);
@@ -265,9 +271,6 @@ public class AutoCrystal extends Module {
                                 return;
 
                             if (targetDamage < minimumDamageValue)
-                                return;
-
-                            if (!mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) && !mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL))
                                 return;
 
                             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
