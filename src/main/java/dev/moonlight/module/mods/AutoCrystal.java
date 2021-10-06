@@ -29,8 +29,9 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 
 /**
  * @Author zPrestige_
@@ -83,6 +84,8 @@ public class AutoCrystal extends Module {
     public FloatSetting endAlpha = new FloatSetting("EndAlpha", 0, 0, 255, () -> render.getValue() && fade.getValue());
     public FloatSetting fadeSpeed = new FloatSetting("FadeSpeed", 20, 0, 100, () -> render.getValue() && fade.getValue());
 
+    public BoolSetting damageText = new BoolSetting("DamageText", false, false, () -> render.getValue());
+
     public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue());
     public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
     public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue());
@@ -102,9 +105,13 @@ public class AutoCrystal extends Module {
     Timer placeTimer = new Timer();
     Timer breakTimer = new Timer();
     HashMap<BlockPos, Integer> possesToFade = new HashMap();
+    bestPlacePos bestCrystalPos = new bestPlacePos(BlockPos.ORIGIN, 0);
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
+        if(nullCheck())
+            return;
+
         targetPlayer = DamageUtil.getTarget(targetRange.getValue());
 
         if (targetPlayer == null)
@@ -121,62 +128,30 @@ public class AutoCrystal extends Module {
     }
 
     void doPlace() {
-        List<BlockPos> sphere = BlockUtil.getSphere(placeRange.getValue());
+
         int slot = InventoryUtil.getItemHotbar(Items.END_CRYSTAL);
         int oldSlot = mc.player.inventory.currentItem;
-        for (int size = sphere.size(), s = 0; s < size; ++s) {
 
-            BlockPos pos = sphere.get(s);
-            float selfHealth = mc.player.getHealth() + mc.player.getAbsorptionAmount();
-            float selfDamage = DamageUtil.calculatePosDamage(pos, mc.player);
-            float targetDamage = DamageUtil.calculatePosDamage(pos, targetPlayer);
-            float targetHealth = targetPlayer.getHealth() + targetPlayer.getAbsorptionAmount();
-            float minimumDamageValue = minimumDamage.getValue();
+        bestCrystalPos = getBestPlacePos();
 
-            if (BlockUtil.isPosValidForCrystal(pos)) {
-
-                if (BlockUtil.isPlayerSafe(targetPlayer) && (facePlaceMode.getValueEnum().equals(FacePlaceMode.Always) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Health) && targetHealth < facePlaceHp.getValue()) || (facePlaceMode.getValueEnum().equals(FacePlaceMode.Bind) && Keyboard.isKeyDown(facePlaceBind.getBind()))))
-                    minimumDamageValue = 2;
-
-                if (antiSuicide.getValue() && selfDamage > selfHealth) {
-                    MessageUtil.sendMessage("selfdamage > selfhealth");
-                    return;
-                }
-
-                if (selfDamage > maximumSelfDamage.getValue()) {
-                    MessageUtil.sendMessage("selfdamage > maximumself");
-                    return;
-                }
-
-                if (targetDamage < minimumDamageValue) {
-                    MessageUtil.sendMessage("targetdamage < minimumdamage");
-                    return;
-                }
-
-                if (!mc.player.getHeldItemMainhand().getItem().equals(Items.END_CRYSTAL) && !mc.player.getHeldItemOffhand().getItem().equals(Items.END_CRYSTAL))
-                    return;
-
-                finalPos = pos;
-
-            }
+        if(bestCrystalPos == null){
+            MessageUtil.sendMessage("NULLLLL");
+            return;
         }
-        if (finalPos != null) {
-            if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
-                InventoryUtil.silentSwitchToSlot(slot);
+        if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
+            InventoryUtil.silentSwitchToSlot(slot);
 
-            MessageUtil.sendMessage("Placing");
-            mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(finalPos, EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
+        mc.getConnection().sendPacket(new CPacketPlayerTryUseItemOnBlock(bestCrystalPos.getBlockPos(), EnumFacing.UP, mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.5f, 0.5f, 0.5f));
 
-            if (render.getValue() && fade.getValue())
-                possesToFade.put(finalPos, (int) startAlpha.getValue());
+        if (render.getValue() && fade.getValue())
+            possesToFade.put(finalPos, (int) startAlpha.getValue());
 
-            if (placeSwing.getValue())
-                mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+        if (placeSwing.getValue())
+            mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
-            if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL)) {
-                mc.player.inventory.currentItem = oldSlot;
-                mc.playerController.updateController();
-            }
+        if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL)) {
+            mc.player.inventory.currentItem = oldSlot;
+            mc.playerController.updateController();
         }
     }
 
@@ -226,6 +201,22 @@ public class AutoCrystal extends Module {
         }
     }
 
+    bestPlacePos getBestPlacePos() {
+        TreeMap<Float, bestPlacePos> posList = new TreeMap<>();
+        for (BlockPos pos : BlockUtil.getSurroundingPositions((int) placeRange.getValue(), mc.player, false)) {
+            float targetDamage = DamageUtil.calculatePosDamage(pos, targetPlayer);
+            if (BlockUtil.isPosValidForCrystal(pos)) {
+                posList.put(targetDamage, new bestPlacePos(pos, targetDamage));
+            }
+        }
+        if (!posList.isEmpty()) {
+            bestPlacePos bestPos = posList.lastEntry().getValue();
+            return bestPos;
+        }
+        return null;
+    }
+
+
     @SubscribeEvent
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketExplosion)
@@ -247,7 +238,6 @@ public class AutoCrystal extends Module {
                         BlockPos predictedCrystalPos = new BlockPos(entity.posX, entity.posY - 1, entity.posZ);
                         float selfHealth = mc.player.getHealth() + mc.player.getAbsorptionAmount();
                         float selfDamage = DamageUtil.calculatePosDamage(predictedCrystalPos, mc.player);
-                        float targetDamage = DamageUtil.calculatePosDamage(predictedCrystalPos, targetPlayer);
                         float targetHealth = targetPlayer.getHealth() + targetPlayer.getAbsorptionAmount();
                         float minimumDamageValue = minimumDamage.getValue();
                         int slot = InventoryUtil.getItemHotbar(Items.END_CRYSTAL);
@@ -270,7 +260,7 @@ public class AutoCrystal extends Module {
                             if (selfDamage > maximumSelfDamage.getValue())
                                 return;
 
-                            if (targetDamage < minimumDamageValue)
+                            if (minimumDamageValue > DamageUtil.calculatePosDamage(predictedCrystalPos, targetPlayer))
                                 return;
 
                             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL))
@@ -318,10 +308,36 @@ public class AutoCrystal extends Module {
                         return;
                     }
                     RenderUtil.drawBoxESP(entry.getKey(), new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, entry.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, entry.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), entry.getValue(), true);
+                    if (damageText.getValue()) {
+                        float targetDamage = DamageUtil.calculatePosDamage(finalPos, targetPlayer);
+                        RenderUtil.drawText(entry.getKey(), targetDamage + "", new Color(255, 255, 255, entry.getValue()).getRGB());
+                    }
                 }
-            } else if(finalPos != null){
+            } else if (finalPos != null) {
                 RenderUtil.drawBoxESP(finalPos, new Color(boxRed.getValue() / 255f, boxGreen.getValue() / 255f, boxBlue.getValue() / 255f, boxAlpha.getValue() / 255f), true, new Color(outlineRed.getValue() / 255f, outlineGreen.getValue() / 255f, outlineBlue.getValue() / 255f, outlineAlpha.getValue() / 255f), lineWidth.getValue(), outline.getValue(), box.getValue(), (int) ((int) boxAlpha.getValue() / 255f), true);
+                if (damageText.getValue()) {
+                    float targetDamage = DamageUtil.calculatePosDamage(finalPos, targetPlayer);
+                    RenderUtil.drawText(finalPos, targetDamage + "", new Color(255, 255, 255, 255).getRGB());
+                }
             }
+        }
+    }
+
+    static class bestPlacePos {
+        private final BlockPos blockPos;
+        private final float targetDamage;
+
+        public bestPlacePos(BlockPos blockPos, float targetDamage) {
+            this.blockPos = blockPos;
+            this.targetDamage = targetDamage;
+        }
+
+        public float getTargetDamage() {
+            return targetDamage;
+        }
+
+        public BlockPos getBlockPos() {
+            return blockPos;
         }
     }
 }
