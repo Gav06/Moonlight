@@ -24,7 +24,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Module.Info(name = "KillAura", desc = "Automatically attacks entities.", category = Module.Category.Combat)
+@Module.Info(
+        name = "KillAura",
+        desc = "Automatically attacks entities (doesnt have rotations yet).",
+        category = Module.Category.Combat
+)
 public class KillAura extends Module {
 
     public FloatSetting range = new FloatSetting("Range", 4, 1, 6);
@@ -49,7 +53,6 @@ public class KillAura extends Module {
     public BoolSetting rainbow = new BoolSetting("Rainbow", true, false, () -> renderParent.getValue() && render.getValue());
     //misc
     public BoolSetting miscParent = new BoolSetting("Misc", false, true);
-    public BoolSetting rotate = new BoolSetting("Rotate", true, false, () -> miscParent.getValue());
     public BoolSetting switchToSword = new BoolSetting("SwitchToSword", true, false, () -> miscParent.getValue());
     public BoolSetting swordOnly = new BoolSetting("SwordOnly", false, false, () -> miscParent.getValue());
 

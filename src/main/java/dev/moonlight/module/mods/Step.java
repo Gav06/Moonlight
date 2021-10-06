@@ -15,7 +15,8 @@ public class Step extends Module {
     public FloatSetting stepHeight = new FloatSetting("StepHeight", 1.0f, 0.5f, 2.5f);
 
     public void onDisable() {
-        mc.player.stepHeight = 0.5f;
+        if (mc.player != null)
+            mc.player.stepHeight = 0.5f;
     }
 
     @SubscribeEvent

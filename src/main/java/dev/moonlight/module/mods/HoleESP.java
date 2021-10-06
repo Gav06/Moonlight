@@ -64,14 +64,12 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
-        if(isEnabled()) {
-            for (BlockPos pos : safePositions) {
-                renderHole(pos, new Color(rSafe.getValue(), gSafe.getValue(), bSafe.getValue()));
-            }
+        for (BlockPos pos : safePositions) {
+            renderHole(pos, new Color(rSafe.getValue(), gSafe.getValue(), bSafe.getValue()));
+        }
 
-            for (BlockPos pos : unSafePositions) {
-                renderHole(pos, new Color(rUnSafe.getValue(), gUnSafe.getValue(), bUnSafe.getValue()));
-            }
+        for (BlockPos pos : unSafePositions) {
+            renderHole(pos, new Color(rUnSafe.getValue(), gUnSafe.getValue(), bUnSafe.getValue()));
         }
     }
 
@@ -117,14 +115,12 @@ public final class HoleESP extends Module {
     @ApiCall
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
-        if(isEnabled()) {
-            if (ticksPassed >= updateDelay.getValue()) {
-                executor.submit(callable);
-                ticksPassed = 0;
-            }
-
-            ticksPassed++;
+        if (ticksPassed >= updateDelay.getValue()) {
+            executor.submit(callable);
+            ticksPassed = 0;
         }
+
+        ticksPassed++;
     }
 
     @SuppressWarnings("rawtypes")
