@@ -8,6 +8,7 @@ import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
 import dev.moonlight.ui.clickgui.settings.*;
+import dev.moonlight.util.MessageUtil;
 import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
 
@@ -228,6 +229,10 @@ public final class Window extends AbstractComponent {
                         settingPane.getComponents().clear();
                         settingPane.metaTags.remove("module");
                     }
+                }
+                if(mouseButton == 2) {
+                    module.setVisible();
+                    MessageUtil.sendMessage(module.getName() + "'s visibility in the arrayList has been set to " + module.isVisible());
                 }
             }
         }

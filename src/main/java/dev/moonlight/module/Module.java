@@ -1,8 +1,7 @@
 package dev.moonlight.module;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.events.ModuleDisableEvent;
-import dev.moonlight.events.ModuleEnableEvent;
+import dev.moonlight.events.ModuleToggleEvent;
 import dev.moonlight.misc.Bind;
 import dev.moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
@@ -26,7 +25,7 @@ public abstract class Module extends Bind {
     private final Category category;
     private final String desc;
     private boolean enabled;
-    private boolean visible;
+    private boolean visible = true;
 
     public Module() {
         if (getClass().isAnnotationPresent(Info.class)) {
@@ -57,7 +56,7 @@ public abstract class Module extends Bind {
     public void enable() {
         enabled = true;
         MinecraftForge.EVENT_BUS.register(this);
-        ModuleEnableEvent moduleEnableEvent = new ModuleEnableEvent(name);
+        ModuleToggleEvent moduleEnableEvent = new ModuleToggleEvent.Enable(this);
         MinecraftForge.EVENT_BUS.post(moduleEnableEvent);
         onEnable();
     }
@@ -65,7 +64,7 @@ public abstract class Module extends Bind {
     public void disable() {
         enabled = false;
         MinecraftForge.EVENT_BUS.unregister(this);
-        ModuleDisableEvent moduleDisableEvent = new ModuleDisableEvent(name);
+        ModuleToggleEvent moduleDisableEvent = new ModuleToggleEvent.Disable(this);
         MinecraftForge.EVENT_BUS.post(moduleDisableEvent);
         onDisable();
     }
@@ -107,6 +106,10 @@ public abstract class Module extends Bind {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public void setVisible() {
+        visible = !visible;
     }
 
     public boolean nullCheck() {

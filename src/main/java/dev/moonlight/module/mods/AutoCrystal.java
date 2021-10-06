@@ -42,60 +42,57 @@ public class AutoCrystal extends Module {
 
     //TODO: add parents
     //TODO: test on cc
-    public FloatSetting placeRange = new FloatSetting("PlaceRange", 5, 0, 6);
-    public FloatSetting breakRange = new FloatSetting("BreakRange", 5, 0, 6);
-    public FloatSetting targetRange = new FloatSetting("TargetRange", 10, 0, 15);
+    public BoolSetting delayParent = new BoolSetting("Delay", false, true);
+    public FloatSetting placeDelay = new FloatSetting("PlaceDelay", 100, 0, 500, () -> delayParent.getValue());
+    public FloatSetting breakDelay = new FloatSetting("BreakDelay", 100, 0, 500, () -> delayParent.getValue());
 
-    public FloatSetting minimumDamage = new FloatSetting("MinimumDamage", 6, 0, 12);
-    public FloatSetting maximumSelfDamage = new FloatSetting("MaximumSelfDamage", 8, 0, 12);
-    public BoolSetting antiSuicide = new BoolSetting("AntiSuicide", false, false);
+    public BoolSetting rangeParent = new BoolSetting("Range", false, true);
+    public FloatSetting placeRange = new FloatSetting("PlaceRange", 5, 0, 6, () -> rangeParent.getValue());
+    public FloatSetting breakRange = new FloatSetting("BreakRange", 5, 0, 6, () -> rangeParent.getValue());
+    public FloatSetting targetRange = new FloatSetting("TargetRange", 10, 0, 15, () -> rangeParent.getValue());
+
+    public BoolSetting damageParent = new BoolSetting("Damage", false, true);
+    public FloatSetting minimumDamage = new FloatSetting("MinimumDamage", 6, 0, 12, () -> damageParent.getValue());
+    public FloatSetting maximumSelfDamage = new FloatSetting("MaximumSelfDamage", 8, 0, 12, () -> damageParent.getValue());
+    public BoolSetting antiSuicide = new BoolSetting("AntiSuicide", false, false, () -> damageParent.getValue());
+
+    public BoolSetting renderParent = new BoolSetting("Render", false, true);
+    public BoolSetting render = new BoolSetting("Render", false, false, () -> renderParent.getValue());
+    public BoolSetting fade = new BoolSetting("Fade", false, false, () -> render.getValue() && renderParent.getValue());
+    public FloatSetting startAlpha = new FloatSetting("StartAlpha", 255, 0, 255, () -> render.getValue() && fade.getValue() && renderParent.getValue());
+    public FloatSetting endAlpha = new FloatSetting("EndAlpha", 0, 0, 255, () -> render.getValue() && fade.getValue() && renderParent.getValue());
+    public FloatSetting fadeSpeed = new FloatSetting("FadeSpeed", 20, 0, 100, () -> render.getValue() && fade.getValue() && renderParent.getValue());
+
+    public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue() && renderParent.getValue());
+    public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
+    public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
+    public FloatSetting boxBlue = new FloatSetting("BoxBlue", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
+    public FloatSetting boxAlpha = new FloatSetting("BoxAlpha", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
+
+    public BoolSetting outline = new BoolSetting("Outline", false, false, () -> render.getValue() && renderParent.getValue());
+    public FloatSetting outlineRed = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue() && renderParent.getValue());
+    public FloatSetting outlineGreen = new FloatSetting("OutlineGreen", 255, 0, 255, () -> render.getValue() && outline.getValue() && renderParent.getValue());
+    public FloatSetting outlineBlue = new FloatSetting("OutlineBlue", 255, 0, 255, () -> render.getValue() && outline.getValue() && renderParent.getValue());
+    public FloatSetting outlineAlpha = new FloatSetting("OutlineAlpha", 255, 0, 255, () -> render.getValue() && outline.getValue() && renderParent.getValue());
+    public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 5, () -> render.getValue() && outline.getValue() && renderParent.getValue());
 
     public BoolSetting packetBreak = new BoolSetting("PacketBreak", false, false);
     public BoolSetting soundPredict = new BoolSetting("SoundPredict", false, false);
     public BoolSetting placePredict = new BoolSetting("PlacePredict", false, false);
 
-    public FloatSetting placeDelay = new FloatSetting("PlaceDelay", 100, 0, 500);
-    public FloatSetting breakDelay = new FloatSetting("BreakDelay", 100, 0, 500);
-
     public BoolSetting silentSwitch = new BoolSetting("SilentSwitch", false, false);
     public BoolSetting antiWeakness = new BoolSetting("AntiWeakness", false, false, () -> silentSwitch.getValue());
 
     public BoolSetting placeSwing = new BoolSetting("PlaceSwing", false, false);
-    public ModeSetting placeSwingHand = new ModeSetting("PlaceSwingHand", PlaceSwingHand.MAINHAND, () -> placeSwing.getValue());
-
-    public enum PlaceSwingHand {MAINHAND, OFFHAND}
-
+    public ModeSetting placeSwingHand = new ModeSetting("PlaceSwingHand", PlaceSwingHand.MainHand, () -> placeSwing.getValue());
+    public enum PlaceSwingHand {MainHand, OffHand}
     public BoolSetting breakSwing = new BoolSetting("BreakSwing", false, false);
-    public ModeSetting breakSwingHand = new ModeSetting("BreakSwingHand", BreakSwingHand.MAINHAND, () -> breakSwing.getValue());
-
-    public enum BreakSwingHand {MAINHAND, OFFHAND}
-
-    public ModeSetting facePlaceMode = new ModeSetting("facePlaceMode", FacePlaceMode.Never);
-
+    public ModeSetting breakSwingHand = new ModeSetting("BreakSwingHand", BreakSwingHand.MainHand, () -> breakSwing.getValue());
+    public enum BreakSwingHand {MainHand, OffHand}
+    public ModeSetting facePlaceMode = new ModeSetting("FacePlaceMode", FacePlaceMode.Never);
     public enum FacePlaceMode {Never, Health, Bind, Always}
-
     public FloatSetting facePlaceHp = new FloatSetting("FacePlaceHp", 15, 0, 36, () -> facePlaceMode.getValueEnum().equals(FacePlaceMode.Health));
     public BindSetting facePlaceBind = new BindSetting("FacePlaceBind", Keyboard.KEY_NONE, () -> facePlaceMode.getValueEnum().equals(FacePlaceMode.Bind));
-
-    public BoolSetting render = new BoolSetting("Render", false, false);
-    public BoolSetting fade = new BoolSetting("Fade", false, false, () -> render.getValue());
-    public FloatSetting startAlpha = new FloatSetting("StartAlpha", 255, 0, 255, () -> render.getValue() && fade.getValue());
-    public FloatSetting endAlpha = new FloatSetting("EndAlpha", 0, 0, 255, () -> render.getValue() && fade.getValue());
-    public FloatSetting fadeSpeed = new FloatSetting("FadeSpeed", 20, 0, 100, () -> render.getValue() && fade.getValue());
-
-    public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue());
-    public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxBlue = new FloatSetting("BoxBlue", 255, 0, 255, () -> render.getValue() && box.getValue());
-    public FloatSetting boxAlpha = new FloatSetting("BoxAlpha", 255, 0, 255, () -> render.getValue() && box.getValue());
-
-    public BoolSetting outline = new BoolSetting("Outline", false, false, () -> render.getValue());
-    public FloatSetting outlineRed = new FloatSetting("OutlineRed", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineGreen = new FloatSetting("OutlineGreen", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineBlue = new FloatSetting("OutlineBlue", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting outlineAlpha = new FloatSetting("OutlineAlpha", 255, 0, 255, () -> render.getValue() && outline.getValue());
-    public FloatSetting lineWidth = new FloatSetting("LineWidth", 1, 0, 5, () -> render.getValue() && outline.getValue());
-
 
     EntityPlayer targetPlayer;
     BlockPos finalPos;
@@ -105,17 +102,18 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        targetPlayer = DamageUtil.getTarget(targetRange.getValue());
+        if(isEnabled()) {
+            targetPlayer = DamageUtil.getTarget(targetRange.getValue());
 
-        if (targetPlayer == null)
-            return;
+            if (targetPlayer == null)
+                return;
 
-        if (placeTimer.passedMs((long) placeDelay.getValue()))
-            doPlace();
+            if (placeTimer.passedMs((long) placeDelay.getValue()))
+                doPlace();
 
-        if (breakTimer.passedMs((long) breakDelay.getValue()))
-            doBreak();
-
+            if (breakTimer.passedMs((long) breakDelay.getValue()))
+                doBreak();
+        }
     }
 
     void doPlace() {
@@ -162,7 +160,7 @@ public class AutoCrystal extends Module {
                 possesToFade.put(finalPos, (int) startAlpha.getValue());
 
             if (placeSwing.getValue())
-                mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+                mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MainHand) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL)) {
                 mc.player.inventory.currentItem = oldSlot;
@@ -207,7 +205,7 @@ public class AutoCrystal extends Module {
                 }
 
                 if (breakSwing.getValue())
-                    mc.player.swingArm(breakSwingHand.getValueEnum().equals(BreakSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+                    mc.player.swingArm(breakSwingHand.getValueEnum().equals(BreakSwingHand.MainHand) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
                 if (silentSwitch.getValue() && antiWeakness.getValue() && (mc.player.getHeldItemMainhand().getItem() != Items.DIAMOND_SWORD) && mc.player.getActivePotionEffects().equals(Potion.getPotionById(18))) {
                     mc.player.inventory.currentItem = oldSlot;
@@ -277,7 +275,7 @@ public class AutoCrystal extends Module {
                                 possesToFade.put(predictedCrystalPos, (int) startAlpha.getValue());
 
                             if (placeSwing.getValue())
-                                mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MAINHAND) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
+                                mc.player.swingArm(placeSwingHand.getValueEnum().equals(PlaceSwingHand.MainHand) ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
 
                             if (silentSwitch.getValue() && (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL || mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL)) {
                                 mc.player.inventory.currentItem = oldSlot;

@@ -16,7 +16,7 @@ public class ArrayList extends Module {
     public void onRender(RenderGameOverlayEvent.Text event) {
         int yOffset = 2;
         for(Module module : Moonlight.INSTANCE.getModuleManager().getModuleList()) {
-            if(module.isEnabled()) {
+            if(module.isEnabled() && module.isVisible()) {
                 float y = yOffset;
                 moonlight.getFontRenderer().drawStringWithShadow(module.getName() + module.getMetaData(), 1, y, -1);
                 yOffset += moonlight.getFontRenderer().getStringHeight(module.getName()) + 2;
