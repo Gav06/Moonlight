@@ -110,12 +110,14 @@ public class AutoCrystal extends Module {
         if (targetPlayer == null)
             return;
 
-        if (placeTimer.passedMs((long) placeDelay.getValue()))
+        if (placeTimer.passedMs((long) placeDelay.getValue())) {
             doPlace();
-
-        if (breakTimer.passedMs((long) breakDelay.getValue()))
+            placeTimer.reset();
+        }
+        if (breakTimer.passedMs((long) breakDelay.getValue())) {
             doBreak();
-
+            breakTimer.reset();
+        }
     }
 
     void doPlace() {
