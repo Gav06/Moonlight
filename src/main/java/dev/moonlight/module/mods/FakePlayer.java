@@ -21,6 +21,7 @@ import java.util.Random;
 public class FakePlayer extends Module {
 
     public BoolSetting moving = new BoolSetting("Moving", false, false);
+    public BoolSetting copyInventory = new BoolSetting("CopyInventory", false, false);
     public FloatSetting delayToMove = new FloatSetting("DelayToMove", 5, 1, 20, () -> moving.getValue());
     public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", true, false);
     public FloatSetting distanceToRespawn = new FloatSetting("DistanceToRespawn", 10, 1, 30, () -> autoRespawn.getValue());
@@ -33,6 +34,8 @@ public class FakePlayer extends Module {
     public void onEnable() {
         if(nullCheck()) return;
         fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(mc.player.getUniqueID(), mc.player.getDisplayNameString()));
+        if(copyInventory.getValue())
+            fakePlayer.inventory = mc.player.inventory;
         mc.world.addEntityToWorld(fakePlayer.getEntityId(), fakePlayer);
         fakePlayer.copyLocationAndAnglesFrom(mc.player);
         fakePlayer.rotationYawHead = mc.player.rotationYawHead;

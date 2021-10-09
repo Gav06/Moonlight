@@ -1,5 +1,6 @@
 package dev.moonlight.util;
 
+import dev.moonlight.Moonlight;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -11,12 +12,11 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL32;
 
 import java.awt.*;
 import java.util.Objects;
@@ -28,10 +28,42 @@ public final class RenderUtil {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
     static ICamera camera;
+
     static {
         camera = new Frustum();
     }
+
     //ur mom
+    public static void drawText(BlockPos pos, String text, int color) {
+        GlStateManager.pushMatrix();
+        glBillboardDistanceScaled((float) pos.getX() + 0.5f, (float) pos.getY() + 0.5f, (float) pos.getZ() + 0.5f, mc.player, 1.0f);
+        GlStateManager.disableDepth();
+        GlStateManager.translate(-((double) Moonlight.INSTANCE.getFontRenderer().getStringWidth(text) / 2.0), 0.0, 0.0);
+        Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(text, 0.0f, 0.0f, color);
+        GlStateManager.popMatrix();
+    }
+
+    public static void glBillboard(float x, float y, float z) {
+        float scale = 0.02666667f;
+        GlStateManager.translate((double) x - mc.getRenderManager().viewerPosX, (double) y - mc.getRenderManager().viewerPosY, (double) z - mc.getRenderManager().viewerPosZ);
+        GlStateManager.glNormal3f(0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(-mc.player.rotationYaw, 0.0f, 1.0f, 0.0f);
+        GlStateManager.rotate(mc.player.rotationPitch, mc.gameSettings.thirdPersonView == 2 ? -1.0f : 1.0f, 0.0f, 0.0f);
+        GlStateManager.scale(-scale, -scale, scale);
+    }
+
+
+    public static void glBillboardDistanceScaled(float x, float y, float z, EntityPlayer player, float scale) {
+        RenderUtil.glBillboard(x, y, z);
+        int distance = (int) player.getDistance(x, y, z);
+        float scaleDistance = (float) distance / 2.0f / (2.0f + (2.0f - scale));
+        if (scaleDistance < 1.0f) {
+            scaleDistance = 1.0f;
+        }
+        GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
+    }
+
+
     public static void drawBoxESP(BlockPos pos, Color color, boolean secondC, Color secondColor, float lineWidth, boolean outline, boolean box, int boxAlpha, boolean air) {
         if (box) {
             RenderUtil.drawBox(pos, new Color(color.getRed(), color.getGreen(), color.getBlue(), boxAlpha));
@@ -40,6 +72,7 @@ public final class RenderUtil {
             RenderUtil.drawBlockOutline(pos, secondC ? secondColor : color, lineWidth, air);
         }
     }
+
     public static void drawBlockOutline(final BlockPos pos, final Color color, final float linewidth, final boolean air) {
         final IBlockState iblockstate = RenderUtil.mc.world.getBlockState(pos);
         if ((air || iblockstate.getMaterial() != Material.AIR) && RenderUtil.mc.world.getWorldBorder().contains(pos)) {
@@ -47,6 +80,7 @@ public final class RenderUtil {
             drawBlockOutline(iblockstate.getSelectedBoundingBox(RenderUtil.mc.world, pos).grow(0.0020000000949949026).offset(-interp.x, -interp.y, -interp.z), color, linewidth);
         }
     }
+
     public static void drawBlockOutline(final AxisAlignedBB bb, final Color color, final float linewidth) {
         final float red = color.getRed() / 255.0f;
         final float green = color.getGreen() / 255.0f;
@@ -112,6 +146,7 @@ public final class RenderUtil {
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
+
     public static void drawBox(final BlockPos pos, final Color color) {
         final AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - RenderUtil.mc.getRenderManager().viewerPosX, pos.getY() - RenderUtil.mc.getRenderManager().viewerPosY, pos.getZ() - RenderUtil.mc.getRenderManager().viewerPosZ, pos.getX() + 1 - RenderUtil.mc.getRenderManager().viewerPosX, pos.getY() + 1 - RenderUtil.mc.getRenderManager().viewerPosY, pos.getZ() + 1 - RenderUtil.mc.getRenderManager().viewerPosZ);
         camera.setPosition(Objects.requireNonNull(RenderUtil.mc.getRenderViewEntity()).posX, RenderUtil.mc.getRenderViewEntity().posY, RenderUtil.mc.getRenderViewEntity().posZ);
@@ -133,6 +168,7 @@ public final class RenderUtil {
             GlStateManager.popMatrix();
         }
     }
+
     //i really dont care this is just so good to have man stfu skidded from client 2.0.0 nigger
     public static void drawRoundedRect(double x, double y, double width, double height, final double radius, final Color color) {
         GL11.glPushAttrib(0);
@@ -186,7 +222,8 @@ public final class RenderUtil {
         buffer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
         buffer.pos(x1, y1, 0.0).endVertex();
         buffer.pos(x2, y1, 0.0).endVertex();
-        buffer.pos(x2, y2, 0.0).endVertex();;
+        buffer.pos(x2, y2, 0.0).endVertex();
+        ;
         buffer.pos(x1, y2, 0.0).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
@@ -207,7 +244,7 @@ public final class RenderUtil {
     }
 
     public static float[] hexToRGBA(int color) {
-        return new float[] {
+        return new float[]{
                 (color >> 16 & 255) / 255.0F,
                 (color >> 8 & 255) / 255.0F,
                 (color & 255) / 255.0F,

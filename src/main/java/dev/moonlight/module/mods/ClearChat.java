@@ -9,7 +9,7 @@ import dev.moonlight.module.Module;
 )
 public class ClearChat extends Module {
 
-    /**
+    /*
      * See MixinGuiNewChat -> drawChatRedirect
      */
 }

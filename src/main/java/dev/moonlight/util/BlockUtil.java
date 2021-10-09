@@ -67,7 +67,7 @@ public class BlockUtil {
         return posList;
     }
 
-    public static List<BlockPos> getSurroundingPositions(int distance, EntityPlayer player, boolean applyMotion) {
+    public static List<BlockPos> getSurroundingPositions(int distance, EntityPlayer player, boolean applyMotion, boolean noAir) {
         final List<BlockPos> positions = new ArrayList<>();
 
         final BlockPos center = new BlockPos(player.posX, player.posY, player.posZ);
@@ -79,7 +79,12 @@ public class BlockUtil {
         for (int x = -distance; x < distance; x++) {
             for (int y = -distance; y < distance; y++) {
                 for (int z = -distance; z < distance; z++) {
-                    positions.add(new BlockPos(x, y, z).add(center.getX(), center.getY(), center.getZ()));
+
+                    if(noAir && mc.world.getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.AIR))
+                        continue;
+
+                        positions.add(new BlockPos(x, y, z).add(center.getX(), center.getY(), center.getZ()));
+
                 }
             }
         }
