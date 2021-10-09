@@ -57,16 +57,14 @@ public abstract class Module extends Bind {
     public void enable() {
         enabled = true;
         MinecraftForge.EVENT_BUS.register(this);
-        ModuleEnableEvent moduleEnableEvent = new ModuleEnableEvent(name);
-        MinecraftForge.EVENT_BUS.post(moduleEnableEvent);
+        MinecraftForge.EVENT_BUS.post(new ModuleEnableEvent(name));
         onEnable();
     }
 
     public void disable() {
         enabled = false;
         MinecraftForge.EVENT_BUS.unregister(this);
-        ModuleDisableEvent moduleDisableEvent = new ModuleDisableEvent(name);
-        MinecraftForge.EVENT_BUS.post(moduleDisableEvent);
+        MinecraftForge.EVENT_BUS.post(new ModuleDisableEvent(name));
         onDisable();
     }
 
@@ -136,17 +134,17 @@ public abstract class Module extends Bind {
 
         boolean enabled() default false;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Module module = (Module) o;
-        return enabled == module.enabled && name.equals(module.name) && category == module.category && desc.equals(module.desc);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, category, desc, enabled, getBind());
-    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Module module = (Module) o;
+//        return enabled == module.enabled && name.equals(module.name) && category == module.category && desc.equals(module.desc);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name, category, desc, enabled, getBind());
+//    }
 }
