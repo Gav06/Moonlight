@@ -56,14 +56,14 @@ public abstract class Module extends Bind {
     public void enable() {
         enabled = true;
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.post(new ModuleTogglEvent.Enable(this));
+        MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.Enable(this));
         onEnable();
     }
 
     public void disable() {
         enabled = false;
         MinecraftForge.EVENT_BUS.unregister(this);
-        MinecraftForge.EVENT_BUS.post(new ModuleTogglEvent.Enable(this));
+        MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.Enable(this));
         onDisable();
     }
 
