@@ -3,6 +3,7 @@ package dev.moonlight.ui.hud;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.misc.FPSHelper;
+import dev.moonlight.module.mods.GUI;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,5 +21,6 @@ public final class HUD {
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
         moonlight.getFontRenderer().drawStringWithShadow(String.format("FPS: %.3f", FPSHelper.INSTANCE.getFpsAverage()), 2f, 2f, -1);
+        moonlight.getFontRenderer().drawStringWithShadow(Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).watermark.getValue(), 2f, 8f, -1);
     }
 }

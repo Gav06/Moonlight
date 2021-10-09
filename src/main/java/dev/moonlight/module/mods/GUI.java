@@ -4,15 +4,17 @@ import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.settings.impl.ModeSetting;
+import dev.moonlight.settings.impl.StringSetting;
 import org.lwjgl.input.Keyboard;
 
 @Module.Info(
         name = "GUI",
         desc = "Opens the GUI.",
         category = Module.Category.Client,
-        bind = Keyboard.KEY_GRAVE
+        bind = Keyboard.KEY_U
 )
 public final class GUI extends Module {
+    public StringSetting watermark = new StringSetting("Watermark", "Moonlight");
     public BoolSetting othersParent = new BoolSetting("Others", false, true);
     public final ModeSetting backgroundMode = new ModeSetting("BackgroundMode", BackgroundMode.None, () -> othersParent.getValue());
 

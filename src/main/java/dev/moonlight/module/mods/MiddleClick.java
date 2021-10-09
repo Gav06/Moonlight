@@ -22,7 +22,7 @@ public class MiddleClick extends Module {
 
     public BoolSetting silent = new BoolSetting("Silent", true, false);
     public BoolSetting xp = new BoolSetting("XP", true, false);
-    public BoolSetting footXP = new BoolSetting("FootXP", true, false, () -> xp.getValue());
+    public BoolSetting footXP = new BoolSetting("FootXP", false, false, () -> xp.getValue());
     public BoolSetting verticalXP = new BoolSetting("VerticalXP", false, false, () -> xp.getValue());
     public BoolSetting ePearl = new BoolSetting("EPearl", false, false);
     public BoolSetting packetGap = new BoolSetting("PacketGap", true, false, () -> silent.getValue());

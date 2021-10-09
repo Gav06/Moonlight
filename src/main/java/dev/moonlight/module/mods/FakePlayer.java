@@ -11,31 +11,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.Random;
-
 @Module.Info(
         name = "FakePlayer",
         desc = "Spawns a fake entity for testing configs.",
         category = Module.Category.World
 )
 public class FakePlayer extends Module {
-
-    public BoolSetting moving = new BoolSetting("Moving", false, false);
     public BoolSetting copyInventory = new BoolSetting("CopyInventory", false, false);
-    public FloatSetting delayToMove = new FloatSetting("DelayToMove", 5, 1, 20, () -> moving.getValue());
-    public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", true, false);
+    public BoolSetting autoRespawn = new BoolSetting("AutoRespawn", false, false);
     public FloatSetting distanceToRespawn = new FloatSetting("DistanceToRespawn", 10, 1, 30, () -> autoRespawn.getValue());
 
     public EntityOtherPlayerMP fakePlayer;
-
-    public Random random = new Random();
 
     @Override
     public void onEnable() {
         if(nullCheck()) return;
         fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(mc.player.getUniqueID(), mc.player.getDisplayNameString()));
-        if(copyInventory.getValue())
-            fakePlayer.inventory = mc.player.inventory;
         mc.world.addEntityToWorld(fakePlayer.getEntityId(), fakePlayer);
         fakePlayer.copyLocationAndAnglesFrom(mc.player);
         fakePlayer.rotationYawHead = mc.player.rotationYawHead;
@@ -43,25 +34,24 @@ public class FakePlayer extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        if(moving.getValue()) {
-            TickTimer timer = new TickTimer();
-            if(timer.hasTicksPassed((long) distanceToRespawn.getValue())) {
-                fakePlayer.posX += random.nextDouble();
-                if(!mc.world.getBlockState(new BlockPos(fakePlayer.posX, fakePlayer.posY, fakePlayer.posZ)).getBlock().equals(Blocks.AIR))
-                    fakePlayer.posY += 1D;
-                fakePlayer.posZ += random.nextDouble();
-                timer.reset();
-            }
-        }
         if(autoRespawn.getValue() && fakePlayer != null) {
+            if(copyInventory.getValue())
+                fakePlayer.inventory = mc.player.inventory;
             if(fakePlayer.getDistance(mc.player) >= distanceToRespawn.getValue()) {
-                fakePlayer.attemptTeleport(mc.player.posX, mc.player.posY, mc.player.posZ);
+                try {
+                    mc.world.removeEntity(fakePlayer);
+                    fakePlayer.copyLocationAndAnglesFrom(mc.player);
+                    fakePlayer.rotationYawHead = mc.player.rotationYawHead;
+                    mc.world.addEntityToWorld(fakePlayer.getEntityId(), fakePlayer);
+                }catch (Exception io) {
+                    io.printStackTrace();
+                }
             }
         }
     }
 
     @Override
     public void onDisable() {
-        if(mc.world == null && fakePlayer != null) mc.world.removeEntity(fakePlayer);
+        if(mc.world != null && fakePlayer != null) mc.world.removeEntity(fakePlayer);
     }
 }

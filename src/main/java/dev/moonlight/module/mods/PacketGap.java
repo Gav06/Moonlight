@@ -1,5 +1,6 @@
 package dev.moonlight.module.mods;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BindSetting;
@@ -11,6 +12,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.security.Key;
+
 @Module.Info(
         name = "PacketGap",
         desc = "Allows you to eat gaps when you are holding a bind.",
@@ -19,6 +22,11 @@ import org.lwjgl.input.Keyboard;
 public class PacketGap extends Module {
 
     public BindSetting buttonToHold = new BindSetting("ButtonToHold", Keyboard.KEY_G);
+
+    @Override
+    public String getMetaData() {
+        return "[" + ChatFormatting.GRAY + Keyboard.getKeyName(buttonToHold.getBind()) + ChatFormatting.RESET + "]";
+    }
 
     int originalSlot = -1;
 

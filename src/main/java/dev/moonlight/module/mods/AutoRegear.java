@@ -3,8 +3,11 @@ package dev.moonlight.module.mods;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
+import dev.moonlight.util.InventoryUtil;
 import dev.moonlight.util.MessageUtil;
 import net.minecraft.client.gui.inventory.GuiShulkerBox;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,17 +35,11 @@ public class AutoRegear extends Module {
             MessageUtil.sendMessage(slots.values().toString());
         }
         if(mc.currentScreen instanceof GuiShulkerBox) {
-            for(int i = 27; i > 0; --i) {
-                if(slots.containsKey(i) && mc.player.inventoryContainer.getSlot(i).getStack().getItem() == slots.get(i)) {
-//                    moveItemToSlot(i, mc.player.inventory.);
+            for(int i = 36; i > 0; --i) {
+                if(slots.containsKey(i) && mc.player.inventoryContainer.getSlot(i).getStack().getItem() == slots.get(i) && mc.player.inventoryContainer.getSlot(i).getStack().getItem() != Items.AIR) {
+                    InventoryUtil.moveItemToSlot(i, mc.player.inventoryContainer.getSlot(i).getSlotIndex());
                 }
             }
         }
-    }
-
-    public void moveItemToSlot(Integer startSlot, Integer endSlot) {
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, endSlot, 0, ClickType.PICKUP, mc.player);
-        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
     }
 }

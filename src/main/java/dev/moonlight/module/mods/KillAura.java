@@ -71,17 +71,15 @@ public class KillAura extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        if (isEnabled()) {
-            int slot = InventoryUtil.getItemSlot(Items.DIAMOND_SWORD);
-            for (Entity e : mc.world.loadedEntityList) {
-                if (shouldAttack(e)) {
-                    if (slot != -1 && switchToSword.getValue())
-                        InventoryUtil.switchToSlot(slot);
-                    if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordOnly.getValue()) {
-                        attack(e);
-                    } else if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !swordOnly.getValue()) {
-                        attack(e);
-                    }
+        int slot = InventoryUtil.getItemSlot(Items.DIAMOND_SWORD);
+        for (Entity e : mc.world.loadedEntityList) {
+            if (shouldAttack(e)) {
+                if (slot != -1 && switchToSword.getValue())
+                    InventoryUtil.switchToSlot(slot);
+                if (mc.player.getHeldItemMainhand().getItem() instanceof ItemSword && swordOnly.getValue()) {
+                    attack(e);
+                } else if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemSword) && !swordOnly.getValue()) {
+                    attack(e);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package dev.moonlight.module.mods;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.ModeSetting;
@@ -17,6 +18,11 @@ public class Sprint extends Module {
     public enum Mode {
         Legit,
         Rage
+    }
+
+    @Override
+    public String getMetaData() {
+        return "[" + ChatFormatting.GRAY + mode.getValueEnum() + ChatFormatting.RESET + "]";
     }
 
     @SubscribeEvent

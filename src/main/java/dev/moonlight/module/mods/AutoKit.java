@@ -21,8 +21,10 @@ public class AutoKit extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
+        if(nullCheck()) return;
         if(mc.player.isEntityAlive() && mc.player.inventory.isEmpty() && !hasUsedKit || !mc.player.isDead && mc.player.inventory.isEmpty() && !hasUsedKit) {
             mc.player.sendChatMessage("/kit autoKit");
+            MessageUtil.sendMessage("Used autoKit.");
             hasUsedKit = true;
         }
         if(mc.player.isDead || mc.player.getHealth() <= 0 || !mc.player.isEntityAlive()) {

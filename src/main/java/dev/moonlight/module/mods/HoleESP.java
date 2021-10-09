@@ -2,6 +2,7 @@ package dev.moonlight.module.mods;
 
 import dev.moonlight.events.PlayerUpdateEvent;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.settings.impl.ModeSetting;
 import dev.moonlight.util.BlockUtil;
 import dev.moonlight.util.MathUtil;
 import dev.moonlight.util.RenderUtil;
@@ -38,10 +39,12 @@ import java.util.concurrent.Executors;
 public final class HoleESP extends Module {
 
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
-    private final FloatSetting updateDelay = new FloatSetting("Update Delay", 2f, 1f, 20f);
+    private final FloatSetting updateDelay = new FloatSetting("UpdateDelay", 2f, 1f, 20f);
     //render
+    private final ModeSetting renderMode = new ModeSetting("RenderMode", RenderMode.Flat);
+    enum RenderMode {Flat, Box, Outline, Both, None}
     private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
-    private final BoolSetting distanceFade = new BoolSetting("Distance Fade", false, false);
+    private final BoolSetting distanceFade = new BoolSetting("DistanceFade", false, false);
     private final BoolSetting self = new BoolSetting("Self", false, false);
     public BoolSetting safeColorParent = new BoolSetting("SafeColor", false, true);
     public final FloatSetting rSafe = new FloatSetting("RSafe", 255, 0, 255, () -> safeColorParent.getValue());
@@ -65,11 +68,11 @@ public final class HoleESP extends Module {
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {
         for (BlockPos pos : safePositions) {
-            renderHole(pos, new Color(rSafe.getValue(), gSafe.getValue(), bSafe.getValue()));
+            renderHole(pos, new Color(rSafe.getValue() / 255f, gSafe.getValue() / 255f, bSafe.getValue() / 255f));
         }
 
         for (BlockPos pos : unSafePositions) {
-            renderHole(pos, new Color(rUnSafe.getValue(), gUnSafe.getValue(), bUnSafe.getValue()));
+            renderHole(pos, new Color(rUnSafe.getValue() / 255f, gUnSafe.getValue() / 255f, bUnSafe.getValue() / 255f));
         }
     }
 
@@ -93,13 +96,19 @@ public final class HoleESP extends Module {
         final Color bottomColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), bottomAlpha);
 
         GlStateManager.color(bottomColor.getRed() / 255.0f, bottomColor.getGreen() / 255.0f, bottomColor.getBlue() / 255.0f, bottomColor.getAlpha() / 255.0f);
-        RenderUtil.quad3d(
-                GL11.GL_LINE_LOOP,
-                pos.getX(), pos.getY(), pos.getZ(),
-                pos.getX() + 1, pos.getY(), pos.getZ(),
-                pos.getX() + 1, pos.getY(), pos.getZ() + 1,
-                pos.getX(), pos.getY(), pos.getZ() + 1
-        );
+        if(renderMode.getValueEnum().equals(RenderMode.Flat)) {
+            RenderUtil.quad3d(
+                    GL11.GL_LINE_LOOP,
+                    pos.getX(), pos.getY(), pos.getZ(),
+                    pos.getX() + 1, pos.getY(), pos.getZ(),
+                    pos.getX() + 1, pos.getY(), pos.getZ() + 1,
+                    pos.getX(), pos.getY(), pos.getZ() + 1
+            );
+        }else if(renderMode.getValueEnum().equals(RenderMode.Both) || renderMode.getValueEnum().equals(RenderMode.Box) || renderMode.getValueEnum().equals(RenderMode.Outline)){
+            boolean outline = (renderMode.getValueEnum().equals(RenderMode.Outline) || renderMode.getValueEnum().equals(RenderMode.Both));
+            boolean fill = (renderMode.getValueEnum().equals(RenderMode.Box) || renderMode.getValueEnum().equals(RenderMode.Both));
+            RenderUtil.drawBoxESP(pos, color, false, color, 1f, outline, fill, bottomAlpha, false);
+        }
         if (gradient.getValue()) {
             final AxisAlignedBB bb = new AxisAlignedBB(pos);
             if (!mc.player.getEntityBoundingBox().intersects(bb) || self.getValue())

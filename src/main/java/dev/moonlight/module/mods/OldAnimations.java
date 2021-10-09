@@ -9,7 +9,7 @@ import dev.moonlight.module.Module;
 )
 public final class OldAnimations extends Module {
 
-    /**
+    /*
      * See MixinItemRenderer -> updateEquippedItem$ModifyVariable$STORE$F4
      */
 }
