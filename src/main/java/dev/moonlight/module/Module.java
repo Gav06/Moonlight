@@ -63,7 +63,7 @@ public abstract class Module extends Bind {
     public void disable() {
         enabled = false;
         MinecraftForge.EVENT_BUS.unregister(this);
-        MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.Enable(this));
+        MinecraftForge.EVENT_BUS.post(new ModuleToggleEvent.Disable(this));
         onDisable();
     }
 
@@ -137,17 +137,4 @@ public abstract class Module extends Bind {
 
         boolean enabled() default false;
     }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Module module = (Module) o;
-//        return enabled == module.enabled && name.equals(module.name) && category == module.category && desc.equals(module.desc);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(name, category, desc, enabled, getBind());
-//    }
 }
