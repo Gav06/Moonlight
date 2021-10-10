@@ -2,7 +2,6 @@ package dev.moonlight.module.hudMods;
 
 import dev.moonlight.module.HUDModule;
 import dev.moonlight.module.Module;
-import dev.moonlight.ui.clickgui.HUDComponent;
 import dev.moonlight.ui.clickgui.hud.ArrayListComponent;
 
 @Module.Info(
