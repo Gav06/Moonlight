@@ -4,9 +4,9 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.FPSHelper;
 import dev.moonlight.module.ModuleManager;
-import dev.moonlight.module.hudMods.HUD;
-import dev.moonlight.module.mods.GUI;
-import dev.moonlight.ui.clickgui.HUDComponent;
+import dev.moonlight.module.mods.client.HUD;
+import dev.moonlight.module.mods.client.GUI;
+import dev.moonlight.ui.clickgui.api.HUDComponent;
 
 import java.awt.*;
 
@@ -28,7 +28,7 @@ public class FPSComponent extends HUDComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
-        String fpsThing = ChatFormatting.GRAY + "FPS:" + ChatFormatting.RESET + " %.3f";
+        String fpsThing = ChatFormatting.GRAY + "FPS:" + ChatFormatting.RESET + "%.3f";
         String fps = String.format(fpsThing, FPSHelper.INSTANCE.getFpsAverage());
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
         this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(fps);

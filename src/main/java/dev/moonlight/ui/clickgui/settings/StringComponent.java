@@ -1,7 +1,7 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.settings.impl.StringSetting;
-import dev.moonlight.ui.clickgui.SettingComponent;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;

@@ -1,9 +1,9 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.GUI;
+import dev.moonlight.module.mods.client.GUI;
 import dev.moonlight.settings.impl.FloatSetting;
-import dev.moonlight.ui.clickgui.SettingComponent;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
 

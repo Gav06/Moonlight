@@ -1,7 +1,7 @@
 package dev.moonlight.mixin.mixins;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.OldAnimations;
+import dev.moonlight.module.mods.render.OldAnimations;
 import net.minecraft.client.renderer.ItemRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,8 +1,7 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.settings.impl.ColorSetting;
-import dev.moonlight.ui.clickgui.SettingComponent;
-import net.minecraft.client.Minecraft;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;

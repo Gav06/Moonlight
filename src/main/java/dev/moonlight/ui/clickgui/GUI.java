@@ -35,7 +35,7 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.GUI.BackgroundMode.Darken))
+        if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.client.GUI.BackgroundMode.Darken))
             drawDefaultBackground();
 
         for (IComponent component : components) {
@@ -47,7 +47,7 @@ public final class GUI extends GuiScreen {
 
     @Override
     public void initGui() {
-        if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.GUI.BackgroundMode.Blur)) {
+        if (OpenGlHelper.shadersSupported && mc.getRenderViewEntity() instanceof EntityPlayer && moonlight.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).backgroundMode.getValueEnum().equals(dev.moonlight.module.mods.client.GUI.BackgroundMode.Blur)) {
             if (mc.entityRenderer.getShaderGroup() != null) {
                 mc.entityRenderer.getShaderGroup().deleteShaderGroup();
             }
@@ -82,7 +82,7 @@ public final class GUI extends GuiScreen {
     @ApiCall
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).getBind()) {
+        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).getBind()) {
             mc.displayGuiScreen(null);
             if (mc.currentScreen == null) {
                 mc.setIngameFocus();

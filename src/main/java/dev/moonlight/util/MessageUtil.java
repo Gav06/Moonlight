@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 
 public class MessageUtil {
-    public static final String messagePrefix = ChatFormatting.GRAY + "<" + Moonlight.MOD_NAME + "> " + ChatFormatting.RESET;
+    public static final String messagePrefix = ChatFormatting.GRAY + "<" + Moonlight.DISPLAY_MOD_NAME + ChatFormatting.GRAY + "> " + ChatFormatting.RESET;
     public static final String errorPrefix = ChatFormatting.DARK_RED + "<" + Moonlight.MOD_NAME + "> " + ChatFormatting.RESET;
 
     public static void sendRawMessage(String message) {

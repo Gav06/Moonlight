@@ -1,7 +1,6 @@
 package dev.moonlight.module;
 
-import dev.moonlight.module.Module;
-import dev.moonlight.ui.clickgui.HUDComponent;
+import dev.moonlight.ui.clickgui.api.HUDComponent;
 
 public class HUDModule extends Module {
 

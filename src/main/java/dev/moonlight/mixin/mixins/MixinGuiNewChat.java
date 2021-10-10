@@ -1,7 +1,7 @@
 package dev.moonlight.mixin.mixins;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.ClearChat;
+import dev.moonlight.module.mods.render.ClearChat;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiNewChat;
 import org.spongepowered.asm.mixin.Mixin;

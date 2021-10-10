@@ -2,13 +2,10 @@ package dev.moonlight.ui.clickgui.settings;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.GUI;
 import dev.moonlight.settings.impl.BoolSetting;
-import dev.moonlight.ui.clickgui.SettingComponent;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.util.RenderUtil;
 import net.minecraft.client.gui.Gui;
-
-import java.awt.*;
 
 public final class BoolComponent extends SettingComponent {
 

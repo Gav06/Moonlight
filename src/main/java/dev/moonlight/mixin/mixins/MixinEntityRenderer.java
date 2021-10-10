@@ -1,7 +1,7 @@
 package dev.moonlight.mixin.mixins;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.Fullbright;
+import dev.moonlight.module.mods.render.Fullbright;
 import net.minecraft.client.renderer.EntityRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

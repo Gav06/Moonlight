@@ -1,8 +1,7 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.settings.impl.ModeSetting;
-import dev.moonlight.ui.clickgui.SettingComponent;
-import dev.moonlight.ui.clickgui.api.Rect;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import net.minecraft.client.gui.Gui;
 
 public final class ModeComponent extends SettingComponent {

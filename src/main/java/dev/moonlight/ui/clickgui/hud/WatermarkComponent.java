@@ -2,10 +2,10 @@ package dev.moonlight.ui.clickgui.hud;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.module.ModuleManager;
-import dev.moonlight.module.hudMods.HUD;
-import dev.moonlight.module.hudMods.Watermark;
-import dev.moonlight.module.mods.GUI;
-import dev.moonlight.ui.clickgui.HUDComponent;
+import dev.moonlight.module.mods.client.HUD;
+import dev.moonlight.module.mods.hud.Watermark;
+import dev.moonlight.module.mods.client.GUI;
+import dev.moonlight.ui.clickgui.api.HUDComponent;
 
 import java.awt.*;
 

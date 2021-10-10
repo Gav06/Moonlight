@@ -7,6 +7,7 @@ import dev.moonlight.settings.impl.*;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.ContentPane;
 import dev.moonlight.ui.clickgui.api.DragComponent;
+import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.ui.clickgui.settings.*;
 import dev.moonlight.util.MessageUtil;
 import dev.moonlight.util.RenderUtil;
@@ -80,18 +81,18 @@ public final class Window extends AbstractComponent {
         header.draw(mouseX, mouseY, partialTicks);
         this.x = header.x;
         this.y = header.y + header.height;
-        int lbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgr.getValue();
-        int lbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgg.getValue();
-        int lbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbgb.getValue();
-        int lbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).lbga.getValue();
-        int rbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgr.getValue();
-        int rbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgg.getValue();
-        int rbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbgb.getValue();
-        int rbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).rbga.getValue();
-        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
-        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
-        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
+        int lbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).lbgr.getValue();
+        int lbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).lbgg.getValue();
+        int lbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).lbgb.getValue();
+        int lbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).lbga.getValue();
+        int rbgr = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).rbgr.getValue();
+        int rbgg = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).rbgg.getValue();
+        int rbgb = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).rbgb.getValue();
+        int rbga = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).rbga.getValue();
+        int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).r.getValue();
+        int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).g.getValue();
+        int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).b.getValue();
+        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).a.getValue();
 
         moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
 
@@ -129,10 +130,10 @@ public final class Window extends AbstractComponent {
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
             super.draw(mouseX, mouseY, partialTicks);
-            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
-            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
-            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
-            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
+            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).r.getValue();
+            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).g.getValue();
+            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).b.getValue();
+            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).a.getValue();
             Gui.drawRect(x, y, x + width, y + height, new Color(r, g, b, a).getRGB());
         }
     }
@@ -244,10 +245,10 @@ public final class Window extends AbstractComponent {
 
         @Override
         public void draw(int mouseX, int mouseY, float partialTicks) {
-            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).r.getValue();
-            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).g.getValue();
-            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).b.getValue();
-            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).a.getValue();
+            int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).r.getValue();
+            int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).g.getValue();
+            int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).b.getValue();
+            int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).a.getValue();
             Moonlight moonlight = Moonlight.INSTANCE;
             if (isInside(mouseX, mouseY)) {
                 Gui.drawRect(x, y, x + width, y + height, 0x50ffffff);
@@ -264,7 +265,7 @@ public final class Window extends AbstractComponent {
                 color = -1;
             moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
             if (isInside(mouseX, mouseY)) {
-                if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.GUI.class).descriptions.getValue()) {
+                if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).descriptions.getValue()) {
                     Gui.drawRect(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 3 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), 0x90000000);
                     moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
                     RenderUtil.outline2d(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 2 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), new Color(r, g, b, a).getRGB());
