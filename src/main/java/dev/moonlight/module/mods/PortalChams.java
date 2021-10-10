@@ -83,12 +83,6 @@ public class PortalChams extends Module {
             BufferBuilder bufferbuilder = tessellator.getBuffer();
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
 
-            for(Entity e : mc.world.loadedEntityList) {
-                if(e.equals(entity)) {
-
-                }
-            }
-
             tessellator.draw();
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5888);

@@ -1,7 +1,7 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.ModeSetting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

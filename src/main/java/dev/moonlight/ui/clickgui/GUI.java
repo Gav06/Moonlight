@@ -2,6 +2,8 @@ package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.module.HUDModule;
+import dev.moonlight.module.Module;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,6 +26,10 @@ public final class GUI extends GuiScreen {
 
         // initialize components here
         components.add(new Window(this, 150, 150, 450, 300));
+        for(Module module : moonlight.getModuleManager().getCategoryModules(Module.Category.HUD)) {
+            final HUDModule hudModule = (HUDModule) module;
+            components.add(hudModule.getComponent());
+        }
     }
 
     @ApiCall

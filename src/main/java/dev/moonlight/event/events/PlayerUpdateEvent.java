@@ -1,4 +1,4 @@
-package dev.moonlight.events;
+package dev.moonlight.event.events;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 

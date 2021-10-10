@@ -1,14 +1,12 @@
 package dev.moonlight.module.mods;
 
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.util.InventoryUtil;
 import dev.moonlight.util.MessageUtil;
 import net.minecraft.client.gui.inventory.GuiShulkerBox;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

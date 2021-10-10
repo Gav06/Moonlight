@@ -11,7 +11,7 @@ import java.awt.datatransfer.DataFlavor;
 
 //somewhat phobos i had to skid a lot of the methods for the actual string manipulation stuff
 public class StringComponent extends SettingComponent {
-    public StringSetting setting;
+    private final StringSetting setting;
 
     CurrentString currentString = new CurrentString("");
     boolean isTyping = false;

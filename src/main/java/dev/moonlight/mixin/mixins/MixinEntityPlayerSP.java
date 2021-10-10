@@ -1,6 +1,6 @@
 package dev.moonlight.mixin.mixins;
 
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;

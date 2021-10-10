@@ -1,14 +1,11 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.authlib.GameProfile;
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
-import dev.moonlight.util.TickTimer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Module.Info(

@@ -1,7 +1,7 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BindSetting;
 import dev.moonlight.util.InventoryUtil;
@@ -11,8 +11,6 @@ import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
-
-import java.security.Key;
 
 @Module.Info(
         name = "PacketGap",

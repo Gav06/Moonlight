@@ -1,6 +1,6 @@
 package dev.moonlight.module.mods;
 
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.util.MessageUtil;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -1,9 +1,9 @@
 package dev.moonlight.module.mods;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.moonlight.events.CrystalAttackEvent;
-import dev.moonlight.events.PacketEvent;
-import dev.moonlight.events.PlayerUpdateEvent;
+import dev.moonlight.event.events.CrystalAttackEvent;
+import dev.moonlight.event.events.PacketEvent;
+import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.mixin.mixins.ICPacketUseEntityMixin;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BindSetting;

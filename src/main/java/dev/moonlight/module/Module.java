@@ -1,7 +1,7 @@
 package dev.moonlight.module;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.events.ModuleToggleEvent;
+import dev.moonlight.event.events.ModuleToggleEvent;
 import dev.moonlight.misc.Bind;
 import dev.moonlight.settings.Setting;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public abstract class Module extends Bind {
 
