@@ -1,6 +1,7 @@
 package dev.moonlight.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
@@ -43,6 +44,13 @@ public class InventoryUtil {
             return;
         }
         mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
+        mc.playerController.updateController();
+    }
+
+    public static void moveItemToSlot(int startSlot, int endSlot) {
+        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
+        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, endSlot, 0, ClickType.PICKUP, mc.player);
+        mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.updateController();
     }
 }

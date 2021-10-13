@@ -5,11 +5,9 @@
   "required": true,
   "package": "dev.moonlight.mixin.mixins",
   "mixins": [
+    "ICPacketUseEntityMixin",
     "MixinEntityPlayerSP",
-    "MixinEntityRenderer",
-    "MixinGuiNewChat",
     "MixinItemRenderer",
-    "MixinNetworkManager",
-    "MixinRenderLivingBase"
+    "MixinNetworkManager"
   ]
 }

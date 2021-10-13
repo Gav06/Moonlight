@@ -2,7 +2,6 @@ package dev.moonlight.module;
 
 import dev.moonlight.misc.ClassFinder;
 import dev.moonlight.settings.Setting;
-import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -29,7 +28,7 @@ public final class ModuleManager {
 
     private void addModules() {
         try {
-            final List<Class<?>> classes = ClassFinder.from("dev.moonlight.module.mods");
+            final List<Class<?>> classes = ClassFinder.from("dev.moonlight.module");
             if (classes != null) {
                 for (Class<?> clazz : classes) {
                     if (!Modifier.isAbstract(clazz.getModifiers()) && Module.class.isAssignableFrom(clazz)) {

@@ -23,11 +23,11 @@ public class BlockUtil {
                 (mc.world.getBlockState(playerPos.west()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(playerPos.west()).getBlock() == Blocks.BEDROCK);
     }
 
-    public static boolean isPosValidForCrystal(BlockPos pos) {
+    public static boolean isPosValidForCrystal(BlockPos pos, boolean onepointthirteen) {
         if (mc.world.getBlockState(pos).getBlock() != Blocks.BEDROCK && mc.world.getBlockState(pos).getBlock() != Blocks.OBSIDIAN)
             return false;
 
-        if (mc.world.getBlockState(pos.up()).getBlock() != Blocks.AIR || mc.world.getBlockState(pos.up().up()).getBlock() != Blocks.AIR)
+        if (mc.world.getBlockState(pos.up()).getBlock() != Blocks.AIR || (!onepointthirteen && mc.world.getBlockState(pos.up().up()).getBlock() != Blocks.AIR))
             return false;
 
         for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.up()))) {
