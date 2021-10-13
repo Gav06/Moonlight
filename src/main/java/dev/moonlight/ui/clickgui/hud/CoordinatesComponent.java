@@ -3,6 +3,7 @@ package dev.moonlight.ui.clickgui.hud;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
 import dev.moonlight.module.ModuleManager;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.module.mods.hud.Coordinates;
 import dev.moonlight.module.mods.client.HUD;
 import dev.moonlight.module.mods.client.GUI;
@@ -32,10 +33,14 @@ public class CoordinatesComponent extends HUDComponent {
         super.draw(mouseX, mouseY, partialTicks);
         BlockPos pos = Minecraft.getMinecraft().player.getPosition();
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
-        String coordinates = moduleManager.getModule(Coordinates.class).nether.getValue() && Minecraft.getMinecraft().player.dimension == 0 ? "X:" + pos.getX() + ChatFormatting.RED + "[" + (pos.getX() / 8) + "] " + ChatFormatting.RESET + "Y:" + pos.getY() + ChatFormatting.RED + "[" + (pos.getY() / 8) + "] " + ChatFormatting.RESET + "Z:" +  pos.getZ() + ChatFormatting.RED + "[" + (pos.getZ() / 8) + "]" + ChatFormatting.RESET : "X:" + pos.getX() + " Y:" + pos.getY() + " Z:" +  pos.getZ();
+        String coordinates = moduleManager.getModule(Coordinates.class).nether.getValue() && Minecraft.getMinecraft().player.dimension == 0 ? ChatFormatting.GRAY + "X:" + ChatFormatting.RESET + pos.getX() + ChatFormatting.RED + "[" + (pos.getX() / 8) + "] " + ChatFormatting.GRAY + "Y:" + ChatFormatting.RESET + pos.getY() + ChatFormatting.GRAY + " Z:" + ChatFormatting.RESET +  pos.getZ() + ChatFormatting.RED + "[" + (pos.getZ() / 8) + "]" + ChatFormatting.RESET : ChatFormatting.GRAY + "X:" + ChatFormatting.RESET + pos.getX() + ChatFormatting.GRAY + " Y:" + ChatFormatting.RESET + pos.getY() + ChatFormatting.GRAY + " Z:" + ChatFormatting.RESET +  pos.getZ();
         this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(coordinates);
         this.height = Moonlight.INSTANCE.getFontRenderer().getStringHeight(coordinates);
-        Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(coordinates, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(coordinates, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(coordinates, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        }
     }
 
     @Override

@@ -1,10 +1,12 @@
 package dev.moonlight.ui.clickgui.settings;
 
 import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.module.mods.client.GUI;
 import dev.moonlight.settings.impl.FloatSetting;
 import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.util.RenderUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -13,7 +15,6 @@ import java.math.RoundingMode;
 
 public class SliderComponent extends SettingComponent {
     public FloatSetting setting;
-
     public boolean isDragging;
     public float sliderWidth;
 
@@ -50,7 +51,11 @@ public class SliderComponent extends SettingComponent {
         Gui.drawRect(x, y + (height / 2) - 1, x + width, y + (height / 2), new Color(r, g, b, 50).getRGB());
         Gui.drawRect(x, y + (height / 2) - 1, x + (int) sliderWidth, y + (height / 2), new Color(r, g, b, a).getRGB());
         RenderUtil.drawRoundedRect(x + sliderWidth - 4, y + (height / 2) - 4, 8, 8, 9, isInside(mouseX, mouseY) ? new Color(r, g, b, a) : new Color(r, g, b, a));
-        cfont.drawStringWithShadow(sb.toString(), x + 2f, y, -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            cfont.drawStringWithShadow(sb.toString(), x + 2f, y, -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + 2f, y, -1);
+        }
     }
 
     @Override

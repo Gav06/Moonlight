@@ -22,13 +22,13 @@ public final class Fullbright extends Module {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
     	if (isEnabled()) {
-                if (brightnessLevel < 20.0f) {
-                    brightnessLevel += 1.0f;
-                }
-            } else {
-                if (brightnessLevel > 0.0f) {
-                    brightnessLevel -= 1.0f;
-                }
+            if (brightnessLevel < 20.0f) {
+                brightnessLevel += 1.0f;
+            }
+        }else {
+    	    if (brightnessLevel > 0.0f) {
+                brightnessLevel -= 1.0f;
+            }
         }
     }
 }

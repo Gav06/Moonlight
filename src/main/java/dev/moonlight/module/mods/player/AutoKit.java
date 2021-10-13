@@ -1,5 +1,6 @@
 package dev.moonlight.module.mods.player;
 
+import dev.moonlight.event.events.DeathEvent;
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.util.MessageUtil;
@@ -27,8 +28,12 @@ public class AutoKit extends Module {
             MessageUtil.sendMessage("Used autoKit.");
             hasUsedKit = true;
         }
-        if(mc.player.isDead || mc.player.getHealth() <= 0 || !mc.player.isEntityAlive()) {
-            hasUsedKit = false;
+    }
+
+    @SubscribeEvent
+    public void onDeath(DeathEvent event) {
+        if(event.getEntity() == mc.player) {
+            if(hasUsedKit) hasUsedKit = false;
         }
     }
 

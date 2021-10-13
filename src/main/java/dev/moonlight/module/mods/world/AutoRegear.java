@@ -1,4 +1,4 @@
-package dev.moonlight.module.mods.combat;
+package dev.moonlight.module.mods.world;
 
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 @Module.Info(
         name = "AutoRegear",
         desc = "Like rusherhack.",
-        category = Module.Category.Combat
+        category = Module.Category.World
 )
 public class AutoRegear extends Module {
 

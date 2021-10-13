@@ -1,7 +1,10 @@
 package dev.moonlight.ui.clickgui.settings;
 
+import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.settings.impl.StringSetting;
 import dev.moonlight.ui.clickgui.api.SettingComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
@@ -11,9 +14,8 @@ import java.awt.datatransfer.DataFlavor;
 
 //somewhat phobos i had to skid a lot of the methods for the actual string manipulation stuff
 public class StringComponent extends SettingComponent {
-    private final StringSetting setting;
-
     CurrentString currentString = new CurrentString("");
+    private final StringSetting setting;
     boolean isTyping = false;
 
     public StringComponent(StringSetting setting, int x, int y, int width, int height) {
@@ -42,7 +44,11 @@ public class StringComponent extends SettingComponent {
         }else {
             sb.append(setting.getValue());
         }
-        cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        }
     }
 
     @Override

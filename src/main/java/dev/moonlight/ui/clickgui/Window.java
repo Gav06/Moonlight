@@ -2,6 +2,7 @@ package dev.moonlight.ui.clickgui;
 
 import dev.moonlight.Moonlight;
 import dev.moonlight.module.Module;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.settings.Setting;
 import dev.moonlight.settings.impl.*;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
@@ -11,6 +12,7 @@ import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.ui.clickgui.settings.*;
 import dev.moonlight.util.MessageUtil;
 import dev.moonlight.util.RenderUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
@@ -22,7 +24,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 // class for holding all of the code for the main window
 public final class Window extends AbstractComponent {
-
     private final WindowHeader header;
 
     private final ArrayList<ContentPane<?>> panes;
@@ -94,7 +95,11 @@ public final class Window extends AbstractComponent {
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).b.getValue();
         int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).a.getValue();
 
-        moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(Moonlight.MOD_NAME + " v" + Moonlight.VERSION, x + 2, header.y + 1, -1);
+        }
 
         //Right Rect
         Gui.drawRect(x + 100, y, x + width, y + height, new Color(rbgr, rbgg, rbgb, rbga).getRGB());
@@ -176,7 +181,11 @@ public final class Window extends AbstractComponent {
                 sb.append("> ");
             }
             sb.append(category.name());
-            moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
+            if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+                moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
+            }else {
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
+            }
         }
 
         @Override
@@ -263,11 +272,19 @@ public final class Window extends AbstractComponent {
             int color = 0x777777;
             if (module.isEnabled())
                 color = -1;
-            moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
+            if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+                moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
+            }else {
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, color);
+            }
             if (isInside(mouseX, mouseY)) {
                 if (moonlight.getModuleManager().getModule(dev.moonlight.module.mods.client.GUI.class).descriptions.getValue()) {
                     Gui.drawRect(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 3 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), 0x90000000);
-                    moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
+                    if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+                        moonlightGui.getMoonlight().getFontRenderer().drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
+                    }else {
+                        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(module.getDesc(), mouseX + 3, mouseY - 4, -1);
+                    }
                     RenderUtil.outline2d(mouseX + 1, mouseY - 6, mouseX + 5 + moonlightGui.getMoonlight().getFontRenderer().getStringWidth(module.getDesc()), mouseY - 2 + moonlightGui.getMoonlight().getFontRenderer().getStringHeight(module.getDesc()), new Color(r, g, b, a).getRGB());
                 }
             }

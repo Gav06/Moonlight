@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 @Module.Info(
         name = "PopCounter",
-        desc = "Counts pops kinda...",
+        desc = "Counts player pops.",
         category = Module.Category.World
 )
 public class PopCounter extends Module {
@@ -22,18 +22,14 @@ public class PopCounter extends Module {
     public BoolSetting self = new BoolSetting("Self", true, false);
     public BoolSetting onDeath = new BoolSetting("OnDeath", true, false);
 
-    public HashMap<Entity, Integer> entityPops = new HashMap<>();
-
     @SubscribeEvent
     public void onPop(TotemPopEvent event) {
         for(Entity e : mc.world.loadedEntityList) {
             if(e.equals(mc.player) && !self.getValue()) return;
-            if(!entityPops.containsKey(event.getEntity())) {
+            if(event.getPopCount() == 0) {
                 MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has just popped a totem ez.", event.getEntity().getEntityId());
-                entityPops.put(event.getEntity(), + 1);
-            }else if(entityPops.containsKey(event.getEntity())) {
-                MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has popped " + entityPops.entrySet() + " ez.", event.getEntity().getEntityId());
-                entityPops.put(event.getEntity(), + 1);
+            }else if(event.getPopCount() > 0) {
+                MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has popped " + event.getPopCount() + " ez.", event.getEntity().getEntityId());
             }
         }
     }
@@ -46,7 +42,6 @@ public class PopCounter extends Module {
                 if(onDeath.getValue()) {
                     if(((EntityPlayer) e).getHealth() <= 0 || e.isDead || !e.isEntityAlive()) {
                         MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + event.getEntity().getName() + " has just died he is so ez.", event.getEntity().getEntityId());
-                        entityPops.remove(event.getEntity(), 0);
                     }
                 }
             }

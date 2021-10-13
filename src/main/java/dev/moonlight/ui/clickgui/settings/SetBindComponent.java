@@ -1,7 +1,10 @@
 package dev.moonlight.ui.clickgui.settings;
 
+import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.settings.impl.BindSetting;
 import dev.moonlight.ui.clickgui.api.SettingComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import org.lwjgl.input.Keyboard;
 
@@ -30,7 +33,11 @@ public class SetBindComponent extends SettingComponent {
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         }
         final String text = listening ? "Press a key..." : setting.getName() + " [" + Keyboard.getKeyName(setting.getBind()) + "]";
-        cfont.drawStringWithShadow(text, x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            cfont.drawStringWithShadow(text, x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+        }
     }
 
     @Override

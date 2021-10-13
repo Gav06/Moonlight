@@ -14,7 +14,6 @@ import org.lwjgl.input.Keyboard;
         bind = Keyboard.KEY_U
 )
 public final class GUI extends Module {
-    public StringSetting watermark = new StringSetting("Watermark", "Moonlight");
     public BoolSetting othersParent = new BoolSetting("Others", false, true);
     public final ModeSetting backgroundMode = new ModeSetting("BackgroundMode", BackgroundMode.None, () -> othersParent.getValue());
 

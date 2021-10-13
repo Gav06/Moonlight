@@ -16,7 +16,11 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class EventListener {
+    public final Map<String, Integer> popMap = new HashMap<>();
 
     private final Moonlight moonlight;
 
@@ -47,9 +51,22 @@ public final class EventListener {
         if (event.getPacket() instanceof SPacketEntityStatus) {
             final SPacketEntityStatus statusPacket = (SPacketEntityStatus) event.getPacket();
 
-            if (statusPacket.getOpCode() == 35) {
-                MinecraftForge.EVENT_BUS.post(new TotemPopEvent(statusPacket.getEntity(Minecraft.getMinecraft().world)));
+            if (statusPacket.getOpCode() == 35 && ((SPacketEntityStatus) event.getPacket()).getEntity(Minecraft.getMinecraft().world) instanceof EntityPlayer) {
+                if (!popMap.containsKey(statusPacket.getEntity(Minecraft.getMinecraft().world).getName())) {
+                    MinecraftForge.EVENT_BUS.post(new TotemPopEvent(statusPacket.getEntity(Minecraft.getMinecraft().world), 1));
+                } else {
+                    MinecraftForge.EVENT_BUS.post(new TotemPopEvent(statusPacket.getEntity(Minecraft.getMinecraft().world), popMap.get(statusPacket.getEntity(Minecraft.getMinecraft().world).getName()) + 1));
+                }
+                handlePop((EntityPlayer) statusPacket.getEntity(Minecraft.getMinecraft().world));
             }
+        }
+    }
+
+    public void handlePop(EntityPlayer player) {
+        if (!popMap.containsKey(player.getName())) {
+            popMap.put(player.getName(), 1);
+        } else {
+            popMap.put(player.getName(), popMap.get(player.getName()) + 1);
         }
     }
 
@@ -62,6 +79,7 @@ public final class EventListener {
                     final EntityPlayer player = (EntityPlayer) entity;
                     if (player.getHealth() <= 0.0f || player.isDead || !player.isEntityAlive()) {
                         MinecraftForge.EVENT_BUS.post(new DeathEvent(player));
+                        popMap.remove(player.getName());
                     }
                 }
             }

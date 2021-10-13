@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ItemRenderer.class)
-public final class MixinItemRenderer {
+public class MixinItemRenderer {
 
     @ModifyVariable(method = "updateEquippedItem", at = @At("STORE"), index = 4)
     private float updateEquippedItem$ModifyVariable$STORE$F4(float original) {

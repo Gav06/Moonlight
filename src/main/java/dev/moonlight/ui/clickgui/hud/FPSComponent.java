@@ -4,9 +4,11 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.FPSHelper;
 import dev.moonlight.module.ModuleManager;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.module.mods.client.HUD;
 import dev.moonlight.module.mods.client.GUI;
 import dev.moonlight.ui.clickgui.api.HUDComponent;
+import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
@@ -33,7 +35,11 @@ public class FPSComponent extends HUDComponent {
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
         this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(fps);
         this.height = Moonlight.INSTANCE.getFontRenderer().getStringHeight(fps);
-        Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(fps, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+            Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(fps, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        }else {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(fps, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
+        }
     }
 
     @Override

@@ -2,13 +2,14 @@ package dev.moonlight.ui.clickgui.settings;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.ui.clickgui.api.SettingComponent;
 import dev.moonlight.util.RenderUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
 public final class BoolComponent extends SettingComponent {
-
     private final BoolSetting boolSetting;
 
     public BoolComponent(BoolSetting boolSetting, int x, int y, int width, int height) {
@@ -47,14 +48,22 @@ public final class BoolComponent extends SettingComponent {
                 sb.append(ChatFormatting.RED + " False");
             }
 
-            cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+                cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            }else {
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            }
         } else {
             if(isInside(mouseX, mouseY)){
                 Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
                 RenderUtil.outline2d(x + 1, y, x + width -1, y + height - 1, 0x20ffffff);
             }
             Gui.drawRect(x , y, x + width - 1, y + height, 0x90000000);
-            cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
+                cfont.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            }else {
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName(), x + width / 2 - Moonlight.INSTANCE.getFontRenderer().getStringWidth(boolSetting.getValue() ? "> " + boolSetting.getName() : boolSetting.getName()) / 2, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            }
         }
     }
 

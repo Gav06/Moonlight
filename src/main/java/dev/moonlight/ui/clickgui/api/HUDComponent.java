@@ -3,6 +3,7 @@ package dev.moonlight.ui.clickgui.api;
 import dev.moonlight.Moonlight;
 import dev.moonlight.misc.font.CFontRenderer;
 import dev.moonlight.module.HUDModule;
+import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.ui.clickgui.GUI;
 import dev.moonlight.ui.clickgui.api.DragComponent;
 import net.minecraft.client.Minecraft;

@@ -47,9 +47,10 @@ public class InventoryUtil {
         mc.playerController.updateController();
     }
 
-    public static void moveItemToSlot(Integer startSlot, Integer endSlot) {
+    public static void moveItemToSlot(int startSlot, int endSlot) {
         mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.windowClick(mc.player.inventoryContainer.windowId, endSlot, 0, ClickType.PICKUP, mc.player);
         mc.playerController.windowClick(mc.player.inventoryContainer.windowId, startSlot, 0, ClickType.PICKUP, mc.player);
+        mc.playerController.updateController();
     }
 }

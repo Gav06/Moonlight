@@ -1,11 +1,14 @@
 package dev.moonlight.module.mods.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import dev.moonlight.Moonlight;
 import dev.moonlight.event.events.CrystalAttackEvent;
 import dev.moonlight.event.events.PacketEvent;
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.mixin.mixins.ICPacketUseEntityMixin;
 import dev.moonlight.module.Module;
+import dev.moonlight.module.ModuleManager;
+import dev.moonlight.module.mods.player.AutoSuicide;
 import dev.moonlight.settings.impl.BindSetting;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
@@ -156,16 +159,21 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        targetPlayer = EntityUtil.getTarget(targetRange.getValue());
+        ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
+        if(moduleManager.getModule(AutoSuicide.class).suicideBomb.getValue() && Keyboard.isKeyDown(moduleManager.getModule(AutoSuicide.class).bindToNuke.getBind()) && moduleManager.getModule(AutoSuicide.class).isEnabled()) {
+            targetPlayer = mc.player;
+        }else {
+            targetPlayer = EntityUtil.getTarget(targetRange.getValue());
+        }
+
+        if (targetPlayer == null)
+            return;
 
         if ((pauseOnGapple.getValue() && mc.player.getHeldItemMainhand().getItem().equals(Items.GOLDEN_APPLE) && mc.gameSettings.keyBindUseItem.isKeyDown())
                 || (pauseOnSword.getValue() && mc.player.getHeldItemMainhand().equals(Items.DIAMOND_SWORD))
                 || (pauseOnExp.getValue() && mc.player.getHeldItemMainhand().equals(Items.EXPERIENCE_BOTTLE) && mc.gameSettings.keyBindUseItem.isKeyDown()
                 || (pauseOnHealth.getValue() && mc.player.getHealth() + mc.player.getAbsorptionAmount() < pauseHealth.getValue())))
-            return;
-
-        if (targetPlayer == null)
-            return;
+                return;
 
         if (placeTimer.passedMs((long) placeDelay.getValue())) {
             doPlace();

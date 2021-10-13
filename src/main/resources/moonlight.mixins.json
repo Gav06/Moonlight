@@ -7,7 +7,6 @@
   "mixins": [
     "MixinEntityPlayerSP",
     "MixinEntityRenderer",
-    "MixinGuiNewChat",
     "MixinItemRenderer",
     "MixinNetworkManager",
     "MixinRenderLivingBase"
