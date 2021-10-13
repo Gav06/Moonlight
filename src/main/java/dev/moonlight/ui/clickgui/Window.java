@@ -184,7 +184,7 @@ public final class Window extends AbstractComponent {
             if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
                 moonlightGui.getMoonlight().getFontRenderer().drawCenteredStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
             }else {
-                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - moonlightGui.getMoonlight().getFontRenderer().getHeight() / 2f, -1);
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + width / 2f, y + height / 2f - Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT / 2f, -1);
             }
         }
 

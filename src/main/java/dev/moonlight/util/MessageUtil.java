@@ -2,12 +2,13 @@ package dev.moonlight.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
+import dev.moonlight.module.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 
 public class MessageUtil {
-    public static final String messagePrefix = ChatFormatting.GRAY + "<" + Moonlight.DISPLAY_MOD_NAME + ChatFormatting.GRAY + "> " + ChatFormatting.RESET;
-    public static final String errorPrefix = ChatFormatting.DARK_RED + "<" + Moonlight.MOD_NAME + "> " + ChatFormatting.RESET;
+    public static final String messagePrefix = ChatFormatting.GRAY + "[" + Moonlight.DISPLAY_MOD_NAME + ChatFormatting.GRAY + "] " + ChatFormatting.RESET;
+    public static final String errorPrefix = ChatFormatting.DARK_RED + "[" + Moonlight.MOD_NAME + "] " + ChatFormatting.RESET;
 
     public static void sendRawMessage(String message) {
         if(Minecraft.getMinecraft().player != null) {
@@ -25,5 +26,9 @@ public class MessageUtil {
 
     public static void sendRemovableMessage(String message, int id) {
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(messagePrefix + message), id);
+    }
+
+    public static String getModulePrefix(Module module, ChatFormatting color) {
+        return ChatFormatting.GRAY + "[" + color + module.getName() + ChatFormatting.GRAY + "]" + ChatFormatting.RESET;
     }
 }
