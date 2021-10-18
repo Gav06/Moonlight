@@ -61,7 +61,7 @@ public final class Moonlight {
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
 
-        Display.setTitle(MOD_NAME + " | " + VERSION + " |  zPrestige_ Edition");
+        Display.setTitle(MOD_NAME + " | " + VERSION);
     }
 
     public Logger getLogger() {
