@@ -17,6 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+
 @Mod(
         modid = Moonlight.MOD_ID,
         name = Moonlight.MOD_NAME,
@@ -62,6 +68,13 @@ public final class Moonlight {
 
         logger.info("Completed initialization! ({} seconds)", (System.currentTimeMillis() - startTime) / 1000.0);
 
+        final InputStream stream16 = getClass().getResourceAsStream("/assets/moonlight/icon_16.png");
+        final InputStream stream32 = getClass().getResourceAsStream("/assets/moonlight/icon_32.png");
+
+        if (stream16 != null && stream32 != null) {
+            Display.setIcon(new ByteBuffer[] {readImageToBuffer(stream16), readImageToBuffer(stream32)});
+        }
+
         Display.setTitle(MOD_NAME + " | " + VERSION);
     }
 
@@ -87,6 +100,26 @@ public final class Moonlight {
 
     public HUD getHud() {
         return hud;
+    }
+
+    private ByteBuffer readImageToBuffer(InputStream imageStream)
+    {
+        BufferedImage bufferedimage = null;
+        try {
+            bufferedimage = ImageIO.read(imageStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[])null, 0, bufferedimage.getWidth());
+        ByteBuffer bytebuffer = ByteBuffer.allocate(4 * aint.length);
+
+        for (int i : aint)
+        {
+            bytebuffer.putInt(i << 8 | i >> 24 & 255);
+        }
+
+        bytebuffer.flip();
+        return bytebuffer;
     }
 
     public FriendManager getFriendManager() {
