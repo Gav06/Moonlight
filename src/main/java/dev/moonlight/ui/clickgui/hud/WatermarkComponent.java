@@ -1,5 +1,6 @@
 package dev.moonlight.ui.clickgui.hud;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
 import dev.moonlight.module.ModuleManager;
 import dev.moonlight.module.mods.client.Font;
@@ -30,9 +31,9 @@ public class WatermarkComponent extends HUDComponent {
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
-        String name = Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? Moonlight.DISPLAY_MOD_NAME + " " + Moonlight.VERSION : Moonlight.DISPLAY_MOD_NAME;
-        this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(name);
-        this.height = Moonlight.INSTANCE.getFontRenderer().getStringHeight(name);
+        String name = !moduleManager.getModule(Watermark.class).custom.getValue() ? (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? Moonlight.DISPLAY_MOD_NAME + " " + ChatFormatting.GRAY + "v" + ChatFormatting.RESET + Moonlight.VERSION : Moonlight.DISPLAY_MOD_NAME) : (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? moduleManager.getModule(Watermark.class).customWatermark.getValue() + " " + ChatFormatting.GRAY + "v" + ChatFormatting.RESET + Moonlight.VERSION : moduleManager.getModule(Watermark.class).customWatermark.getValue());
+        this.width = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? (Moonlight.INSTANCE.getFontRenderer().getStringWidth(!moduleManager.getModule(Watermark.class).custom.getValue() ? (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? Moonlight.DISPLAY_MOD_NAME + " " + Moonlight.VERSION : Moonlight.DISPLAY_MOD_NAME) : (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? moduleManager.getModule(Watermark.class).customWatermark.getValue() + " " + Moonlight.VERSION : moduleManager.getModule(Watermark.class).customWatermark.getValue()))) : (Minecraft.getMinecraft().fontRenderer.getStringWidth(!moduleManager.getModule(Watermark.class).custom.getValue() ? (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? Moonlight.DISPLAY_MOD_NAME + " " + Moonlight.VERSION : Moonlight.DISPLAY_MOD_NAME) : (Moonlight.INSTANCE.getModuleManager().getModule(Watermark.class).version.getValue() ? moduleManager.getModule(Watermark.class).customWatermark.getValue() + " " + Moonlight.VERSION : moduleManager.getModule(Watermark.class).customWatermark.getValue())));
+        this.height = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? Moonlight.INSTANCE.getFontRenderer().getStringHeight(name) : Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
             Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(name, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
         }else {

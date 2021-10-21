@@ -24,7 +24,7 @@ public class MessageUtil {
         sendRawMessage(errorPrefix + message);
     }
 
-    public static void sendRemovableMessage(String message, int id) {
+    public static void sendRemovableMessage(String message, int id, boolean watermark) {
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(messagePrefix + message), id);
     }
 

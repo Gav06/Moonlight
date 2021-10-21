@@ -2,10 +2,12 @@ package dev.moonlight;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.event.EventListener;
+import dev.moonlight.friend.FriendManager;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.misc.FontHelper;
 import dev.moonlight.misc.font.CFontRenderer;
 import dev.moonlight.module.ModuleManager;
+import dev.moonlight.ui.clickgui.ClickGUI;
 import dev.moonlight.ui.clickgui.GUI;
 import dev.moonlight.ui.hud.HUD;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,16 +34,13 @@ public final class Moonlight {
     /** This is the instance of your mod as created by Forge. It will never be null. */
     @Mod.Instance(MOD_ID)
     public static Moonlight INSTANCE;
-
     private Logger logger;
-
     private CFontRenderer fontRenderer;
-
     private ModuleManager moduleManager;
-
     private HUD hud;
-
     private GUI gui;
+    private ClickGUI clickGUI;
+    private FriendManager friendManager;
 
     @SuppressWarnings("all")
     @ApiCall
@@ -53,9 +52,11 @@ public final class Moonlight {
         logger.info("Starting {} v{}", MOD_NAME, VERSION);
 
         fontRenderer = new CFontRenderer(FontHelper.getFontFromResource("/assets/moonlight/Jetbrains_Mono.ttf", 18.0f), true, true);
+        friendManager = new FriendManager();
         moduleManager = new ModuleManager();
         hud = new HUD(this);
         gui = new GUI(this);
+        clickGUI = new ClickGUI(this);
 
         MinecraftForge.EVENT_BUS.register(new EventListener(this));
 
@@ -80,7 +81,15 @@ public final class Moonlight {
         return gui;
     }
 
+    public ClickGUI getClickGUI() {
+        return clickGUI;
+    }
+
     public HUD getHud() {
         return hud;
+    }
+
+    public FriendManager getFriendManager() {
+        return friendManager;
     }
 }

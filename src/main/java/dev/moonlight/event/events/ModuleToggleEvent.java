@@ -15,14 +15,12 @@ public class ModuleToggleEvent extends Event {
     }
 
     public static class Enable extends ModuleToggleEvent {
-
         public Enable(Module moduleIn) {
             super(moduleIn);
         }
     }
 
     public static class Disable extends ModuleToggleEvent {
-
         public Disable(Module moduleIn) {
             super(moduleIn);
         }

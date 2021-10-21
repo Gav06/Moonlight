@@ -43,9 +43,9 @@ public final class BoolComponent extends SettingComponent {
             final StringBuilder sb = new StringBuilder(boolSetting.getName() + ":");
 
             if (boolSetting.getValue()) {
-                sb.append(ChatFormatting.GREEN + " True");
+                sb.append(ChatFormatting.GREEN + " [True]");
             } else {
-                sb.append(ChatFormatting.RED + " False");
+                sb.append(ChatFormatting.RED + " [False]");
             }
 
             if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {

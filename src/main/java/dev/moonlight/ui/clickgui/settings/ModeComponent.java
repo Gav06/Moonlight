@@ -35,9 +35,9 @@ public final class ModeComponent extends SettingComponent {
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         }
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
-            cfont.drawStringWithShadow(setting.getName() + ": " + setting.getValueEnum().toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            cfont.drawStringWithShadow(setting.getName() + " [" + setting.getValueEnum().toString() + "]", x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }else {
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(setting.getName() + ": " + setting.getValueEnum().toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(setting.getName() + " [" + setting.getValueEnum().toString() + "]", x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }
 

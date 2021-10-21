@@ -1,9 +1,14 @@
 package dev.moonlight.module.mods.player;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.event.events.PlayerUpdateEvent;
+import dev.moonlight.friend.FriendManager;
 import dev.moonlight.module.Module;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.util.InventoryUtil;
+import dev.moonlight.util.MessageUtil;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -26,6 +31,7 @@ public class MiddleClick extends Module {
     public BoolSetting verticalXP = new BoolSetting("VerticalXP", false, false, () -> xp.getValue());
     public BoolSetting ePearl = new BoolSetting("EPearl", false, false);
     public BoolSetting packetGap = new BoolSetting("PacketGap", true, false, () -> silent.getValue());
+    public BoolSetting friend = new BoolSetting("Friend", true, false);
 
     boolean mouseHolding = false;
     boolean hasSwitched = false;
@@ -74,6 +80,24 @@ public class MiddleClick extends Module {
                     mc.player.connection.sendPacket(new CPacketPlayer.Rotation(mc.player.cameraYaw, -90f, true));
                 mc.player.connection.sendPacket(new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND));
                 if(hasClicked = true) hasClicked = false;
+            }
+            if(hasClicked && friend.getValue() && mc.objectMouseOver.entityHit != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
+                if(!moonlight.getFriendManager().isFriend(mc.objectMouseOver.entityHit.getName())) {
+                    try {
+                        moonlight.getFriendManager().addFriend(mc.objectMouseOver.entityHit.getName());
+                        MessageUtil.sendMessage(ChatFormatting.GREEN + "Added" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " to friends list.");
+                    }catch (Exception e) {
+                        MessageUtil.sendError("Failed to add player to friends list.");
+                    }
+                }else {
+                    try {
+                        moonlight.getFriendManager().delFriend(mc.objectMouseOver.entityHit.getName());
+                        MessageUtil.sendMessage(ChatFormatting.RED + "Removed" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " from friends list.");
+                    }catch (Exception e) {
+                        MessageUtil.sendError("Failed to remove player from friends list.");
+                    }
+                }
+                hasClicked = false;
             }
         }
     }

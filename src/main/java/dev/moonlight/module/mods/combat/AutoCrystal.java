@@ -45,7 +45,7 @@ import java.util.TreeMap;
 
 
 /**
- * @Author zPrestige_
+ * @Author zPrestige_ (certified nigger)
  * @Since 05/10/21
  */
 
@@ -123,7 +123,7 @@ public class AutoCrystal extends Module {
     public FloatSetting endAlpha = new FloatSetting("EndAlpha", 0, 0, 255, () -> render.getValue() && fade.getValue() && renderParent.getValue());
     public FloatSetting fadeSpeed = new FloatSetting("FadeSpeed", 20, 0, 100, () -> render.getValue() && fade.getValue() && renderParent.getValue());
 
-    public BoolSetting box =new BoolSetting("Box", false, false, () -> render.getValue() && renderParent.getValue());
+    public BoolSetting box = new BoolSetting("Box", false, false, () -> render.getValue() && renderParent.getValue());
     public FloatSetting boxRed = new FloatSetting("BoxRed", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
     public FloatSetting boxGreen = new FloatSetting("BoxGreen", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
     public FloatSetting boxBlue = new FloatSetting("BoxBlue", 255, 0, 255, () -> render.getValue() && box.getValue() && renderParent.getValue());
@@ -136,13 +136,13 @@ public class AutoCrystal extends Module {
     public FloatSetting outlineAlpha = new FloatSetting("OutlineAlpha", 255, 0, 255, () -> render.getValue() && outline.getValue() && renderParent.getValue());
     public FloatSetting lineWidth = new FloatSetting("LineWidth", 1f, 0f, 5f, () -> render.getValue() && outline.getValue() && renderParent.getValue());
 
-    EntityPlayer targetPlayer;
-    BlockPos finalPos;
-    Timer placeTimer = new Timer();
-    Timer breakTimer = new Timer();
-    HashMap<BlockPos, Integer> possesToFade = new HashMap();
-    BestBlockPos bestCrystalPos = new BestBlockPos(BlockPos.ORIGIN, 0);
-    HashMap<Integer, Entity> attemptedEntityId = new HashMap();
+    private EntityPlayer targetPlayer;
+    private BlockPos finalPos;
+    private final Timer placeTimer = new Timer();
+    private final Timer breakTimer = new Timer();
+    private final HashMap<BlockPos, Integer> possesToFade = new HashMap<>();
+    private BestBlockPos bestCrystalPos = new BestBlockPos(BlockPos.ORIGIN, 0);
+    private final HashMap<Integer, Entity> attemptedEntityId = new HashMap<>();
 
     float mainTargetDamage;
     float mainTargetHealth;
@@ -159,8 +159,7 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
-        if(moduleManager.getModule(AutoSuicide.class).suicideBomb.getValue() && Keyboard.isKeyDown(moduleManager.getModule(AutoSuicide.class).bindToNuke.getBind()) && moduleManager.getModule(AutoSuicide.class).isEnabled()) {
+        if(moonlight.getModuleManager().getModule(AutoSuicide.class).suicideBomb.getValue() && Keyboard.isKeyDown(moonlight.getModuleManager().getModule(AutoSuicide.class).bindToNuke.getBind()) && moonlight.getModuleManager().getModule(AutoSuicide.class).isEnabled()) {
             targetPlayer = mc.player;
         }else {
             targetPlayer = EntityUtil.getTarget(targetRange.getValue());
@@ -169,11 +168,11 @@ public class AutoCrystal extends Module {
         if (targetPlayer == null)
             return;
 
-        if ((pauseOnGapple.getValue() && mc.player.getHeldItemMainhand().getItem().equals(Items.GOLDEN_APPLE) && mc.gameSettings.keyBindUseItem.isKeyDown())
-                || (pauseOnSword.getValue() && mc.player.getHeldItemMainhand().equals(Items.DIAMOND_SWORD))
-                || (pauseOnExp.getValue() && mc.player.getHeldItemMainhand().equals(Items.EXPERIENCE_BOTTLE) && mc.gameSettings.keyBindUseItem.isKeyDown()
+        if ((pauseOnGapple.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.GOLDEN_APPLE && mc.gameSettings.keyBindUseItem.isKeyDown())
+                || (pauseOnSword.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD)
+                || (pauseOnExp.getValue() && mc.player.getHeldItemMainhand().getItem() == Items.EXPERIENCE_BOTTLE && mc.gameSettings.keyBindUseItem.isKeyDown()
                 || (pauseOnHealth.getValue() && mc.player.getHealth() + mc.player.getAbsorptionAmount() < pauseHealth.getValue())))
-                return;
+            return;
 
         if (placeTimer.passedMs((long) placeDelay.getValue())) {
             doPlace();

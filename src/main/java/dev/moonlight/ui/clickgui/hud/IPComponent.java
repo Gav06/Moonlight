@@ -6,6 +6,7 @@ import dev.moonlight.module.ModuleManager;
 import dev.moonlight.module.mods.client.Font;
 import dev.moonlight.module.mods.client.HUD;
 import dev.moonlight.module.mods.client.GUI;
+import dev.moonlight.module.mods.hud.IP;
 import dev.moonlight.ui.clickgui.api.HUDComponent;
 import net.minecraft.client.Minecraft;
 
@@ -27,10 +28,10 @@ public class IPComponent extends HUDComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
-        String ip = ChatFormatting.GRAY + "IP:" + ChatFormatting.RESET + (Minecraft.getMinecraft().getConnection() != null && Minecraft.getMinecraft().getCurrentServerData() != null && Minecraft.getMinecraft().getCurrentServerData().serverIP != null ? Minecraft.getMinecraft().getCurrentServerData() : "SinglePlayer");
+        String ip = ChatFormatting.GRAY + "IP:" + ChatFormatting.RESET + (Moonlight.INSTANCE.getModuleManager().getModule(IP.class).censorIp.getValue() ? "Censored" : (Minecraft.getMinecraft().getConnection() != null && Minecraft.getMinecraft().getCurrentServerData() != null && Minecraft.getMinecraft().getCurrentServerData().serverIP != null ? Minecraft.getMinecraft().getCurrentServerData().serverIP : "SinglePlayer"));
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
-        this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(ip);
-        this.height = Moonlight.INSTANCE.getFontRenderer().getStringHeight(ip);
+        this.width = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? Moonlight.INSTANCE.getFontRenderer().getStringWidth(ip) : Minecraft.getMinecraft().fontRenderer.getStringWidth(ip);
+        this.height = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? Moonlight.INSTANCE.getFontRenderer().getStringHeight(ip) : Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
             Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(ip, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
         }else {

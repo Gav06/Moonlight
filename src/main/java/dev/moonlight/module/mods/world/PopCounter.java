@@ -27,9 +27,9 @@ public class PopCounter extends Module {
         for(Entity e : mc.world.loadedEntityList) {
             if(e.equals(mc.player) && !self.getValue()) return;
             if(event.getPopCount() == 0) {
-                MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has just popped a totem ez.", event.getEntity().getEntityId());
+                MessageUtil.sendRemovableMessage(MessageUtil.getModulePrefix(this, ChatFormatting.RED) + ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has just popped a totem ez.", event.getEntity().getEntityId(), false);
             }else if(event.getPopCount() > 0) {
-                MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has popped " + event.getPopCount() + " ez.", event.getEntity().getEntityId());
+                MessageUtil.sendRemovableMessage(MessageUtil.getModulePrefix(this, ChatFormatting.RED) + ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + " has popped " + ChatFormatting.GREEN + event.getPopCount() + "'s" + ChatFormatting.RESET + "ez.", event.getEntity().getEntityId(), false);
             }
         }
     }
@@ -41,7 +41,7 @@ public class PopCounter extends Module {
             if(e instanceof EntityPlayer) {
                 if(onDeath.getValue()) {
                     if(((EntityPlayer) e).getHealth() <= 0 || e.isDead || !e.isEntityAlive()) {
-                        MessageUtil.sendRemovableMessage(ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + event.getEntity().getName() + " has just died he is so ez.", event.getEntity().getEntityId());
+                        MessageUtil.sendRemovableMessage(MessageUtil.getModulePrefix(this, ChatFormatting.RED) + ChatFormatting.GREEN + event.getEntity().getName() + ChatFormatting.RESET + event.getEntity().getName() + " has just died he is so ez.", event.getEntity().getEntityId(), false);
                     }
                 }
             }

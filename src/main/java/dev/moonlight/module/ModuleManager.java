@@ -45,6 +45,8 @@ public final class ModuleManager {
                                     }
                                 }
 
+                                System.out.println(instance.getName() + "has been loaded.");
+
                                 moduleList.add(instance);
                                 moduleMap.put(instance.getClass(), instance);
                             }

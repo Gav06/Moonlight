@@ -4,6 +4,7 @@ import dev.moonlight.Moonlight;
 import dev.moonlight.misc.ApiCall;
 import dev.moonlight.module.HUDModule;
 import dev.moonlight.module.Module;
+import dev.moonlight.module.mods.client.HUD;
 import dev.moonlight.ui.clickgui.api.AbstractComponent;
 import dev.moonlight.ui.clickgui.api.IComponent;
 import net.minecraft.client.gui.GuiScreen;

@@ -4,6 +4,7 @@ import dev.moonlight.event.events.DeathEvent;
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.module.Module;
 import dev.moonlight.util.MessageUtil;
+import dev.moonlight.util.Timer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Module.Info(
@@ -13,11 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 )
 public class AutoKit extends Module {
 
-    @Override
-    public void onEnable() {
-        MessageUtil.sendMessage("Make a kit called autoKit.");
-    }
-
+    public Timer timer = new Timer();
     public boolean hasUsedKit = false;
 
     @SubscribeEvent
@@ -28,6 +25,10 @@ public class AutoKit extends Module {
             MessageUtil.sendMessage("Used autoKit.");
             hasUsedKit = true;
         }
+        if(hasUsedKit && timer.passedMs(2000)) {
+            hasUsedKit = false;
+            timer.reset();
+        }
     }
 
     @SubscribeEvent
@@ -35,6 +36,11 @@ public class AutoKit extends Module {
         if(event.getEntity() == mc.player) {
             if(hasUsedKit) hasUsedKit = false;
         }
+    }
+
+    @Override
+    public void onEnable() {
+        MessageUtil.sendMessage("Make a kit called autoKit.");
     }
 
     @Override

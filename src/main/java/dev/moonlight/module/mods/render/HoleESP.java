@@ -40,19 +40,18 @@ public final class HoleESP extends Module {
     private final FloatSetting distance = new FloatSetting("Distance", 8.0f, 2.0f, 32.0f);
     private final FloatSetting updateDelay = new FloatSetting("UpdateDelay", 2f, 1f, 20f);
     //render
-    private final BoolSetting gradient = new BoolSetting("Gradient", true, false);
-    private final BoolSetting distanceFade = new BoolSetting("DistanceFade", false, false);
-    private final BoolSetting self = new BoolSetting("Self", false, false);
-    public BoolSetting safeColorParent = new BoolSetting("SafeColor", false, true);
-    public final FloatSetting rSafe = new FloatSetting("RSafe", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting gSafe = new FloatSetting("GSafe", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting bSafe = new FloatSetting("BSafe", 255, 0, 255, () -> safeColorParent.getValue());
-    public final FloatSetting aSafe = new FloatSetting("ASafe", 255, 0, 255, () -> safeColorParent.getValue());
-    public BoolSetting unSafeColorParent = new BoolSetting("UnSafeColor", false, true);
-    public final FloatSetting rUnSafe = new FloatSetting("RUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting gUnSafe = new FloatSetting("GUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting bUnSafe = new FloatSetting("BUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
-    public final FloatSetting aUnSafe = new FloatSetting("AUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue());
+    public BoolSetting renderParent = new BoolSetting("Render", false, true);
+    private final BoolSetting gradient = new BoolSetting("Gradient", true, false, () -> renderParent.getValue());
+    private final BoolSetting distanceFade = new BoolSetting("DistanceFade", false, false, () -> renderParent.getValue());
+    private final BoolSetting self = new BoolSetting("Self", false, false, () -> renderParent.getValue());
+    public BoolSetting safeColorParent = new BoolSetting("SafeColor", false, true, () -> renderParent.getValue());
+    public final FloatSetting rSafe = new FloatSetting("RSafe", 0, 0, 255, () -> safeColorParent.getValue() && renderParent.getValue());
+    public final FloatSetting gSafe = new FloatSetting("GSafe", 255, 0, 255, () -> safeColorParent.getValue() && renderParent.getValue());
+    public final FloatSetting bSafe = new FloatSetting("BSafe", 0, 0, 255, () -> safeColorParent.getValue() && renderParent.getValue());
+    public BoolSetting unSafeColorParent = new BoolSetting("UnSafeColor", false, true, () -> renderParent.getValue());
+    public final FloatSetting rUnSafe = new FloatSetting("RUnSafe", 255, 0, 255, () -> unSafeColorParent.getValue() && renderParent.getValue());
+    public final FloatSetting gUnSafe = new FloatSetting("GUnSafe", 0, 0, 255, () -> unSafeColorParent.getValue() && renderParent.getValue());
+    public final FloatSetting bUnSafe = new FloatSetting("BUnSafe", 0, 0, 255, () -> unSafeColorParent.getValue() && renderParent.getValue());
 
     private final HoleFinderCallable callable = new HoleFinderCallable();
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -106,6 +105,7 @@ public final class HoleESP extends Module {
                 drawSimpleGradientBB(bb, topColor, bottomColor);
         }
 
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GlStateManager.popMatrix();
     }
 

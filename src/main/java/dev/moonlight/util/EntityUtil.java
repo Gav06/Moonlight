@@ -62,13 +62,12 @@ public class EntityUtil {
 
     public static EntityPlayer getTarget(final float range) {
         EntityPlayer currentTarget = null;
-        for (int size = mc.world.playerEntities.size(), i = 0; i < size; ++i) {
-            final EntityPlayer player = mc.world.playerEntities.get(i);
-            if (!EntityUtil.isntValid(player, range)) {
+        for (EntityPlayer player : mc.world.playerEntities) {
+            if (isValid(player, range)) {
                 if (currentTarget == null) {
                     currentTarget = player;
                 }
-                else if (mc.player.getDistanceSq( player ) < mc.player.getDistanceSq( currentTarget )) {
+                else if (mc.player.getDistance( player ) < mc.player.getDistance( currentTarget )) {
                     currentTarget = player;
                 }
             }
@@ -76,8 +75,8 @@ public class EntityUtil {
         return currentTarget;
     }
 
-    public static boolean isntValid(Entity entity, double range) {
-        return entity == null || EntityUtil.isDead(entity) || entity.equals(mc.player) || entity instanceof EntityPlayer || mc.player.getDistanceSq(entity) > MathUtil.square(range);
+    public static boolean isValid(EntityPlayer player, float range) {
+        return player != null && player.getDistance(mc.player) <= range && player != mc.player;
     }
 
 

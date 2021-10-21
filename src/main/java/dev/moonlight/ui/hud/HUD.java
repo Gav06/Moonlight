@@ -21,7 +21,7 @@ public final class HUD {
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
         for(Module module : moonlight.getModuleManager().getCategoryModules(Module.Category.HUD)) {
-            if(module.isEnabled()) {
+            if(module.isEnabled() && moonlight.getModuleManager().getModule(dev.moonlight.module.mods.client.HUD.class).isEnabled()) {
                 final HUDModule hudMod = (HUDModule) module;
                 hudMod.getComponent().draw(-1, -1, event.getPartialTicks());
             }

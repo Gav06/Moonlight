@@ -6,7 +6,8 @@ import dev.moonlight.settings.impl.BoolSetting;
 @Module.Info(
         name = "HUD",
         desc = "Shit",
-        category = Module.Category.Client
+        category = Module.Category.Client,
+        enabled = true
 )
 public class HUD extends Module {
 

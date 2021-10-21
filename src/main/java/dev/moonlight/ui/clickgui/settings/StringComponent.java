@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.security.Key;
 
 //somewhat phobos i had to skid a lot of the methods for the actual string manipulation stuff
 public class StringComponent extends SettingComponent {
@@ -38,30 +39,30 @@ public class StringComponent extends SettingComponent {
         if (isInside(mouseX, mouseY)) {
             Gui.drawRect(x, y, x + width, y + height, 0x20ffffff);
         }
-        final StringBuilder sb = new StringBuilder(setting.getName() + ":");
+        String sb = setting.getName() + ":";
         if(isTyping) {
-            sb.append(currentString);
+            sb += currentString.getString();
         }else {
-            sb.append(setting.getValue());
+            sb += setting.getValue();
         }
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
-            cfont.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            cfont.drawStringWithShadow(sb, x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }else {
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb.toString(), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(sb, x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
     }
 
     @Override
     public void typed(char keyChar, int keyCode) {
         if(isTyping) {
-            if (keyCode == 1) {
+            if (keyCode == Keyboard.KEY_ESCAPE) {
                 return;
             }
-            if (keyCode == 28) {
+            if (keyCode == Keyboard.KEY_RETURN) {
                 this.enterString();
-            } else if (keyCode == 14) {
+            } else if (keyCode == Keyboard.KEY_BACK) {
                 this.setString(removeLastChar(this.currentString.getString()));
-            } else if (keyCode == 47 && (Keyboard.isKeyDown((int)157) || Keyboard.isKeyDown((int)29))) {
+            } else if (keyCode == Keyboard.KEY_V && (Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))) {
                 try {
                     this.setString(this.currentString.getString() + Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor));
                 }
@@ -72,11 +73,6 @@ public class StringComponent extends SettingComponent {
                 this.setString(this.currentString.getString() + keyChar);
             }
         }
-    }
-
-    @Override
-    public boolean isVisible() {
-        return false;
     }
 
     private void enterString() {
@@ -110,5 +106,10 @@ public class StringComponent extends SettingComponent {
         public String getString() {
             return this.string;
         }
+    }
+
+    @Override
+    public boolean isVisible() {
+        return true;
     }
 }

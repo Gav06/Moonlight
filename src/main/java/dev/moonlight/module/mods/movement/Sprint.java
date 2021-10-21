@@ -31,7 +31,7 @@ public class Sprint extends Module {
             if (!mc.player.isSprinting())
                 mc.player.setSprinting(true);
         }else if(mode.getValueEnum() == Mode.Rage){
-            mc.player.setSprinting(false);
+            mc.player.setSprinting(true);
         }
     }
 }

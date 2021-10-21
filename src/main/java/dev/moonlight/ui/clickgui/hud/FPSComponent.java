@@ -33,8 +33,8 @@ public class FPSComponent extends HUDComponent {
         String fpsThing = ChatFormatting.GRAY + "FPS:" + ChatFormatting.RESET + "%.3f";
         String fps = String.format(fpsThing, FPSHelper.INSTANCE.getFpsAverage());
         ModuleManager moduleManager = Moonlight.INSTANCE.getModuleManager();
-        this.width = Moonlight.INSTANCE.getFontRenderer().getStringWidth(fps);
-        this.height = Moonlight.INSTANCE.getFontRenderer().getStringHeight(fps);
+        this.width = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? Moonlight.INSTANCE.getFontRenderer().getStringWidth(fps) : Minecraft.getMinecraft().fontRenderer.getStringWidth(fps);
+        this.height = Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled() ? Moonlight.INSTANCE.getFontRenderer().getStringHeight(fps) : Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
             Moonlight.INSTANCE.getFontRenderer().drawStringWithShadow(fps, x, y, moduleManager.getModule(HUD.class).clientSync.getValue() ? new Color(moduleManager.getModule(GUI.class).r.getValue() / 255f, moduleManager.getModule(GUI.class).g.getValue() / 255f, moduleManager.getModule(GUI.class).b.getValue() / 255f).getRGB() : -1);
         }else {
