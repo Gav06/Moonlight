@@ -1,14 +1,12 @@
 package dev.moonlight.module.mods.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.moonlight.Moonlight;
 import dev.moonlight.event.events.CrystalAttackEvent;
 import dev.moonlight.event.events.PacketEvent;
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.mixin.mixins.ICPacketUseEntityMixin;
 import dev.moonlight.module.Module;
-import dev.moonlight.module.ModuleManager;
-import dev.moonlight.module.mods.player.AutoSuicide;
+import dev.moonlight.module.mods.player.Suicide;
 import dev.moonlight.settings.impl.BindSetting;
 import dev.moonlight.settings.impl.BoolSetting;
 import dev.moonlight.settings.impl.FloatSetting;
@@ -159,7 +157,7 @@ public class AutoCrystal extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        if(moonlight.getModuleManager().getModule(AutoSuicide.class).suicideBomb.getValue() && Keyboard.isKeyDown(moonlight.getModuleManager().getModule(AutoSuicide.class).bindToNuke.getBind()) && moonlight.getModuleManager().getModule(AutoSuicide.class).isEnabled()) {
+        if(moonlight.getModuleManager().getModule(Suicide.class).suicideBomb.getValue() && Keyboard.isKeyDown(moonlight.getModuleManager().getModule(Suicide.class).bindToNuke.getBind()) && moonlight.getModuleManager().getModule(Suicide.class).isEnabled()) {
             targetPlayer = mc.player;
         }else {
             targetPlayer = EntityUtil.getTarget(targetRange.getValue());

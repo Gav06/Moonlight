@@ -119,6 +119,7 @@ public abstract class Module extends Bind {
         Movement,
         World,
         Player,
+        Misc,
         Client,
         HUD
     }

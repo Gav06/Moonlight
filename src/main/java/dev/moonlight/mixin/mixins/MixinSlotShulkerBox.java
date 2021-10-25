@@ -1,7 +1,7 @@
 package dev.moonlight.mixin.mixins;
 
 import dev.moonlight.Moonlight;
-import dev.moonlight.module.mods.player.ShulkerCeption;
+import dev.moonlight.module.mods.misc.ShulkerCeption;
 import net.minecraft.inventory.SlotShulkerBox;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

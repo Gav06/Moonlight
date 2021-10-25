@@ -16,9 +16,7 @@ import org.lwjgl.input.Keyboard;
 public final class GUI extends Module {
     public BoolSetting othersParent = new BoolSetting("Others", false, true);
     public final ModeSetting backgroundMode = new ModeSetting("BackgroundMode", BackgroundMode.None, () -> othersParent.getValue());
-
     public enum BackgroundMode {Darken, Blur, None}
-
     public final BoolSetting descriptions = new BoolSetting("Descriptions", true, false, () -> othersParent.getValue());
     public BoolSetting leftBackgroundparent = new BoolSetting("LeftBackground", false, true);
     public final FloatSetting lbgr = new FloatSetting("LEFT-BG-R", 0, 0, 255, () -> leftBackgroundparent.getValue());

@@ -29,26 +29,20 @@ public class FakePlayer extends Module {
         fakePlayer.rotationYawHead = mc.player.rotationYawHead;
     }
 
-    @SubscribeEvent
-    public void onUpdate(PlayerUpdateEvent event) {
-        if(autoRespawn.getValue() && fakePlayer != null) {
-            if(copyInventory.getValue())
-                fakePlayer.inventory = mc.player.inventory;
-            if(fakePlayer.getDistance(mc.player) >= distanceToRespawn.getValue()) {
-                try {
-                    mc.world.removeEntity(fakePlayer);
-                    fakePlayer.copyLocationAndAnglesFrom(mc.player);
-                    fakePlayer.rotationYawHead = mc.player.rotationYawHead;
-                    mc.world.addEntityToWorld(fakePlayer.getEntityId(), fakePlayer);
-                }catch (Exception io) {
-                    io.printStackTrace();
-                }
-            }
-        }
-    }
-
     @Override
     public void onDisable() {
         if(mc.world != null && fakePlayer != null) mc.world.removeEntity(fakePlayer);
+    }
+
+    @SubscribeEvent
+    public void onUpdate(PlayerUpdateEvent event) {
+        if(copyInventory.getValue())
+            fakePlayer.inventory = mc.player.inventory;
+        if(autoRespawn.getValue() && fakePlayer != null) {
+            if(fakePlayer.getDistance(mc.player) >= distanceToRespawn.getValue()) {
+                fakePlayer.copyLocationAndAnglesFrom(mc.player);
+                fakePlayer.rotationYawHead = mc.player.rotationYawHead;
+            }
+        }
     }
 }

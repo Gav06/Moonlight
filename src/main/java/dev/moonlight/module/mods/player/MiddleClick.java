@@ -83,19 +83,11 @@ public class MiddleClick extends Module {
             }
             if(hasClicked && friend.getValue() && mc.objectMouseOver.entityHit != null && mc.objectMouseOver.entityHit instanceof EntityPlayer) {
                 if(!moonlight.getFriendManager().isFriend(mc.objectMouseOver.entityHit.getName())) {
-                    try {
-                        moonlight.getFriendManager().addFriend(mc.objectMouseOver.entityHit.getName());
-                        MessageUtil.sendMessage(ChatFormatting.GREEN + "Added" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " to friends list.");
-                    }catch (Exception e) {
-                        MessageUtil.sendError("Failed to add player to friends list.");
-                    }
+                    moonlight.getFriendManager().addFriend(mc.objectMouseOver.entityHit.getName());
+                    MessageUtil.sendMessage(ChatFormatting.GREEN + "Added" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " to friends list.");
                 }else {
-                    try {
-                        moonlight.getFriendManager().delFriend(mc.objectMouseOver.entityHit.getName());
-                        MessageUtil.sendMessage(ChatFormatting.RED + "Removed" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " from friends list.");
-                    }catch (Exception e) {
-                        MessageUtil.sendError("Failed to remove player from friends list.");
-                    }
+                    moonlight.getFriendManager().delFriend(mc.objectMouseOver.entityHit.getName());
+                    MessageUtil.sendMessage(ChatFormatting.RED + "Removed" + " " + ChatFormatting.GOLD + mc.objectMouseOver.entityHit.getName() + ChatFormatting.RESET + " from friends list.");
                 }
                 hasClicked = false;
             }
@@ -104,9 +96,11 @@ public class MiddleClick extends Module {
 
     @Override
     public void onDisable() {
-        if(hasSwitched) mc.player.connection.sendPacket(new CPacketHeldItemChange(originalSlot));
+        if(hasSwitched) {
+            mc.player.connection.sendPacket(new CPacketHeldItemChange(originalSlot));
+            hasSwitched = false;
+        }
         mouseHolding = false;
-        if(hasSwitched) hasSwitched = false;
         hasClicked = false;
     }
 }

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 )
 public class Messages extends Module {
 
-    public BoolSetting waterMark = new BoolSetting("WaterMark", true, false);
+    public BoolSetting waterMark = new BoolSetting("WaterMark", false, false);
     public BoolSetting toggleMessages = new BoolSetting("ToggleMessages", true, false);
 
     @SubscribeEvent

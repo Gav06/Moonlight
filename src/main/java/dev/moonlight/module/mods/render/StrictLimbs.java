@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class StrictLimbs extends Module {
 
     public BoolSetting self = new BoolSetting("Self", true, false);
+    public BoolSetting rotateHead = new BoolSetting("RotateHead", true, false);
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
@@ -25,6 +26,12 @@ public class StrictLimbs extends Module {
             ((EntityPlayer) entity).prevLimbSwingAmount = 0;
             ((EntityPlayer) entity).limbSwingAmount = 0;
             ((EntityPlayer) entity).limbSwing = 0;
+            if(!rotateHead.getValue()) {
+                ((EntityPlayer) entity).prevCameraPitch = 0;
+                ((EntityPlayer) entity).prevCameraYaw = 0;
+                ((EntityPlayer) entity).cameraPitch = 0;
+                ((EntityPlayer) entity).cameraYaw = 0;
+            }
         }
     }
 }

@@ -12,4 +12,5 @@ import dev.moonlight.settings.impl.BoolSetting;
 public class HUD extends Module {
 
     public BoolSetting clientSync = new BoolSetting("ClientSync", true, false);
+    public BoolSetting xyDescription = new BoolSetting("XYDescription", true, false);
 }

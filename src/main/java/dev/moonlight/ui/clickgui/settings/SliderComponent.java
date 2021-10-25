@@ -47,10 +47,9 @@ public class SliderComponent extends SettingComponent {
         int r = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).r.getValue();
         int g = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).g.getValue();
         int b = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).b.getValue();
-        int a = (int) Moonlight.INSTANCE.getModuleManager().getModule(GUI.class).a.getValue();
         Gui.drawRect(x, y + (height / 2) + 3, x + width, y + (height / 2) + 2, new Color(r, g, b, 50).getRGB());
-        Gui.drawRect(x, y + (height / 2) + 3, x + (int) sliderWidth, y + (height / 2) + 2, new Color(r, g, b, a).getRGB());
-        RenderUtil.drawRoundedRect(x + sliderWidth - 4, y + (height / 2) - 1, 8, 8, 9, isInside(mouseX, mouseY) ? new Color(r, g, b, a) : new Color(r, g, b, a));
+        Gui.drawRect(x, y + (height / 2) + 3, x + (int) sliderWidth, y + (height / 2) + 2, new Color(r, g, b, 255).getRGB());
+        RenderUtil.drawRoundedRect(x + sliderWidth - 4, y + (height / 2) - 1, 8, 8, 9, isDragging ? new Color(r, g, b, 200) : new Color(r, g, b, 255));
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
             cfont.drawStringWithShadow(sb.toString(), x + 2f, y, -1);
         }else {

@@ -1,4 +1,4 @@
-package dev.moonlight.module.mods.player;
+package dev.moonlight.module.mods.misc;
 
 import dev.moonlight.event.events.DeathEvent;
 import dev.moonlight.event.events.PlayerUpdateEvent;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Module.Info(
         name = "AutoKit",
         desc = "Automatically ",
-        category = Module.Category.Player
+        category = Module.Category.Misc
 )
 public class AutoKit extends Module {
 

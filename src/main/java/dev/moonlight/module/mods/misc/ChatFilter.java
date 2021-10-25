@@ -1,4 +1,4 @@
-package dev.moonlight.module.mods.world;
+package dev.moonlight.module.mods.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.moonlight.Moonlight;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Module.Info(
         name = "ChatFilter",
         desc = "Filters chat.",
-        category = Module.Category.World
+        category = Module.Category.Misc
 )
 public class ChatFilter extends Module {
 

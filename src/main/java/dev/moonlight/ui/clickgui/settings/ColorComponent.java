@@ -23,6 +23,11 @@ public class ColorComponent extends SettingComponent {
         sliderComponents.add(new SliderComponent(setting.g, x, y, width, height));
         sliderComponents.add(new SliderComponent(setting.b, x, y, width, height));
         sliderComponents.add(new SliderComponent(setting.a, x, y, width, height));
+        if(open) {
+            this.height = 16 * 5;
+        }else {
+            this.height = 16;
+        }
     }
 
     @Override
