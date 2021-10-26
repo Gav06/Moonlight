@@ -16,7 +16,7 @@ import dev.moonlight.ui.clickgui.hud.WatermarkComponent;
 public class Watermark extends HUDModule {
 
     public BoolSetting custom = new BoolSetting("Custom", false, false);
-    public StringSetting customWatermark = new StringSetting("CustomWatermark", "Zori");
+    public StringSetting customWatermark = new StringSetting("CustomWatermark", "Zori", () -> custom.getValue());
     public BoolSetting version = new BoolSetting("Version", true, false);
 
     public Watermark() { super(new WatermarkComponent(1, 1, 1, 1)); }

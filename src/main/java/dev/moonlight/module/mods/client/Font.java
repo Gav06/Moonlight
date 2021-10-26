@@ -9,6 +9,4 @@ import dev.moonlight.settings.impl.FloatSetting;
         category = Module.Category.Client,
         enabled = true
 )
-public class Font extends Module {
-    public FloatSetting fontSize = new FloatSetting("FontSize", 20, 1, 100);
-}
+public class Font extends Module { }

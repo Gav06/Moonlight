@@ -1,7 +1,5 @@
 package dev.moonlight.util;
 
-import net.minecraft.client.gui.Gui;
-
 import java.awt.*;
 
 public class ColorUtil {

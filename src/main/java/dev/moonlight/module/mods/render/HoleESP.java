@@ -2,6 +2,7 @@ package dev.moonlight.module.mods.render;
 
 import dev.moonlight.event.events.PlayerUpdateEvent;
 import dev.moonlight.misc.ApiCall;
+import dev.moonlight.settings.impl.ColorSetting;
 import dev.moonlight.util.BlockUtil;
 import dev.moonlight.util.MathUtil;
 import dev.moonlight.util.RenderUtil;

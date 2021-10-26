@@ -9,13 +9,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Module.Info(
         name = "AutoKit",
-        desc = "Automatically ",
+        desc = "Automatically uses /kit for you (Make a kit called autoKit",
         category = Module.Category.Misc
 )
 public class AutoKit extends Module {
 
     public Timer timer = new Timer();
+    public Timer deathTimer = new Timer();
     public boolean hasUsedKit = false;
+    public boolean hasDied = false;
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
@@ -24,6 +26,11 @@ public class AutoKit extends Module {
             mc.player.sendChatMessage("/kit autoKit");
             MessageUtil.sendMessage("Used autoKit.");
             hasUsedKit = true;
+        }
+        if(hasDied && deathTimer.passedMs(250) && !mc.player.isDead && mc.player.isEntityAlive()) {
+            hasUsedKit = false;
+            hasDied = false;
+            deathTimer.reset();
         }
         if(hasUsedKit && timer.passedMs(2000)) {
             hasUsedKit = false;
@@ -34,17 +41,15 @@ public class AutoKit extends Module {
     @SubscribeEvent
     public void onDeath(DeathEvent event) {
         if(event.getEntity() == mc.player) {
-            if(hasUsedKit) hasUsedKit = false;
+             hasDied = true;
         }
-    }
-
-    @Override
-    public void onEnable() {
-        MessageUtil.sendMessage("Make a kit called autoKit.");
     }
 
     @Override
     public void onDisable() {
         hasUsedKit = false;
+        hasDied = false;
+        deathTimer.reset();
+        timer.reset();
     }
 }

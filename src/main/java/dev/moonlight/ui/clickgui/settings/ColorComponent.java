@@ -23,11 +23,6 @@ public class ColorComponent extends SettingComponent {
         sliderComponents.add(new SliderComponent(setting.g, x, y, width, height));
         sliderComponents.add(new SliderComponent(setting.b, x, y, width, height));
         sliderComponents.add(new SliderComponent(setting.a, x, y, width, height));
-        if(open) {
-            this.height = 16 * 5;
-        }else {
-            this.height = 16;
-        }
     }
 
     @Override
@@ -53,15 +48,15 @@ public class ColorComponent extends SettingComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
-        Gui.drawRect(x, y, x + width, y + height, new Color((int) setting.r.getValue(), (int) setting.g.getValue(), (int) setting.b.getValue()).getRGB());
+        Gui.drawRect(x + width - 15, y + 1, x + width - 2, y + 16 - 1, new Color((int) setting.r.getValue(), (int) setting.g.getValue(), (int) setting.b.getValue()).getRGB());
         final StringBuilder sb = new StringBuilder(setting.getName() + " [" + setting.r.getValue() + "," + setting.g.getValue() + "," + setting.b.getValue() + "," + setting.a.getValue() + "]");
         if(Moonlight.INSTANCE.getModuleManager().getModule(Font.class).isEnabled()) {
-            cfont.drawStringWithShadow(String.valueOf(sb), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            cfont.drawStringWithShadow(String.valueOf(sb), x + 2f, y + (16 / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }else {
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(String.valueOf(sb), x + 2f, y + (height / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(String.valueOf(sb), x + 2f, y + (16 / 2f) - (cfont.getHeight() / 2f) - 1f, -1);
         }
         if (open) {
-            int yOffset = y + height;
+            int yOffset = y + 16;
             for (SliderComponent component : sliderComponents) {
                 component.x = x;
                 component.y = yOffset;

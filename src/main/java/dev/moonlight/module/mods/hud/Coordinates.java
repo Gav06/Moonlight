@@ -10,7 +10,7 @@ import dev.moonlight.ui.clickgui.hud.CoordinatesComponent;
         desc = "Shows the players coordinates.",
         category = Module.Category.HUD
 )
-public class        Coordinates extends HUDModule {
+public class Coordinates extends HUDModule {
     public BoolSetting nether = new BoolSetting("Nether", true, false);
 
     public Coordinates() { super(new CoordinatesComponent(1, 1, 1, 1)); }

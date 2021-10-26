@@ -1,6 +1,5 @@
 package dev.moonlight.misc;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -35,8 +34,7 @@ public final class FPSHelper {
             frames = 0;
             startTime = System.currentTimeMillis();
         }
-
         // getting interpolated
-        fpsAvg = MathHelper.clampedLerp((double) lastFps, (double) currFps, (System.currentTimeMillis() - startTime) / 1000.0) / 2.0;
+        fpsAvg = MathHelper.clampedLerp(lastFps, currFps, (System.currentTimeMillis() - startTime) / 1000.0) / 2.0;
     }
 }
