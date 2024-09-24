@@ -11,4 +11,4 @@
 
     -Dyanmic Fade HoleESP
 
-    -Cool gui (stop calling it skeet you fucking retard)
+    -Cool gui (stop calling it skeet)
